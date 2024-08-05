@@ -15,6 +15,8 @@
   # release notes.
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
+  nixpkgs.config.allowUnfree = true;
+
   fonts.fontconfig.enable = true;
 
   # The home.packages option allows you to install Nix packages into your
@@ -23,6 +25,9 @@
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono"]; })
     pkgs.kitty-themes
     pkgs.lazygit
+    pkgs.zathura
+    pkgs.mpv
+    pkgs.discord
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -89,5 +94,20 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+  };
+
+  gtk = {
+    enable = true;
+    theme.name = "adw-gtk3";
+    cursorTheme.name = "Bibata-Modern-Ice";
+    iconTheme.name = "GruvboxPlus";
+  };
+
+  xdg.mimeApps.defaultApplications = {
+    "image/*" = [ "firefox.desktop" ];
+    "application/pdf" = [ "zathura.desktop" ];
+    "video/png" = [ "mpv.desktop" ];
+    "video/jpg" = [ "mpv.desktop" ];
+    "video/*" = [ "mpv.desktop" ];
   };
 }
