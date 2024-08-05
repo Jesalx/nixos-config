@@ -9,13 +9,14 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-  environment.systemPackages = [
-    pkgs.waybar
-    pkgs.dunst
-    pkgs.libnotify
-    pkgs.hyprpaper
-    pkgs.wofi
-    pkgs.wl-clipboard
+  environment.systemPackages = with pkgs; [
+    waybar
+    dunst
+    libnotify
+    hyprpaper
+    wofi
+    wl-clipboard
+    nautilus
   ];
 
   environment.sessionVariables = {
