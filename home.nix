@@ -81,11 +81,6 @@
     shellAliases = {
       nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
     };
-    # oh-my-zsh = {
-    #   enable = true;
-    #   plugins = [ "git" ];
-    #   theme = "agnoster";
-    # };
   };
  
   programs.starship = {

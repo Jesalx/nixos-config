@@ -116,6 +116,7 @@
     git
     pulseaudio
     gcc
+    ripgrep
   ];
 
   programs.nix-ld = {
