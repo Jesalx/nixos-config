@@ -112,11 +112,8 @@
     neovim
     wget
     curl
-    kitty
     git
     pulseaudio
-    gcc
-    ripgrep
   ];
 
   programs.nix-ld = {

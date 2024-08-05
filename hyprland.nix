@@ -15,6 +15,7 @@
     pkgs.libnotify
     pkgs.hyprpaper
     pkgs.wofi
+    pkgs.wl-clipboard
   ];
 
   environment.sessionVariables = {

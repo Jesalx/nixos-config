@@ -21,13 +21,25 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono"]; })
-    pkgs.kitty-themes
-    pkgs.lazygit
-    pkgs.zathura
-    pkgs.mpv
-    pkgs.discord
+  home.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono"]; })
+    kitty-themes
+    lazygit
+    zathura
+    mpv
+    discord
+
+    git
+    gcc
+    gnumake
+    unzip
+    wget
+    curl
+    ripgrep
+    fd
+    fzf
+    cargo
+    alejandra
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -83,15 +95,34 @@
     };
   };
  
+  programs.kitty = {
+    enable = true;
+    font.name = "JetBrainsMono NF";
+    font.size = 12;
+    shellIntegration.enableZshIntegration = true;
+    settings = {
+      enable_audio_bell = false;
+      confirm_os_window_close = 0;
+    };
+  };
+
   programs.starship = {
     enable = true;
   };
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    
+    extraPackages = with pkgs; [
+      tree-sitter
+      nil
+      lua-language-server
+      stylua
+    ];
   };
 
   gtk = {
