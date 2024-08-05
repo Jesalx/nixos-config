@@ -29,6 +29,9 @@
     mpv
     discord
 
+    rustup
+    pyenv
+    python3
     git
     gcc
     gnumake
@@ -38,7 +41,6 @@
     ripgrep
     fd
     fzf
-    cargo
     alejandra
   ];
 
@@ -102,7 +104,7 @@
     shellIntegration.enableZshIntegration = true;
     settings = {
       enable_audio_bell = false;
-      confirm_os_window_close = 0;
+      confirm_os_window_close = -1;
     };
   };
 
