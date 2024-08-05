@@ -22,6 +22,7 @@
   home.packages = [
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono"]; })
     pkgs.kitty-themes
+    pkgs.lazygit
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -72,6 +73,9 @@
     enable = true;
     autosuggestion.enable = true;
     enableCompletion = true;
+    shellAliases = {
+      nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
+    };
   };
  
   programs.neovim = {

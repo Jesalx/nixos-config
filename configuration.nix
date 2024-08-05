@@ -114,6 +114,7 @@
     curl
     kitty
     git
+    pulseaudio
   ];
 
 
