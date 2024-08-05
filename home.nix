@@ -81,6 +81,12 @@
     EDITOR = "nvim";
   };
 
+  home.pointerCursor = {
+    name = "Numix-Cursor-Light";
+    package = pkgs.numix-cursor-theme;
+    size = 40;
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -133,7 +139,11 @@
   gtk = {
     enable = true;
     theme.name = "adw-gtk3";
-    cursorTheme.name = "Bibata-Modern-Ice";
+    cursorTheme = {
+      name = "Numix-Cursor-Light";
+      package = pkgs.numix-cursor-theme;
+      size = 40;
+    };
     iconTheme.name = "GruvboxPlus";
   };
 
