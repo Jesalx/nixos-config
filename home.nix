@@ -30,8 +30,10 @@
     discord
 
     rustup
+    nodejs
     pyenv
     python3
+    go
     git
     gcc
     gnumake
@@ -124,6 +126,7 @@
       nil
       lua-language-server
       stylua
+      gopls
     ];
   };
 
