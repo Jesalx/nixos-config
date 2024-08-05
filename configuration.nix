@@ -82,10 +82,11 @@
   users.users.jesal = {
     isNormalUser = true;
     description = "jesal";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
     #  thunderbird
     ];
+    shell = pkgs.zsh;
   };
 
   home-manager = {
@@ -97,6 +98,8 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+
+  programs.zsh.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
