@@ -30,7 +30,7 @@
     discord
 
     rustup
-    nodejs
+    nodejs_22
     pyenv
     python3
     go
