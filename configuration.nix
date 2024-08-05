@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # ./hyprland.nix
       inputs.home-manager.nixosModules.default
     ];
 
@@ -50,7 +51,7 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
@@ -58,8 +59,21 @@
     xkb.variant = "";
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # hyprland start
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
+  hardware.opengl.enable = true;
+  # hyprland end
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -112,6 +126,13 @@
     wget
     curl
     kitty
+    git
+
+    pkgs.waybar
+    pkgs.dunst
+    libnotify
+    hyprpaper
+    wofi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
