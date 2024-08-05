@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # ./hyprland.nix
+      ./hyprland.nix
       inputs.home-manager.nixosModules.default
     ];
 
@@ -58,22 +58,6 @@
     xkb.layout = "us";
     xkb.variant = "";
   };
-
-  # hyprland start
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-  };
-
-  hardware.opengl.enable = true;
-  # hyprland end
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -127,12 +111,6 @@
     curl
     kitty
     git
-
-    pkgs.waybar
-    pkgs.dunst
-    libnotify
-    hyprpaper
-    wofi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

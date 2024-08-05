@@ -12,17 +12,14 @@
   environment.systemPackages = [
     pkgs.waybar
     pkgs.dunst
-    libnotify
-    hyprpaper
-    kitty
-    rofi-wayland
+    pkgs.libnotify
+    pkgs.hyprpaper
+    pkgs.wofi
   ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
   };
 
-  hardware = {
-    opengl.enable = true;
-  };
+  hardware.graphics.enable = true;
 }
