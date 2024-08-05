@@ -115,6 +115,7 @@
     kitty
     git
     pulseaudio
+    gcc
   ];
 
   programs.nix-ld = {
