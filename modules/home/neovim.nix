@@ -8,7 +8,7 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-      
+
       extraPackages = with pkgs; [
         unzip
         fzf
@@ -16,6 +16,7 @@
         tree-sitter
         cargo
         nil
+        nixfmt
         lua-language-server
         stylua
         gopls
