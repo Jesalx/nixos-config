@@ -34,5 +34,11 @@ in
         user.signingkey = sshKeyPath;
       };
     };
+    programs.lazygit = {
+      enable = true;
+      settings = {
+        promptToReturnFromSubprocess = false;
+      };
+    };
   };
 }
