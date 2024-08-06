@@ -24,6 +24,8 @@ in
         core.editor = "nvim";
         github.user = "jesalx";
         push.autoSetupRemote = true;
+        color.ui = "auto";
+        init.defaultBranch = "main";
 
         # Sign commits using ssh key
         commit.gpgsign = true;
