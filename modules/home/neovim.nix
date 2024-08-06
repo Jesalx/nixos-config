@@ -10,11 +10,16 @@
       vimdiffAlias = true;
       
       extraPackages = with pkgs; [
+        unzip
+        fzf
+        fd
         tree-sitter
+        cargo
         nil
         lua-language-server
         stylua
         gopls
+        alejandra
       ];
     };
   };
