@@ -76,6 +76,14 @@
     xkb.variant = "";
   };
 
+  # GPU stuff
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
+
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -140,7 +148,9 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+    gamescopeSession.enable = true;
   };
+  programs.gamemode.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
