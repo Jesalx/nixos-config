@@ -1,8 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+  imports = [
+    ./modules/home/zsh.nix
+    ./modules/home/neovim.nix
+    ./modules/home/kitty.nix
+    ./modules/home/theme.nix
+    ./modules/home/git.nix
+  ];
+
   home.username = "jesal";
   home.homeDirectory = "/home/jesal";
 
@@ -47,113 +53,17 @@
     alejandra
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
   xdg.configFile = {
     waybar.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/waybar";
     wofi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/wofi";
     hypr.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/hypr";
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/jesal/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     EDITOR = "nvim";
   };
 
-  home.pointerCursor = {
-    name = "Numix-Cursor-Light";
-    package = pkgs.numix-cursor-theme;
-    size = 40;
-  };
-
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
-  programs.git = {
-    enable = true;
-    userName = "Jesal Patel";
-    userEmail = "jesalx@users.noreply.github.com";
-  };
-
-  programs.zsh = {
-    enable = true;
-    autosuggestion.enable = true;
-    enableCompletion = true;
-    shellAliases = {
-      nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
-      ".." = "cd ..";
-    };
-  };
- 
-  programs.kitty = {
-    enable = true;
-    font.name = "JetBrainsMono NF";
-    font.size = 12;
-    shellIntegration.enableZshIntegration = true;
-    settings = {
-      enable_audio_bell = false;
-      confirm_os_window_close = -1;
-    };
-  };
-
-  programs.starship = {
-    enable = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    
-    extraPackages = with pkgs; [
-      tree-sitter
-      nil
-      lua-language-server
-      stylua
-      gopls
-    ];
-  };
-
-  gtk = {
-    enable = true;
-    theme.name = "adw-gtk3";
-    cursorTheme = {
-      name = "Numix-Cursor-Light";
-      package = pkgs.numix-cursor-theme;
-      size = 40;
-    };
-    iconTheme.name = "GruvboxPlus";
-  };
 
   xdg.mimeApps.defaultApplications = {
     "image/*" = [ "firefox.desktop" ];
