@@ -11,6 +11,7 @@
         nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
         nix-update = "sudo nix flake update /home/jesal/nixos-config";
         nix-config = "nvim /home/jesal/nixos-config/";
+        nix-gc = "sudo nix-collect-garbage -d";
       };
     };
 
