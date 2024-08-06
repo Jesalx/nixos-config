@@ -28,6 +28,7 @@
     zathura
     mpv
     discord
+    obsidian
 
     rustup
     nodejs_22
@@ -64,6 +65,7 @@
   xdg.configFile = {
     waybar.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/waybar";
     wofi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/wofi";
+    hypr.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/hypr";
   };
 
   # Home Manager can also manage your environment variables through
@@ -107,6 +109,7 @@
     enableCompletion = true;
     shellAliases = {
       nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
+      ".." = "cd ..";
     };
   };
  
