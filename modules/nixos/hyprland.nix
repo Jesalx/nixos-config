@@ -7,7 +7,6 @@
   };
 
   programs.hyprlock.enable = true;
-  services.hypridle.enable = true;
 
   security.polkit.enable = true;
 
@@ -35,6 +34,7 @@
     dunst
     libnotify
     hyprpaper
+    hypridle
     wofi
     wl-clipboard
     nautilus
