@@ -5,7 +5,7 @@
     home.pointerCursor = {
         name = "Numix-Cursor-Light";
         package = pkgs.numix-cursor-theme;
-        size = 40;
+        size = 24;
     };
 
     gtk = {
@@ -14,7 +14,7 @@
         cursorTheme = {
         name = "Numix-Cursor-Light";
         package = pkgs.numix-cursor-theme;
-        size = 40;
+        size = 24;
         };
         iconTheme.name = "GruvboxPlus";
     };
