@@ -154,7 +154,7 @@
         "format-critical": "{temperatureC}°C "
     },
     "custom/arch": {
-        "format": "",
+        "format": "",
         "on-click": "kitty --hold -e zsh -c 'paru'",
         "tooltip": false
     }
