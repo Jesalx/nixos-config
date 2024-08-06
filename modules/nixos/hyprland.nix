@@ -6,6 +6,9 @@
     xwayland.enable = true;
   };
 
+  programs.hyprlock.enable = true;
+  programs.hypridle.enable = true;
+
   security.polkit.enable = true;
 
   systemd = {
