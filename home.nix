@@ -54,10 +54,10 @@
   ];
 
   xdg.configFile = {
-    waybar.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/waybar";
-    wofi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/wofi";
-    hypr.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/hypr";
-    nvim.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/xdg/nvim";
+    waybar.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/waybar";
+    wofi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/wofi";
+    hypr.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/hypr";
+    nvim.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/nvim";
   };
 
   home.sessionVariables = {
