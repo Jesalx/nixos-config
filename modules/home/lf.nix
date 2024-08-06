@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
 {
-  programs.lf = { enable = true; };
+  programs.lf = {
+    enable = true;
+  };
 }

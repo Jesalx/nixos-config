@@ -2,15 +2,20 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/nixos/hyprland.nix
-      inputs.home-manager.nixosModules.default
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./modules/nixos/hyprland.nix
+    inputs.home-manager.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -22,7 +27,10 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   system.autoUpgrade = {
     enable = true;
@@ -83,9 +91,7 @@
   };
   services.xserver.videoDrivers = [ "amdgpu" ];
 
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  # Enable sound with pipewire. hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -104,15 +110,21 @@
   users.users.jesal = {
     isNormalUser = true;
     description = "jesal";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
     shell = pkgs.zsh;
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {
+      inherit inputs;
+    };
     users = {
       "jesal" = import ./home.nix;
     };
@@ -139,8 +151,7 @@
 
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [
-    ];
+    libraries = with pkgs; [ ];
   };
 
   programs.steam = {
@@ -151,7 +162,6 @@
     gamescopeSession.enable = true;
   };
   programs.gamemode.enable = true;
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -16,7 +16,7 @@
         tree-sitter
         cargo
         nil
-        nixfmt
+        nixfmt-rfc-style
         lua-language-server
         stylua
         gopls

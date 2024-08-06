@@ -28,7 +28,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono"]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     kitty-themes
     lazygit
     zathura
