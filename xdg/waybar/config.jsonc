@@ -1,0 +1,161 @@
+{
+    "output": "DP-2",
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 35,
+    "modules-left": [
+        "custom/arch",
+        "custom/updates",
+        "hyprland/workspaces"
+        // "custom/weather"
+    ],
+    "modules-center": [
+        "hyprland/window"
+    ],
+    "modules-right": [
+        // "temperature",
+        // "battery",
+        // "backlight",
+        "tray",
+        "group/hardware",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "group/time"
+        // "clock"
+        // "custom/powermenu"
+    ],
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 70
+    },
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "all-outputs": true,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            "10": []
+        },
+        "format-icons": {
+            "active": "󰮯",
+            "default": "󰊠",
+            "empty": ""
+        }
+    },
+    "tray": {
+        "icon-size": 19,
+        "spacing": 10
+    },
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "cpu",
+            "memory"
+        ]
+    },
+    "group/time": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock#date",
+            "clock#time"
+        ]
+    },
+    "clock#time": {
+        "format": " {:%I:%M %p}",
+        "interval": 60
+    },
+    "clock#date": {
+        "format": " {:%Y/%m/%d}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "interval": 300,
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "today": "<span color='#a6e3a1'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+    // "clock#": {
+    // "format": "{:  %I:%M %p    %a, %b%e}",
+    // "format": "{:  %I:%M %p    %a, %b%e}",
+    // "format": "{:  %I:%M %p    %a, %b%e}",
+    // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    // "interval": 60
+    // },
+    "custom/updates": {
+        "exec": "$XDG_CONFIG_HOME/waybar/scripts/package-updates.sh",
+        "tooltip": false,
+        "on-click": "kitty --hold -e zsh -c 'paru'",
+        "interval": 1800,
+        "format": "󰚰 {}"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "on-click": "$XDG_CONFIG_HOME/waybar/scripts/volume.sh toggle",
+        "on-click-middle": "pavucontrol",
+        "on-scroll-up": "$XDG_CONFIG_HOME/waybar/scripts/volume.sh up",
+        "on-scroll-down": "$XDG_CONFIG_HOME/waybar/scripts/volume.sh down",
+        // "on-click-right": "pavucontrol",
+        // "ignored-sinks": ["Easy Effects Sink"],
+        "format-icons": {
+            // "headphone": "",
+            // "hands-free": "",
+            // "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        }
+    },
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": " Muted",
+        "on-click": "pactl set-source-mute 0 toggle",
+        "on-scroll-up": "pactl set-source-volume 0 +1%",
+        "on-scroll-down": "pactl set-source-volume 0 -1%"
+        // "ignored-sinks": ["Easy Effects Sink"],
+        // "scroll-step": 5
+    },
+    "memory": {
+        "format": " {}%",
+        "interval": 30
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "on-click": "kitty btm",
+        "interval": 10
+    },
+    "temperature": {
+        "thermal-zone": 1,
+        "format": "{temperatureF}°F ",
+        "critical-threshold": 80,
+        "format-critical": "{temperatureC}°C "
+    },
+    "custom/arch": {
+        "format": "",
+        "on-click": "kitty --hold -e zsh -c 'paru'",
+        "tooltip": false
+    }
+}
