@@ -7,7 +7,7 @@
   };
 
   programs.hyprlock.enable = true;
-  programs.hypridle.enable = true;
+  services.hypridle.enable = true;
 
   security.polkit.enable = true;
 
