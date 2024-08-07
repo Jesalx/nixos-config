@@ -4,6 +4,9 @@
   config,
   ...
 }:
+let
+  user = config.home.username;
+in
 {
   options = {
     zsh.enable = lib.mkEnableOption "enables custom zsh config";
@@ -12,10 +15,10 @@
     programs.zsh = {
       enable = true;
       shellAliases = {
-        nix-test = "sudo nixos-rebuild test --flake /home/jesal/nixos-config#default";
-        nix-rebuild = "sudo nixos-rebuild switch --flake /home/jesal/nixos-config#default";
-        nix-update = "sudo nix flake update /home/jesal/nixos-config";
-        nix-config = "nvim /home/jesal/nixos-config/";
+        nix-test = "sudo nixos-rebuild test --flake /home/${user}/nixos-config#default";
+        nix-rebuild = "sudo nixos-rebuild switch --flake /home/${user}/nixos-config#default";
+        nix-update = "sudo nix flake update /home/${user}/nixos-config";
+        nix-config = "nvim /home/${user}/nixos-config/";
         nix-gc = "sudo nix-collect-garbage -d";
       };
     };
