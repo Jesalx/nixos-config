@@ -29,7 +29,6 @@
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     kitty-themes
-    lazygit
     zathura
     mpv
     discord

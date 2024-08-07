@@ -21,6 +21,7 @@ in
 {
   options = {
     git.enable = lib.mkEnableOption "enables custom git config";
+    lazygit.enable = lib.mkEnableOption "enables custom lazygit config";
   };
   config = lib.mkIf config.git.enable {
     home.file.".ssh/allowed_signers".text = lib.mkDefault (createAllowedSigners sshKeyPath);
@@ -42,7 +43,8 @@ in
         user.signingkey = sshKeyPath;
       };
     };
-    programs.lazygit = {
+
+    programs.lazygit = lib.mkIf config.lazygit.enable {
       enable = true;
       settings = {
         promptToReturnFromSubprocess = false;

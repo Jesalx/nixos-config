@@ -11,6 +11,7 @@
   ];
 
   git.enable = true;
+  lazygit.enable = true;
   kitty.enable = true;
   neovim.enable = true;
   theme.enable = true;
