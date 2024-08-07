@@ -27,10 +27,13 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    warn-dirty = false;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   system.autoUpgrade = {
     enable = true;
