@@ -21,9 +21,5 @@
         nix-gc = "sudo nix-collect-garbage -d";
       };
     };
-
-    programs.starship = {
-      enable = true;
-    };
   };
 }

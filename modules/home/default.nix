@@ -4,6 +4,7 @@
     ./git.nix
     ./kitty.nix
     ./neovim.nix
+    ./starship.nix
     ./theme.nix
     ./zsh.nix
   ];
@@ -13,4 +14,5 @@
   neovim.enable = true;
   theme.enable = true;
   zsh.enable = true;
+  starship.enable = true;
 }
