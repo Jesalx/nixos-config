@@ -1,13 +1,13 @@
 { pkgs, lib, ... }:
 {
   imports = [
-    ./git.nix
-    ./kitty.nix
-    ./neovim.nix
-    ./starship.nix
-    ./theme.nix
-    ./zsh.nix
-    ./wofi.nix
+    ./cli/git.nix
+    ./cli/kitty.nix
+    ./cli/neovim.nix
+    ./cli/starship.nix
+    ./cli/zsh.nix
+    ./gui/theme.nix
+    ./gui/wofi.nix
   ];
 
   git.enable = true;
