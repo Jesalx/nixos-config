@@ -158,7 +158,6 @@
   environment.systemPackages = with pkgs; [
     kitty
     neovim
-    wget
     curl
     git
     pulseaudio
