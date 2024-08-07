@@ -9,9 +9,9 @@
 {
   # You can import other NixOS modules here
   imports = [
-    # If you want to use modules from other flakes (such as nixos-hardware):
-    # inputs.hardware.nixosModules.common-cpu-amd
-    # inputs.hardware.nixosModules.common-ssd
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-gpu-amd
+    inputs.hardware.nixosModules.common-pc-ssd
     inputs.home-manager.nixosModules.home-manager
 
     ./hardware-configuration.nix
@@ -179,7 +179,6 @@
   programs.gamemode.enable = true;
 
   services.tailscale.enable = true;
-  services.fstrim.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";
