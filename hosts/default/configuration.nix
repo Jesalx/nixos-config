@@ -114,8 +114,7 @@
       inherit inputs outputs;
     };
     users = {
-      # Import your home-manager configuration
-      your-username = import ../home-manager/home.nix;
+      jesal = import ./home.nix;
     };
   };
 
