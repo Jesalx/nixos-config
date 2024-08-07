@@ -105,8 +105,8 @@
         "docker"
         "audio"
       ];
+      shell = pkgs.zsh;
     };
-    shell = pkgs.zsh;
   };
 
   home-manager = {
