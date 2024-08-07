@@ -1,18 +1,13 @@
 {
   inputs,
+  outputs,
   lib,
   config,
   pkgs,
   ...
 }:
 {
-  imports = [
-    ../../modules/home/zsh.nix
-    ../../modules/home/neovim.nix
-    ../../modules/home/kitty.nix
-    ../../modules/home/theme.nix
-    ../../modules/home/git.nix
-  ];
+  imports = [ outputs.homeManagerModules.default ];
 
   nixpkgs = {
     overlays = [ ];

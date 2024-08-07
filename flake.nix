@@ -32,5 +32,6 @@
           ];
         };
       };
+      homeManagerModules.default = ./modules/home/default.nix;
     };
 }

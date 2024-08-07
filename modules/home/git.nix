@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   homeDir = config.home.homeDirectory;
@@ -14,7 +19,10 @@ let
     if keyContent != "" then "${email} ${keyContent}" else "";
 in
 {
-  config = {
+  options = {
+    git.enable = lib.mkEnableOption "enables custom git config";
+  };
+  config = lib.mkIf config.git.enable {
     home.file.".ssh/allowed_signers".text = lib.mkDefault (createAllowedSigners sshKeyPath);
     programs.git = {
       enable = true;

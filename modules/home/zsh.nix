@@ -1,7 +1,14 @@
-{ ... }:
-
 {
-  config = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  options = {
+    zsh.enable = lib.mkEnableOption "enables custom zsh config";
+  };
+  config = lib.mkIf config.zsh.enable {
     programs.zsh = {
       enable = true;
       autosuggestion.enable = true;

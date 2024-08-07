@@ -1,7 +1,14 @@
-{ pkgs, ... }:
-
 {
-  config = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  options = {
+    neovim.enable = lib.mkEnableOption "enables custom neovim config";
+  };
+  config = lib.mkIf config.neovim.enable {
     programs.neovim = {
       enable = true;
       defaultEditor = true;
