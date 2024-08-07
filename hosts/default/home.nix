@@ -6,6 +6,10 @@
   pkgs,
   ...
 }:
+let
+  dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
+  wallpaper = ../../dotfiles/wallpaper/blackhole.png;
+in
 {
   imports = [ outputs.homeManagerModules.default ];
 
@@ -50,11 +54,12 @@
     alejandra
   ];
 
+  home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
+
   xdg.configFile = {
-    waybar.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/waybar";
-    # wofi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/wofi";
-    hypr.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/hypr";
-    nvim.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dotfiles/nvim";
+    waybar.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
+    hypr.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr";
+    nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
   };
 
   home.sessionVariables = {
