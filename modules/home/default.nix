@@ -7,6 +7,7 @@
     ./starship.nix
     ./theme.nix
     ./zsh.nix
+    ./wofi.nix
   ];
 
   git.enable = true;
@@ -15,4 +16,5 @@
   theme.enable = true;
   zsh.enable = true;
   starship.enable = true;
+  wofi.enable = true;
 }
