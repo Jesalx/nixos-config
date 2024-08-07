@@ -1,7 +1,14 @@
-{ ... }:
-
 {
-  config = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  options = {
+    kitty.enable = lib.mkEnableOption "enables custom kitty config";
+  };
+  config = lib.mkIf config.kitty.enable {
     programs.kitty = {
       enable = true;
       font.name = "JetBrainsMono NF";

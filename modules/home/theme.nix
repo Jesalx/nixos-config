@@ -1,7 +1,14 @@
-{ pkgs, ... }:
-
 {
-  config = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  options = {
+    theme.enable = lib.mkEnableOption "enables custom theme";
+  };
+  config = lib.mkIf config.theme.enable {
     home.pointerCursor = {
       name = "Numix-Cursor-Light";
       package = pkgs.numix-cursor-theme;

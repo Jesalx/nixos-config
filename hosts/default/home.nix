@@ -1,32 +1,31 @@
-{ config, pkgs, ... }:
-
 {
-  imports = [
-    ../../modules/home/zsh.nix
-    ../../modules/home/neovim.nix
-    ../../modules/home/kitty.nix
-    ../../modules/home/theme.nix
-    ../../modules/home/git.nix
-  ];
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
+  imports = [ outputs.homeManagerModules.default ];
 
-  home.username = "jesal";
-  home.homeDirectory = "/home/jesal";
+  nixpkgs = {
+    overlays = [ ];
+    config = {
+      allowUnfree = true;
+    };
+  };
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home = {
+    username = "jesal";
+    homeDirectory = "/home/jesal";
+  };
 
-  nixpkgs.config.allowUnfree = true;
+  # Nicely reload system units when changing configs
+  systemd.user.startServices = "sd-switch";
 
   fonts.fontconfig.enable = true;
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     kitty-themes
@@ -41,7 +40,6 @@
     pyenv
     python3
     go
-    git
     gcc
     gnumake
     unzip
@@ -65,8 +63,6 @@
     VISUAL = "nvim";
   };
 
-  programs.home-manager.enable = true;
-
   xdg.mimeApps.defaultApplications = {
     "image/*" = [ "firefox.desktop" ];
     "application/pdf" = [ "zathura.desktop" ];
@@ -74,4 +70,11 @@
     "video/jpg" = [ "mpv.desktop" ];
     "video/*" = [ "mpv.desktop" ];
   };
+
+  # Enable home-manager and git
+  programs.home-manager.enable = true;
+  programs.git.enable = true;
+
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+  home.stateVersion = "24.05";
 }
