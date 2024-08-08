@@ -31,6 +31,7 @@
 
           "[workspace 1 silent] kitty"
           "[workspace 1 silent] firefox"
+          "[workspace special:term silent] kitty"
           "[workspace special:notes silent] obsidian"
         ];
 
@@ -181,13 +182,17 @@
           "$mainMod SHIFT, 9, movetoworkspace, 9"
           "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-          # Example special workspace (scratchpad)
-          "$mainMod, S, togglespecialworkspace, magic"
-          "$mainMod SHIFT, S, movetoworkspace, special:magic"
+          # Special workspace (social)
+          "$mainMod, S, togglespecialworkspace, social"
+          "$mainMod SHIFT, S, movetoworkspace, special:social"
 
           # Special workspace (notes)
           "$mainMod, N, togglespecialworkspace, notes"
           "$mainMod SHIFT, N, movetoworkspace, special:notes"
+
+          # Special workspace (term)
+          "$mainMod, D, togglespecialworkspace, term"
+          "$mainMod SHIFT, D, movetoworkspace, special:term"
 
           # Scroll through existing workspaces with mainMod + scroll
           "$mainMod, mouse_down, workspace, e+1"
