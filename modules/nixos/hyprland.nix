@@ -41,11 +41,8 @@
       waybar
       dunst
       libnotify
-      hyprpaper
-      hypridle
       wofi
       wl-clipboard
-      nautilus
     ];
 
     environment.sessionVariables = {

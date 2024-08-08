@@ -27,6 +27,7 @@ in
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     kitty-themes
+    nautilus
     zathura
     mpv
     discord
