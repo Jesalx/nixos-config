@@ -13,13 +13,6 @@ in
 {
   imports = [ outputs.homeManagerModules.default ];
 
-  nixpkgs = {
-    overlays = [ ];
-    config = {
-      allowUnfree = true;
-    };
-  };
-
   home = {
     username = "jesal";
     homeDirectory = "/home/jesal";
