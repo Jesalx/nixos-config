@@ -4,6 +4,9 @@
   config,
   ...
 }:
+let
+  dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
+in
 {
   options = {
     neovim.enable = lib.mkEnableOption "enables custom neovim config";
@@ -29,6 +32,13 @@
         gopls
         alejandra
       ];
+    };
+
+    xdg.configFile.nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
+
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
   };
 }

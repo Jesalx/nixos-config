@@ -7,7 +7,6 @@
   ...
 }:
 let
-  dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
   wallpaper = ../../dotfiles/wallpaper/blackhole.png;
   username = "jesal";
 in
@@ -51,14 +50,7 @@ in
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
 
-  xdg.configFile = {
-    nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
-  };
-
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
+  home.sessionVariables = { };
 
   xdg.mimeApps.defaultApplications = {
     "image/*" = [ "firefox.desktop" ];
