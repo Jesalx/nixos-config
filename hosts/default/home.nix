@@ -52,7 +52,6 @@ in
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
 
   xdg.configFile = {
-    waybar.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
     nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
   };
 

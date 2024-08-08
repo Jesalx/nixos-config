@@ -14,8 +14,6 @@
       xwayland.enable = true;
     };
 
-    programs.hyprlock.enable = true;
-
     security.polkit.enable = true;
 
     systemd = {
@@ -38,7 +36,6 @@
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
     environment.systemPackages = with pkgs; [
-      waybar
       dunst
       libnotify
       wofi
