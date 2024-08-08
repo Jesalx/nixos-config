@@ -6,6 +6,9 @@
   pkgs,
   ...
 }:
+let
+  username = "jesal";
+in
 {
   # You can import other NixOS modules here
   imports = [
@@ -96,7 +99,7 @@
   networking.networkmanager.enable = true;
 
   users.users = {
-    jesal = {
+    ${username} = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
@@ -116,7 +119,7 @@
       inherit inputs outputs;
     };
     users = {
-      jesal = import ./home.nix;
+      ${username} = import ./home.nix;
     };
   };
 

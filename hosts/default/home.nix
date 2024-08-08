@@ -9,13 +9,14 @@
 let
   dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
   wallpaper = ../../dotfiles/wallpaper/blackhole.png;
+  username = "jesal";
 in
 {
   imports = [ outputs.homeManagerModules.default ];
 
   home = {
-    username = "jesal";
-    homeDirectory = "/home/jesal";
+    username = username;
+    homeDirectory = "/home/${username}";
   };
 
   # Nicely reload system units when changing configs
