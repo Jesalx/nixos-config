@@ -59,21 +59,22 @@
       ];
 
       label = [
+        # DATE
         {
           monitor = "";
           text = ''cmd[update:1000] echo "$(date +"%A, %B %d")"'';
-          color = "rgba(242, 243, 244, 0.75)";
+          color = "rgba(242, 243, 244, 0.90)";
           font_size = 20;
           font_family = "JetBrainsMono Nerd Font";
           position = "0, 400";
           halign = "center";
           valign = "center";
         }
-
+        # TIME
         {
           monitor = "";
-          text = ''cmd[update:1000] echo "$(date +"%k:%M")"'';
-          color = "rgba(242, 243, 244, 0.75)";
+          text = ''cmd[update:1000] echo "$(date +"%-I:%M%p")"'';
+          color = "rgba(242, 243, 244, 0.90)";
           font_size = 93;
           font_family = "JetBrainsMono Nerd Font";
           position = "0, 253";
