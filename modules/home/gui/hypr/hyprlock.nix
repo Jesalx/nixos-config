@@ -13,7 +13,7 @@
     programs.hyprlock.settings = {
       background = [
         {
-          monitor = null;
+          monitor = "";
           path = "$HOME/Pictures/Wallpaper/wallpaper.png";
           color = "rgba(25, 20, 20, 1.0)";
 
@@ -30,7 +30,7 @@
 
       input-field = [
         {
-          monitor = null;
+          monitor = "";
           size = "300, 30";
           outline_thickness = 0;
           dots_size = 0.25; # Scale of input-field height, 0.2 - 0.8
@@ -60,7 +60,7 @@
 
       label = [
         {
-          monitor = null;
+          monitor = "";
           text = ''cmd[update:1000] echo "$(date +"%A, %B %d")"'';
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 20;
@@ -71,7 +71,7 @@
         }
 
         {
-          monitor = null;
+          monitor = "";
           text = ''cmd[update:1000] echo "$(date +"%k:%M")"'';
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 93;
@@ -82,7 +82,7 @@
         }
 
         {
-          monitor = null;
+          monitor = "";
           text = "Jesal";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 12;
@@ -93,7 +93,7 @@
         }
 
         {
-          monitor = null;
+          monitor = "";
           text = "Enter Password";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 10;

@@ -52,7 +52,7 @@ in
 
   xdg.configFile = {
     waybar.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
-    hypr.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr";
+    # hypr.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr";
     nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
   };
 
