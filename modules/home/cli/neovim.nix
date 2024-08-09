@@ -19,14 +19,25 @@ in
       vimAlias = true;
       vimdiffAlias = true;
 
+      withRuby = true;
+      withNodeJs = true;
+      withPython3 = true;
+
       extraPackages = with pkgs; [
+        git
+        gcc
+        gnumake
         unzip
         fzf
+        wget
+        curl
+        ripgrep
         fd
         tree-sitter
         cargo
         nil
         nixfmt-rfc-style
+        lua
         lua-language-server
         stylua
         gopls
