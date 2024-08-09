@@ -19,7 +19,7 @@ in
         nix-rebuild = "sudo nixos-rebuild switch --flake /home/${user}/nixos-config#default";
         nix-update = "sudo nix flake update /home/${user}/nixos-config";
         nix-config = "nvim /home/${user}/nixos-config/";
-        nix-gc = "sudo nix-collect-garbage -d";
+        nix-gc = "sudo nix-collect-garbage --delete-older-than 30d";
       };
     };
     programs.zsh.oh-my-zsh = {
