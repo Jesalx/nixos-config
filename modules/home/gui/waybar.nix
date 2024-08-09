@@ -10,19 +10,19 @@ let
     runtimeInputs = with pkgs; [
       pulseaudio
       dunst
-      gnugrep
+      ripgrep
       coreutils
     ];
     text = # bash
       ''
         get_current_volume() {
-          pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1 | tr -d '%'
+          pactl get-sink-volume @DEFAULT_SINK@ | rg -oP '\d+%' | head -1 | tr -d '%'
         }
 
         send_notification() {
           notification_tag="volume"
           volume=$(get_current_volume)
-          mute_status=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -oP '(yes|no)')
+          mute_status=$(pactl get-sink-mute @DEFAULT_SINK@ | rg -oP '(yes|no)')
           if [ "$mute_status" = "yes" ]; then
             dunstify -h string:x-dunst-stack-tag:$notification_tag -u low "Volume Muted"
           else
