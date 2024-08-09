@@ -26,5 +26,10 @@ in
       enable = true;
       plugins = [ "git" ];
     };
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
   };
 }
