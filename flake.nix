@@ -36,5 +36,26 @@
         };
       };
       homeManagerModules.default = ./modules/home/default.nix;
+
+      # MacOS home manager configuration
+      homeConfigurations = {
+        "jesal" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-darwin;
+          extraSpecialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            (
+              { pkgs, ... }:
+              {
+                nix.package = pkgs.nix;
+                home.username = "jesal";
+                home.homeDirectory = "/Users/jesal";
+                imports = [ ./hosts/mac/home.nix ];
+              }
+            )
+          ];
+        };
+      };
     };
 }
