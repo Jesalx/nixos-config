@@ -39,7 +39,7 @@
 
       # MacOS home manager configuration
       homeConfigurations = {
-        "jesal" = home-manager.lib.homeManagerConfiguration {
+        "patel" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-darwin;
           extraSpecialArgs = {
             inherit inputs;
@@ -49,9 +49,9 @@
               { pkgs, ... }:
               {
                 nix.package = pkgs.nix;
-                home.username = "jesal";
-                home.homeDirectory = "/Users/jesal";
-                imports = [ ./hosts/mac/home.nix ];
+                home.username = "patel";
+                home.homeDirectory = "/Users/patel";
+                imports = [ ./hosts/work/home.nix ];
               }
             )
           ];

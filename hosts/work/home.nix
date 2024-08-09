@@ -7,7 +7,7 @@
   ...
 }:
 let
-  username = "jesal";
+  username = "patel";
 in
 {
   imports = [ ../../modules/home/cli/default.nix ];
@@ -20,9 +20,13 @@ in
     warn-dirty = false;
   };
 
+  # home-manager = {
+  #   backupFileExtension = "backup";
+  # };
+
   home = {
     username = username;
-    homeDirectory = "/home/${username}";
+    homeDirectory = "/Users/${username}";
   };
 
   fonts.fontconfig.enable = true;
