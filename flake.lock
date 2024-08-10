@@ -56,7 +56,28 @@
       "inputs": {
         "hardware": "hardware",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "ucodenix": "ucodenix"
+      }
+    },
+    "ucodenix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1723152038,
+        "narHash": "sha256-Vm4LeY8QZnVtM0xDijL+S20589DpFF3dP5rYcmvzzAA=",
+        "owner": "e-tho",
+        "repo": "ucodenix",
+        "rev": "dfcd427c945c80b135725f43e0a716cdf710b9c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "e-tho",
+        "repo": "ucodenix",
+        "type": "github"
       }
     }
   },

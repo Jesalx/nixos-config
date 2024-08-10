@@ -11,6 +11,10 @@
 
     # NixOS hardware
     hardware.url = "github:NixOS/nixos-hardware/master";
+
+    # AMD microcode updates
+    ucodenix.url = "github:e-tho/ucodenix";
+    ucodenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

@@ -4,9 +4,11 @@
     ./hyprland.nix
     ./steam.nix
     ./nh.nix
+    ./microcode.nix
   ];
 
-  hyprland.enable = true;
-  steam.enable = true;
-  nh.enable = true;
+  hyprland.enable = lib.mkDefault true;
+  steam.enable = lib.mkDefault true;
+  nh.enable = lib.mkDefault true;
+  microcode.enable = lib.mkDefault false;
 }
