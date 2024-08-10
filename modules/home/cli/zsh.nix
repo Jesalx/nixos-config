@@ -6,6 +6,7 @@
 }:
 let
   user = config.home.username;
+  home = config.home.homeDirectory;
   nix-helper-app = import ../scripts/nix-helper.nix { inherit pkgs user; };
 in
 {
@@ -33,8 +34,8 @@ in
         })
         {
           # Common aliases for both platforms
-          nix-config = "nvim ~/nixos-config";
-          vimconfig = "nvim ~/nixos-config/dotfiles/nvim";
+          nix-config = "nvim ${home}/nixos-config";
+          vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
         }
       ];
     };
