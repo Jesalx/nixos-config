@@ -16,10 +16,10 @@ in
     programs.zsh = {
       enable = true;
       shellAliases = {
-        nix-test = "${nix-helper-app}/bin/nix-rebuild test";
-        nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch";
-        nix-update = "${nix-helper-app}/bin/nix-rebuild update";
-        nix-clean = "${nix-helper-app}/bin/nix-rebuild clean";
+        nix-test = "${nix-helper-app}/bin/nix-rebuild test default";
+        nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch default";
+        nix-update = "${nix-helper-app}/bin/nix-rebuild update default";
+        nix-clean = "${nix-helper-app}/bin/nix-rebuild clean default";
         nix-config = "nvim /home/${user}/nixos-config/";
       };
     };
