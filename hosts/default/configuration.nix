@@ -172,15 +172,6 @@ in
     libraries = with pkgs; [ ];
   };
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-  programs.gamemode.enable = true;
-
   services.tailscale.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
