@@ -31,21 +31,6 @@ in
     mpv
     discord
     obsidian
-
-    rustup
-    nodejs_22
-    pyenv
-    python3
-    go
-    gcc
-    gnumake
-    unzip
-    wget
-    curl
-    ripgrep
-    fd
-    fzf
-    alejandra
   ];
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;

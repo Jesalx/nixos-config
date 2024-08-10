@@ -27,10 +27,10 @@ in
         })
         (lib.mkIf pkgs.stdenv.isDarwin {
           # macOS-specific aliases
-          nix-test = "${nix-helper-app}/bin/nix-rebuild test work";
-          nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch work";
-          nix-update = "${nix-helper-app}/bin/nix-rebuild update work";
-          nix-clean = "${nix-helper-app}/bin/nix-rebuild clean work";
+          nix-test = "${nix-helper-app}/bin/nix-rebuild test";
+          nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch";
+          nix-update = "${nix-helper-app}/bin/nix-rebuild update";
+          nix-clean = "${nix-helper-app}/bin/nix-rebuild clean";
         })
         {
           # Common aliases for both platforms

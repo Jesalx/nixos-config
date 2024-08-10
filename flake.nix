@@ -43,6 +43,13 @@
 
       # MacOS home manager configuration
       homeConfigurations = {
+        "mac" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+          extraSpecialArgs = {
+            inherit inputs;
+          };
+          modules = [ ./hosts/mac/configuration.nix ];
+        };
         "work" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           extraSpecialArgs = {
