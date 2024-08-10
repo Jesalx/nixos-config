@@ -48,17 +48,7 @@
           extraSpecialArgs = {
             inherit inputs;
           };
-          modules = [
-            (
-              { pkgs, ... }:
-              {
-                nix.package = pkgs.nix;
-                home.username = "patel";
-                home.homeDirectory = "/Users/patel";
-                imports = [ ./hosts/work/home.nix ];
-              }
-            )
-          ];
+          modules = [ ./hosts/work/configuration.nix ];
         };
       };
     };
