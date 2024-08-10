@@ -7,7 +7,7 @@
   ...
 }:
 let
-  username = "patel";
+  user = "patel";
 in
 {
   imports = [ ../../modules/home/cli/default.nix ];
@@ -20,13 +20,9 @@ in
     warn-dirty = false;
   };
 
-  # home-manager = {
-  #   backupFileExtension = "backup";
-  # };
-
   home = {
-    username = username;
-    homeDirectory = "/Users/${username}";
+    username = user;
+    homeDirectory = "/Users/${user}";
   };
 
   fonts.fontconfig.enable = true;
@@ -40,7 +36,6 @@ in
 
   home.sessionVariables = { };
 
-  # Enable home-manager and git
   programs.home-manager.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
