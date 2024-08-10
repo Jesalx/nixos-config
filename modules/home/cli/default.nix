@@ -8,10 +8,10 @@
     ./zsh.nix
   ];
 
-  git.enable = true;
-  lazygit.enable = true;
-  kitty.enable = true;
-  neovim.enable = true;
-  zsh.enable = true;
-  starship.enable = true;
+  git.enable = lib.mkDefault true;
+  lazygit.enable = lib.mkDefault true;
+  kitty.enable = lib.mkDefault true;
+  neovim.enable = lib.mkDefault true;
+  zsh.enable = lib.mkDefault true;
+  starship.enable = lib.mkDefault true;
 }
