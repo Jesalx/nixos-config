@@ -4,6 +4,7 @@
     ./git.nix
     ./kitty.nix
     ./neovim.nix
+    ./nh.nix
     ./starship.nix
     ./zsh.nix
   ];
@@ -13,5 +14,6 @@
   kitty.enable = true;
   neovim.enable = true;
   zsh.enable = true;
+  nh.enable = true;
   starship.enable = true;
 }

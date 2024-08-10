@@ -6,7 +6,7 @@
 }:
 let
   user = config.home.username;
-  nix-rebuild-app = import ../scripts/rebuild.nix { inherit pkgs user; };
+  nix-helper-app = import ../scripts/nix-helper.nix { inherit pkgs user; };
 in
 {
   options = {
@@ -16,11 +16,11 @@ in
     programs.zsh = {
       enable = true;
       shellAliases = {
-        nix-test = "${nix-rebuild-app}/bin/nix-rebuild test";
-        nix-rebuild = "${nix-rebuild-app}/bin/nix-rebuild switch";
-        nix-update = "sudo nix flake update /home/${user}/nixos-config";
+        nix-test = "${nix-helper-app}/bin/nix-rebuild test";
+        nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch";
+        nix-update = "${nix-helper-app}/bin/nix-rebuild update";
+        nix-clean = "${nix-helper-app}/bin/nix-rebuild clean";
         nix-config = "nvim /home/${user}/nixos-config/";
-        nix-gc = "sudo nix-collect-garbage --delete-older-than 30d";
       };
     };
     programs.zsh.oh-my-zsh = {
