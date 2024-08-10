@@ -7,7 +7,7 @@
   ...
 }:
 let
-  username = "jesal";
+  user = "jesal";
 in
 {
   # You can import other NixOS modules here
@@ -49,11 +49,9 @@ in
       # Opinionated: disable channels
       channel.enable = false;
 
-      gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 30d";
-      };
+      # TODO: Update nix config so that if nh module is enabled then it will use
+      # nh's garbage collection service, otherwise it will nix's default garbage
+      # collection service.
 
       optimise = {
         automatic = true;
@@ -99,7 +97,7 @@ in
   networking.networkmanager.enable = true;
 
   users.users = {
-    ${username} = {
+    ${user} = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
@@ -119,7 +117,7 @@ in
       inherit inputs outputs;
     };
     users = {
-      ${username} = import ./home.nix;
+      ${user} = import ./home.nix;
     };
   };
 
