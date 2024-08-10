@@ -11,13 +11,11 @@ pkgs.writeShellApplication {
       set -euo pipefail
 
       detect_os() {
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-          echo "macos"
-        elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-          echo "linux"
-        else
-          echo "unknown"
-        fi
+        case "$OSTYPE" in
+          darwin*) echo "macos" ;;
+          linux*)  echo "linux" ;;
+          *)       echo "unknown" ;;
+        esac
       }
 
       get_config_path() {
