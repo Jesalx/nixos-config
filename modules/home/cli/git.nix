@@ -2,21 +2,19 @@
   pkgs,
   lib,
   config,
+  userConfig,
   ...
 }:
 
 let
-  homeDir = config.home.homeDirectory;
-  sshKeyPath = "${homeDir}/.ssh/id_ed25519.pub";
+  sshKeyPath = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
   safeReadFile = path: if builtins.pathExists path then builtins.readFile path else "";
-  gitEmail = "jesalx@users.noreply.github.com";
   createAllowedSigners =
     keyPath:
     let
       keyContent = safeReadFile keyPath;
-      email = gitEmail;
     in
-    if keyContent != "" then "${email} ${keyContent}" else "";
+    if keyContent != "" then "${userConfig.gitEmail} ${keyContent}" else "";
 in
 {
   options = {
@@ -28,7 +26,7 @@ in
     programs.git = {
       enable = true;
       userName = "Jesal Patel";
-      userEmail = gitEmail;
+      userEmail = userConfig.gitEmail;
       extraConfig = {
         core.editor = "nvim";
         github.user = "jesalx";
@@ -39,7 +37,7 @@ in
         # Sign commits using ssh key
         commit.gpgsign = true;
         gpg.format = "ssh";
-        gpg.ssh.allowedSignersFile = "${homeDir}/.ssh/allowed_signers";
+        gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
         user.signingkey = sshKeyPath;
       };
     };

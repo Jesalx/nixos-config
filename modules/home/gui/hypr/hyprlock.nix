@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  userConfig,
   ...
 }:
 {
@@ -84,7 +85,7 @@
 
         {
           monitor = "";
-          text = "Jesal";
+          text = "${userConfig.user}";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 12;
           font_family = "JetBrainsMono Nerd Font";

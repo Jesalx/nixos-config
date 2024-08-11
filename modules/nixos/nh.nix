@@ -4,9 +4,6 @@
   config,
   ...
 }:
-let
-  user = "jesal";
-in
 {
   options = {
     nh.enable = lib.mkEnableOption "enables nix-helper";
@@ -16,7 +13,7 @@ in
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 7d --keep 10";
-      flake = "/home/${user}/nixos-config";
+      flake = "/home/${config.userConfig.user}/nixos-config";
     };
   };
 }

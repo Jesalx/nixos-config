@@ -4,18 +4,18 @@
   lib,
   config,
   pkgs,
+  userConfig,
   ...
 }:
 let
   wallpaper = ../../dotfiles/wallpaper/blackhole.png;
-  username = "jesal";
 in
 {
   imports = [ outputs.homeManagerModules.default ];
 
   home = {
-    username = username;
-    homeDirectory = "/home/${username}";
+    username = userConfig.user;
+    homeDirectory = "/home/${userConfig.user}";
   };
 
   # Nicely reload system units when changing configs

@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  userConfig,
   ...
 }:
 let
@@ -20,20 +21,16 @@ in
       shellAliases = lib.mkMerge [
         (lib.mkIf pkgs.stdenv.isLinux {
           # Linux specific aliases
-          jp-test = "${nix-helper-app}/bin/nix-rebuild test default";
-          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch default";
-          jp-update = "${nix-helper-app}/bin/nix-rebuild update default";
-          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean default";
         })
         (lib.mkIf pkgs.stdenv.isDarwin {
           # MacOS specific aliases
-          jp-test = "${nix-helper-app}/bin/nix-rebuild test";
-          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch";
-          jp-update = "${nix-helper-app}/bin/nix-rebuild update";
-          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean";
         })
         {
           # Common aliases for both platforms
+          jp-test = "${nix-helper-app}/bin/nix-rebuild test ${userConfig.profile}";
+          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch ${userConfig.profile}";
+          jp-update = "${nix-helper-app}/bin/nix-rebuild update ${userConfig.profile}";
+          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean ${userConfig.profile}";
           nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
         }

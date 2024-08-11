@@ -6,9 +6,6 @@
   pkgs,
   ...
 }:
-let
-  user = "jesal";
-in
 {
   # You can import other NixOS modules here
   imports = [
@@ -18,8 +15,17 @@ in
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.home-manager.nixosModules.home-manager
 
+    ../../modules/user-config.nix
+    ../../modules/nixos/default.nix
+
     ./hardware-configuration.nix
   ];
+
+  # User config
+  userConfig = {
+    user = "jesal";
+    hostName = "nixos";
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -94,11 +100,11 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  networking.hostName = "nixos";
+  networking.hostName = config.userConfig.hostName;
   networking.networkmanager.enable = true;
 
   users.users = {
-    ${user} = {
+    ${config.userConfig.user} = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
@@ -116,9 +122,10 @@ in
     useUserPackages = true;
     extraSpecialArgs = {
       inherit inputs outputs;
+      userConfig = config.userConfig;
     };
     users = {
-      ${user} = import ./home.nix;
+      ${config.userConfig.user} = import ./home.nix;
     };
   };
 

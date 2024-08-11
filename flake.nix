@@ -33,10 +33,7 @@
           specialArgs = {
             inherit inputs outputs;
           };
-          modules = [
-            ./hosts/default/configuration.nix
-            ./modules/nixos/default.nix
-          ];
+          modules = [ ./hosts/default/configuration.nix ];
         };
       };
       homeManagerModules.default = ./modules/home/default.nix;
