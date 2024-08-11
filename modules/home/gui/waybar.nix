@@ -25,8 +25,9 @@ in
             "passthrough": false,
             "gtk-layer-shell": true,
             "height": 35,
+            "margin": "5px 10px 0 10px",
             "modules-left": [
-                "custom/arch",
+                "custom/nix",
                 "hyprland/workspaces"
             ],
             "modules-center": [
@@ -143,9 +144,9 @@ in
                 "critical-threshold": 80,
                 "format-critical": "{temperatureC}°C "
             },
-            "custom/arch": {
+            "custom/nix": {
                 "format": "",
-                "on-click": "kitty --hold -e zsh -c 'paru'",
+                "on-click": "hyprlock",
                 "tooltip": false
             }
         }
@@ -163,27 +164,14 @@ in
           border-radius: 0;
           font-family: "JetBrainsMono Nerd Font";
           font-weight: bold;
-          font-size: 15px;
-          min-height: 15px;
-        }
-
-        waybar {
-          background: alpha(shade(@background, 0.4), 0);
-          min-height: 20px;
+          font-size: 14px;
+          min-height: 0;
         }
 
         window#waybar {
-          /* background: rgba(21, 18, 27, 0); */
-          background: alpha(shade(@background, 0.4), 0);
+          background: rgba(10, 10, 10, 0.8);
           color: @foreground;
-        }
-
-        /* Hide window module when not focused on window or empty workspace */
-        window#waybar.empty #window {
-          padding: 0px;
-          margin: 0px;
-          border: 0px;
-          background-color: transparent;
+          border-radius: 10px;
         }
 
         tooltip {
@@ -195,9 +183,8 @@ in
         }
 
         #workspaces button {
-          padding: 2px;
+          padding: 0 5px;
           color: lightblue;
-          margin-right: 2px;
         }
 
         #workspaces button.empty {
@@ -208,131 +195,80 @@ in
           color: yellow;
         }
 
-        #custom-arch,
-        #custom-power_profile,
-        #custom-weather,
+        #workspaces,
+        #custom-nix,
         #window,
-        #battery,
-        #clock,
         #cpu,
         #memory,
         #pulseaudio,
-        #network,
-        #bluetooth,
-        #custom-updates,
-        #workspaces,
-        #tray,
-        #backlight,
-        #custom-powermenu {
-          background: alpha(@background, 0.8);
-          padding: 2px 10px;
-          margin: 4px 0px 0px 0px;
+        #clock,
+        #tray {
+          padding: 0 10px;
         }
 
-        #tray menu,
-        tooltip {
+        /* Center the content vertically */
+        #workspaces button,
+        #custom-nix,
+        #window,
+        #cpu,
+        #memory,
+        #pulseaudio,
+        #clock,
+        #tray {
+          margin: 2px 0;
+        }
+
+        #tray menu {
           background: @background;
           color: @foreground;
           border: 1px solid shade(@border-color, 0.6);
           border-radius: 10px;
         }
 
-        #backlight {
-          border-radius: 10px 0px 0px 10px;
-          border: 1px solid @border-color;
-          border-right: none;
-        }
-
-        #tray {
-          border-radius: 10px;
-          margin-right: 10px;
-          border: 1px solid @border-color;
-        }
-
         #workspaces {
-          border-radius: 10px;
-          margin-left: 10px;
-          padding-right: 2px;
-          padding-left: 2px;
-          border: 1px solid @border-color;
+          margin-left: 5px;
         }
 
         #window {
-          border-radius: 10px;
-          border: 1px solid @border-color;
-          margin-left: 10px;
+          margin-left: 5px;
+          margin-right: 5px;
         }
 
         #memory {
           color: #a6e3a1;
-          border-radius: 0px 10px 10px 0px;
-          border: 1px solid @border-color;
-          margin-right: 10px;
-          border-left: none;
         }
 
         #cpu {
           color: #cba6f7;
-          border-radius: 10px 0px 0px 10px;
-          border: 1px solid @border-color;
-          border-right: none;
         }
 
         #clock {
           color: #94e2d5;
-          border-radius: 10px 0px 0px 10px;
-          border: 1px solid @border-color;
-          border-right: none;
         }
 
         #clock.time {
           color: #89b4fa;
-          border-radius: 0px 10px 10px 0px;
-          border-left: none;
-          margin-right: 10px;
-          border-right: 1px solid @border-color;
         }
 
-        #custom-arch {
+        #custom-nix {
           color: #8be9fd;
-          border-radius: 10px 10px 10px 10px;
-          margin-left: 8px;
-          border-right: 0px;
-          padding: 0px 13px 0px 8px;
-          border: 1px solid @border-color;
+          margin-left: 5px;
         }
 
         #pulseaudio {
           color: #fab378;
-          border-radius: 10px 0px 0px 10px;
-          border: 1px solid @border-color;
-          /* border-left: none; */
-          border-right: none;
         }
 
         #pulseaudio.microphone {
           color: #eba0ac;
-          border-radius: 0px 10px 10px 0px;
-          border-left: none;
-          margin-right: 10px;
-          border-right: 1px solid @border-color;
         }
 
         #custom-updates {
           color: #ffb86c;
-          border-radius: 10px 10px 10px 10px;
-          margin-left: 10px;
-          border-left: 0px;
-          border: 1px solid @border-color;
         }
 
-        #custom-weather {
-          border-radius: 0px 10px 10px 0px;
-
-          margin-left: 0px;
-          border-top: 1px solid @border-color;
-          border-right: 1px solid @border-color;
-          border-bottom: 1px solid @border-color;
+        #tray {
+          margin-right: 5px;
         }
       '';
   };
