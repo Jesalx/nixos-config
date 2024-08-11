@@ -19,22 +19,22 @@ in
 
       shellAliases = lib.mkMerge [
         (lib.mkIf pkgs.stdenv.isLinux {
-          # Linux-specific aliases
-          nix-test = "${nix-helper-app}/bin/nix-rebuild test default";
-          nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch default";
-          nix-update = "${nix-helper-app}/bin/nix-rebuild update default";
-          nix-clean = "${nix-helper-app}/bin/nix-rebuild clean default";
+          # Linux specific aliases
+          jp-test = "${nix-helper-app}/bin/nix-rebuild test default";
+          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch default";
+          jp-update = "${nix-helper-app}/bin/nix-rebuild update default";
+          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean default";
         })
         (lib.mkIf pkgs.stdenv.isDarwin {
-          # macOS-specific aliases
-          nix-test = "${nix-helper-app}/bin/nix-rebuild test";
-          nix-rebuild = "${nix-helper-app}/bin/nix-rebuild switch";
-          nix-update = "${nix-helper-app}/bin/nix-rebuild update";
-          nix-clean = "${nix-helper-app}/bin/nix-rebuild clean";
+          # MacOS specific aliases
+          jp-test = "${nix-helper-app}/bin/nix-rebuild test";
+          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch";
+          jp-update = "${nix-helper-app}/bin/nix-rebuild update";
+          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean";
         })
         {
           # Common aliases for both platforms
-          nix-config = "nvim ${home}/nixos-config";
+          nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
         }
       ];
