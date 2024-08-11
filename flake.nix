@@ -26,12 +26,33 @@
     }@inputs:
     let
       inherit (self) outputs;
+      userConfig = {
+        default = {
+          profile = "default";
+          user = "jesal";
+          hostName = "nixos";
+          gitEmail = "jesalx@users.noreply.github.com";
+        };
+        mac = {
+          profile = "mac";
+          user = "jesal";
+          hostName = "jesals-mbp";
+          gitEmail = "jesalx@users.noreply.github.com";
+        };
+        work = {
+          profile = "work";
+          user = "patel";
+          hostName = "patel-MBP";
+          gitEmail = "jesalx@users.noreply.github.com";
+        };
+      };
     in
     {
       nixosConfigurations = {
         default = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
+            userConfig = userConfig.default;
           };
           modules = [ ./hosts/default/configuration.nix ];
         };
@@ -44,6 +65,7 @@
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           extraSpecialArgs = {
             inherit inputs;
+            userConfig = userConfig.mac;
           };
           modules = [ ./hosts/mac/configuration.nix ];
         };
@@ -51,6 +73,7 @@
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           extraSpecialArgs = {
             inherit inputs;
+            userConfig = userConfig.work;
           };
           modules = [ ./hosts/work/configuration.nix ];
         };

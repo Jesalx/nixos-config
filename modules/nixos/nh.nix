@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  userConfig,
   ...
 }:
 {
@@ -13,7 +14,7 @@
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 7d --keep 10";
-      flake = "/home/${config.userConfig.user}/nixos-config";
+      flake = "/home/${userConfig.user}/nixos-config";
     };
   };
 }

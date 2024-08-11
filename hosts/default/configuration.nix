@@ -4,6 +4,7 @@
   lib,
   config,
   pkgs,
+  userConfig,
   ...
 }:
 {
@@ -15,17 +16,10 @@
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.home-manager.nixosModules.home-manager
 
-    ../../modules/user-config.nix
     ../../modules/nixos/default.nix
 
     ./hardware-configuration.nix
   ];
-
-  # User config
-  userConfig = {
-    user = "jesal";
-    hostName = "nixos";
-  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -100,11 +94,11 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  networking.hostName = config.userConfig.hostName;
+  networking.hostName = userConfig.hostName;
   networking.networkmanager.enable = true;
 
   users.users = {
-    ${config.userConfig.user} = {
+    ${userConfig.user} = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
@@ -121,11 +115,10 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {
-      inherit inputs outputs;
-      userConfig = config.userConfig;
+      inherit inputs outputs userConfig;
     };
     users = {
-      ${config.userConfig.user} = import ./home.nix;
+      ${userConfig.user} = import ./home.nix;
     };
   };
 
