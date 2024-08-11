@@ -75,7 +75,7 @@
 
           blur = {
             enabled = true;
-            size = 3;
+            size = 8;
             passes = 1;
           };
 
@@ -127,6 +127,7 @@
         windowrulev2 = [
           "idleinhibit fullscreen, class:firefox, fullscreen:1"
           "idleinhibit focus, class:mpv"
+          "opacity 0.85,class:^(kitty)$"
         ];
 
         "$mainMod" = "SUPER";
