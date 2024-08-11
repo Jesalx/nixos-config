@@ -64,7 +64,7 @@ pkgs.writeShellApplication {
           elif [ "$action" = "update" ]; then
             nh os switch -u -H "$config"
           elif [ "$action" = "clean" ]; then
-            nh clean all --keep-since 15d --keep 15
+            nh clean all --keep-since 7d --keep 10
           else
             echo "Invalid action for Linux. Use 'test', 'switch', 'update', or 'clean'."
             exit 1
