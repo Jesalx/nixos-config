@@ -23,24 +23,6 @@ return {
     end,
   },
   {
-    "olimorris/onedarkpro.nvim",
-    lazy = true,
-    opts = {
-      transparency = true,
-    },
-  },
-  {
-    "craftzdog/solarized-osaka.nvim",
-    lazy = true,
-    opts = {
-      transparency = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
-      },
-    },
-  },
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
