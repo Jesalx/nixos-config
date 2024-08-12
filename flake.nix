@@ -48,6 +48,8 @@
       };
     in
     {
+      homeManagerModules = ./modules/home;
+
       nixosConfigurations = {
         default = nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -57,7 +59,6 @@
           modules = [ ./hosts/default/configuration.nix ];
         };
       };
-      homeManagerModules.default = ./modules/home/default.nix;
 
       # MacOS home manager configuration
       homeConfigurations = {

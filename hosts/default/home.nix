@@ -11,7 +11,7 @@ let
   wallpaper = ../../dotfiles/wallpaper/blackhole.png;
 in
 {
-  imports = [ outputs.homeManagerModules.default ];
+  imports = [ outputs.homeManagerModules ];
 
   home = {
     username = userConfig.user;
