@@ -14,10 +14,16 @@
       font.name = "JetBrainsMono NF";
       font.size = 12;
       shellIntegration.enableZshIntegration = true;
-      settings = {
-        enable_audio_bell = false;
-        confirm_os_window_close = -1;
-      };
+      settings =
+        {
+          enable_audio_bell = false;
+          confirm_os_window_close = -1;
+        }
+        // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          background_opacity = "0.8";
+          background_blur = 16;
+          hide_window_decorations = "titlebar-only";
+        };
     };
   };
 }
