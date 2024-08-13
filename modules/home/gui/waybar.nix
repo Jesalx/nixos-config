@@ -74,7 +74,8 @@ in
                 "orientation": "horizontal",
                 "modules": [
                     "cpu",
-                    "memory"
+                    "memory",
+                    "disk"
                 ]
             },
             "group/time": {
@@ -132,6 +133,10 @@ in
             "memory": {
                 "format": " {}%",
                 "interval": 30
+            },
+            "disk": {
+                "format": " {percentage_used}%",
+                "interval": 600
             },
             "cpu": {
                 "format": " {usage}%",
@@ -200,6 +205,7 @@ in
         #window,
         #cpu,
         #memory,
+        #disk,
         #pulseaudio,
         #clock,
         #tray {
@@ -212,6 +218,7 @@ in
         #window,
         #cpu,
         #memory,
+        #disk,
         #pulseaudio,
         #clock,
         #tray {
@@ -234,11 +241,15 @@ in
           margin-right: 5px;
         }
 
+        #cpu {
+          color: #4bbbe3;
+        }
+
         #memory {
           color: #a6e3a1;
         }
 
-        #cpu {
+        #disk {
           color: #cba6f7;
         }
 
