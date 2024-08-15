@@ -26,6 +26,7 @@
       fd
       fzf
       alejandra
+      jq
     ];
   };
 }
