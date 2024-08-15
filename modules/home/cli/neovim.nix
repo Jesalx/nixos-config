@@ -32,6 +32,7 @@ in
         wget
         curl
         ripgrep
+        rust-analyzer
         fd
         tree-sitter
         cargo
