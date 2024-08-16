@@ -28,9 +28,7 @@
           "signon.rememberSignons" = false;
           "extensions.formautofill.creditCards.enabled" = false;
           "signon.generation.enabled" = false;
-          # Add custom search engine for nixpkgs
-          "browser.urlbar.placeholderName" = "DuckDuckGo";
-          "browser.urlbar.placeholderName.private" = "DuckDuckGo";
+          "browser.uidensity" = 1;
         };
         search = {
           force = true;
