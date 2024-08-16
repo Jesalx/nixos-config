@@ -12,6 +12,8 @@ return {
         }),
         { "i", "c" }
       ),
+      ["<C-j>"] = cmp.mapping.select_next_item(),
+      ["<C-k>"] = cmp.mapping.select_prev_item(),
     })
   end,
 }
