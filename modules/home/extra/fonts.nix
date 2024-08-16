@@ -12,14 +12,26 @@
     fonts.fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font" ];
-        sansSerif = [ "Roboto" ];
+        monospace = [
+          "MonaspiceNe Nerd Font"
+          "JetBrainsMono Nerd Font"
+        ];
+        sansSerif = [
+          "Inter"
+          "Roboto"
+        ];
       };
     };
 
     home.packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      (nerdfonts.override {
+        fonts = [
+          "Monaspace" # Actual nerd font is referred to as "Monaspice"
+          "JetBrainsMono"
+        ];
+      })
       roboto
+      inter
     ];
   };
 }
