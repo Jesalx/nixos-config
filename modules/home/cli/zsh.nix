@@ -34,6 +34,7 @@ in
           nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
         }
+        (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
       ];
     };
     programs.zsh.oh-my-zsh = {

@@ -27,6 +27,7 @@
       fzf
       alejandra
       jq
+      bat
     ];
   };
 }
