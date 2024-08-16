@@ -10,7 +10,10 @@ let
   user = "patel";
 in
 {
-  imports = [ ../../modules/home/cli/default.nix ];
+  imports = [
+    ../../modules/home/cli/default.nix
+    ../../modules/home/extra/default.nix
+  ];
 
   nix.settings = {
     experimental-features = [
@@ -26,18 +29,10 @@ in
   };
 
   home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ripgrep
     fd
     fzf
   ];
-
-  fonts.fontconfig = {
-    enable = true;
-    defaultFonts = {
-      monospace = [ "JetBrainsMono Nerd Font" ];
-    };
-  };
 
   home.sessionVariables = { };
 

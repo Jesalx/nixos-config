@@ -11,7 +11,6 @@
   config = lib.mkIf config.development.enable {
 
     home.packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       rustup
       nodejs_22
       pyenv
