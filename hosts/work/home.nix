@@ -25,14 +25,19 @@ in
     homeDirectory = "/Users/${user}";
   };
 
-  fonts.fontconfig.enable = true;
-
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ripgrep
     fd
     fzf
   ];
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      monospace = [ "JetBrainsMono Nerd Font" ];
+    };
+  };
 
   home.sessionVariables = { };
 
