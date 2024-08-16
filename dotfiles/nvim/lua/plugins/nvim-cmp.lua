@@ -5,7 +5,13 @@ return {
 
     opts.mapping = vim.tbl_extend("force", opts.mapping or {}, {
       ["<CR>"] = cmp.config.disable,
-      ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+      ["<C-y>"] = cmp.mapping(
+        cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Insert,
+          select = true,
+        }),
+        { "i", "c" }
+      ),
     })
   end,
 }
