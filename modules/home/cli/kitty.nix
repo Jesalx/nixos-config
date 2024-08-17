@@ -12,7 +12,7 @@
     programs.kitty = {
       enable = true;
       font.name = "MonaspiceNe Nerd Font";
-      font.size = 12;
+      font.size = 13;
       shellIntegration.enableZshIntegration = true;
       settings =
         {
