@@ -43,6 +43,7 @@ in
         stylua
         gopls
         alejandra
+        zls
       ];
     };
 

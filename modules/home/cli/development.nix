@@ -27,6 +27,8 @@
       alejandra
       jq
       bat
+      zig
+      zls
     ];
   };
 }
