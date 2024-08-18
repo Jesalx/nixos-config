@@ -27,6 +27,8 @@
       alejandra
       jq
       bat
+      swift
+      swift-format
       zig
       zls
     ];
