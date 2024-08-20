@@ -29,6 +29,7 @@
       bat
       zig
       zls
+      docker
     ];
   };
 }
