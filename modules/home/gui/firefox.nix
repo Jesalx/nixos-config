@@ -18,7 +18,6 @@
         isDefault = true;
         settings = {
           "general.autoScroll" = true;
-          "privacy.resistFingerprinting" = true;
           "media.peerconnection.enabled" = false;
           "dom.battery.enabled" = false;
           "browser.tabs.closeWindowWithLastTab" = false;
