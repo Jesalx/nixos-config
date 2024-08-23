@@ -29,9 +29,6 @@
       bat
       zig
       zls
-      docker
-      google-cloud-sdk
-      firebase-tools
     ];
   };
 }
