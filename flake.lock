@@ -67,11 +67,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723152038,
-        "narHash": "sha256-Vm4LeY8QZnVtM0xDijL+S20589DpFF3dP5rYcmvzzAA=",
+        "lastModified": 1724363501,
+        "narHash": "sha256-A+zVs7cXAimPvhc6ZXwKjPD//LgtTVDR8TvQWUsKqN4=",
         "owner": "e-tho",
         "repo": "ucodenix",
-        "rev": "dfcd427c945c80b135725f43e0a716cdf710b9c5",
+        "rev": "73b2499526b98902f9da6a6606c400889aec59f6",
         "type": "github"
       },
       "original": {
