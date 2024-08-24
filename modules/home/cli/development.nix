@@ -15,7 +15,7 @@
       nodejs_22
       pyenv
       python3
-      go
+      go_1_23
       gcc
       gnumake
       unzip
