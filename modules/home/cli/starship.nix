@@ -54,6 +54,10 @@
         symbol = "  ";
       };
 
+      gcloud = {
+        disabled = true;
+      };
+
       conda = {
         symbol = " ";
       };
