@@ -33,6 +33,12 @@
           hostName = "nixos";
           gitEmail = "jesalx@users.noreply.github.com";
         };
+        deepthought = {
+          profile = "deepthought";
+          user = "jesal";
+          hostName = "deepthought";
+          gitEmail = "jesalx@users.noreply.github.com";
+        };
         mac = {
           profile = "mac";
           user = "jesal";
@@ -57,6 +63,13 @@
             userConfig = userConfig.default;
           };
           modules = [ ./hosts/default/configuration.nix ];
+        };
+        deepthought = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
+            userConfig = userConfig.default;
+          };
+          modules = [ ./hosts/deepthought/configuration.nix ];
         };
       };
 
