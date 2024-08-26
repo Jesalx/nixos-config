@@ -67,7 +67,7 @@
         deepthought = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
-            userConfig = userConfig.default;
+            userConfig = userConfig.deepthought;
           };
           modules = [ ./hosts/deepthought/configuration.nix ];
         };

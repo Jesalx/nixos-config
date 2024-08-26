@@ -58,11 +58,11 @@ pkgs.writeShellApplication {
         elif [ "$os" = "linux" ]; then
           # Linux specific commands (using nh as in your original script)
           if [ "$action" = "test" ]; then
-            nh os test -H "$config"
+            nh os test --hostname "$config" .
           elif [ "$action" = "switch" ]; then
-            nh os switch -H "$config"
+            nh os switch --hostname "$config" .
           elif [ "$action" = "update" ]; then
-            nh os switch -u -H "$config"
+            nh os switch -u --hostname "$config" .
           elif [ "$action" = "clean" ]; then
             nh clean all --keep-since 7d --keep 10
           else

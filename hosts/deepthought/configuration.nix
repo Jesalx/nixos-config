@@ -16,7 +16,7 @@
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.home-manager.nixosModules.home-manager
 
-    # ../../modules/nixos/default.nix
+    ../../modules/nixos/default.nix
 
     ./hardware-configuration.nix
   ];
@@ -97,6 +97,11 @@
   networking.hostName = userConfig.hostName;
   networking.networkmanager.enable = true;
 
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
   users.users = {
     ${userConfig.user} = {
       isNormalUser = true;
@@ -109,6 +114,8 @@
       shell = pkgs.zsh;
     };
   };
+
+  services.getty.autologinUser = userConfig.user;
 
   home-manager = {
     backupFileExtension = "backup";
@@ -136,12 +143,16 @@
     libraries = with pkgs; [ ];
   };
 
+  programs.dconf.enable = true;
   services.tailscale.enable = true;
 
-  # microcode = {
-  #   enable = true;
-  #   cpuSerialNumber = "00A6-0F12-0000-0000-0000-0000";
-  # };
+  hyprland.enable = false;
+  steam.enable = false;
+
+  microcode = {
+    enable = true;
+    cpuSerialNumber = "00A6-0F12-0000-0000-0000-0000";
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

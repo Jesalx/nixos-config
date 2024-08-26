@@ -8,7 +8,9 @@
   ...
 }:
 {
-  imports = [ outputs.homeManagerModules ];
+  imports = [
+    ../../modules/home/cli/default.nix
+  ];
 
   home = {
     username = userConfig.user;
