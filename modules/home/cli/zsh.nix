@@ -33,6 +33,7 @@ in
           jp-clean = "${nix-helper-app}/bin/nix-rebuild clean ${userConfig.profile}";
           nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
+          dt = "ssh jesal@deepthought";
         }
         (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
       ];
