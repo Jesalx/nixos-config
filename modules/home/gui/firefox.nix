@@ -30,8 +30,8 @@
           "browser.uidensity" = 1;
         };
         search = {
-          force = true;
-          default = "Google";
+          # force = true;
+          default = "Kagi";
           engines = {
             "Nix Packages" = {
               urls = [
@@ -57,6 +57,7 @@
             "eBay".metaData.hidden = true;
           };
           order = [
+            "Kagi"
             "Google"
             "DuckDuckGo"
             "Nix Packages"
