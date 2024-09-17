@@ -16,6 +16,7 @@
       pyenv
       python3
       go_1_23
+      crystal
       gcc
       gnumake
       unzip
