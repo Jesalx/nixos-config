@@ -17,6 +17,7 @@
       python3
       go_1_23
       crystal
+      crystalline
       gcc
       gnumake
       unzip
