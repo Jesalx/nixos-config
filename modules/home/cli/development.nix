@@ -29,6 +29,7 @@
       alejandra
       jq
       bat
+      vscode
       zig
       zls
     ];
