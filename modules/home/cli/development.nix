@@ -30,6 +30,7 @@
       jq
       bat
       vscode
+      mongosh
       zig
       zls
     ];

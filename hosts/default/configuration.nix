@@ -169,6 +169,10 @@
   };
 
   services.tailscale.enable = true;
+  services.mongodb = {
+    enable = true;
+    package = pkgs.mongodb;
+  };
 
   microcode = {
     enable = true;
