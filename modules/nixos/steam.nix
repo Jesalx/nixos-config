@@ -20,7 +20,10 @@
 
     programs.gamemode.enable = true;
 
-    environment.systemPackages = with pkgs; [ protonup ];
+    environment.systemPackages = with pkgs; [
+      protonup
+      lunar-client
+    ];
 
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${userConfig.user}/.steam/root/compatibilitytools.d";
