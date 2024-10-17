@@ -13,6 +13,7 @@
     home.packages = with pkgs; [
       rustup
       nodejs_22
+      deno
       pyenv
       python3
       go_1_23
