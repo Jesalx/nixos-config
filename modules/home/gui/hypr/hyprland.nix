@@ -198,6 +198,10 @@
           # Scroll through existing workspaces with mainMod + scroll
           "$mainMod, mouse_down, workspace, e+1"
           "$mainMod, mouse_up, workspace, e-1"
+
+          # Scroll through workspaces with mouse keybindings
+          "CONTROL, right, workspace, e+1"
+          "CONTROL, left, workspace, e-1"
         ];
 
         bindm = [
