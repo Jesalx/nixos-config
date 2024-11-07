@@ -16,7 +16,7 @@
       deno
       pyenv
       python3
-      go_1_23
+      go
       crystal
       crystalline
       gcc
