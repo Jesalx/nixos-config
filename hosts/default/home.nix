@@ -28,6 +28,7 @@ in
     mpv
     discord
     obsidian
+    pandoc
   ];
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
