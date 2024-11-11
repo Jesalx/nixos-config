@@ -176,7 +176,6 @@
 
   microcode = {
     enable = true;
-    cpuSerialNumber = "00A6-0F12-0000-0000-0000-0000";
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
