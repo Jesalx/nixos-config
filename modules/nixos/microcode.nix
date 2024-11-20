@@ -16,6 +16,7 @@
     # visit https://github.com/e-tho/ucodenix for configuration details
     services.ucodenix = {
       enable = true;
+      cpuModelId = "00A60F12";
     };
   };
 }
