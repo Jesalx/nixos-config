@@ -31,19 +31,19 @@
           profile = "default";
           user = "jesal";
           hostName = "nixos";
-          gitEmail = "jesalx@users.noreply.github.com";
+          gitEmail = "mail@jesal.dev";
         };
         mac = {
           profile = "mac";
           user = "jesal";
           hostName = "jesals-mbp";
-          gitEmail = "jesalx@users.noreply.github.com";
+          gitEmail = "mail@jesal.dev";
         };
         work = {
           profile = "work";
           user = "patel";
           hostName = "patel-MBP";
-          gitEmail = "jesalx@users.noreply.github.com";
+          gitEmail = "mail@jesal.dev";
         };
       };
     in
