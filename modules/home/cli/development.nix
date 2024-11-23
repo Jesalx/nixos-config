@@ -18,6 +18,7 @@
       python3
       go
       crystal
+      shards
       crystalline
       gcc
       gnumake
