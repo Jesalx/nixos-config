@@ -24,12 +24,8 @@
     };
 
     home.packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "Monaspace" # Actual nerd font is referred to as "Monaspice"
-          "JetBrainsMono"
-        ];
-      })
+      nerd-fonts.monaspace
+      nerd-fonts.jetbrains-mono
       roboto
       inter
     ];
