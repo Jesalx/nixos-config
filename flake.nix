@@ -14,7 +14,6 @@
 
     # AMD microcode updates
     ucodenix.url = "github:e-tho/ucodenix";
-    ucodenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
