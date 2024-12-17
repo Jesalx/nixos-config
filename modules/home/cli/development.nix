@@ -34,6 +34,7 @@
       vscode
       zig
       zls
+      qmk
     ];
   };
 }
