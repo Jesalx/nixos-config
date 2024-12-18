@@ -35,6 +35,7 @@
       zig
       zls
       qmk
+      via
     ];
   };
 }
