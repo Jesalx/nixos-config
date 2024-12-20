@@ -36,6 +36,7 @@
       zls
       qmk
       via
+      chromium
     ];
   };
 }
