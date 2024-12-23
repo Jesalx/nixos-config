@@ -37,6 +37,7 @@
       qmk
       via
       chromium
+      keymapp
     ];
   };
 }
