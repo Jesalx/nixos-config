@@ -2,6 +2,7 @@
 {
   imports = [
     ./development.nix
+    ./ghostty.nix
     ./git.nix
     ./kitty.nix
     ./neovim.nix
@@ -12,6 +13,7 @@
 
   development.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
+  ghostty.enable = lib.mkDefault true;
   lazygit.enable = lib.mkDefault true;
   kitty.enable = lib.mkDefault true;
   neovim.enable = lib.mkDefault true;
