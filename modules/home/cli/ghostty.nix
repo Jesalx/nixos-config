@@ -10,7 +10,7 @@
   };
   config = lib.mkIf config.ghostty.enable {
     xdg.configFile."ghostty/config".text = ''
-      theme = Adventure
+      theme = catppuccin-mocha
       background = 000000
       background-opacity = 0.8
       background-blur-radius = 20

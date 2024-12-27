@@ -31,12 +31,12 @@
 
           "[workspace 1 silent] ghostty"
           "[workspace 1 silent] firefox"
-          "[workspace special:term silent] kitty"
+          "[workspace special:term silent] ghostty"
           "[workspace special:notes silent] obsidian"
         ];
 
         "$browser" = "firefox";
-        "$terminal" = "kitty";
+        "$terminal" = "ghostty";
         "$fileManager" = "nautilus";
         "$menu" = "pkill wofi || wofi -c /home/jesal/.config/wofi/config -I -a";
 
