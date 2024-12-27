@@ -29,7 +29,7 @@
           "wl-paste --type image --watch cliphist store"
           "rm $HOME/.cache/cliphist/db # delete clipboard history every boot"
 
-          "[workspace 1 silent] kitty"
+          "[workspace 1 silent] ghostty"
           "[workspace 1 silent] firefox"
           "[workspace special:term silent] kitty"
           "[workspace special:notes silent] obsidian"
@@ -138,7 +138,7 @@
           "$mainMod, RETURN, exec, $terminal"
           "$mainMod, B, exec, $browser"
           "$mainMod, Q, killactive, "
-          # bind = $mainMod, BACKSPACE, exit, 
+          # bind = $mainMod, BACKSPACE, exit,
           "$mainMod, E, exec, $fileManager"
           "$mainMod, V, togglefloating, "
           "$mainMod, F, fullscreen, "
