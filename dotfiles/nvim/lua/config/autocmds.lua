@@ -8,3 +8,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.b.autoformat = false
   end,
 })
+
+vim.api.nvim_create_autocmd("FocusGained", {
+  callback = function()
+    vim.wo.relativenumber = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FocusLost", {
+  callback = function()
+    vim.wo.relativenumber = false
+  end,
+})
