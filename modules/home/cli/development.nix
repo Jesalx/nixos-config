@@ -38,6 +38,7 @@
       via
       chromium
       keymapp
+      hyprshot
     ];
   };
 }
