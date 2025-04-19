@@ -17,6 +17,8 @@
       pyenv
       python3
       go
+      gopls
+      golangci-lint
       crystal
       shards
       crystalline
