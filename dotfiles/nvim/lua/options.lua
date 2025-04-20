@@ -3,9 +3,6 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -37,6 +34,7 @@ vim.opt.expandtab = true
 
 -- Set the number of spaces a tab counts for
 vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 
 -- Set the number of spaces for each indentation level
 vim.opt.shiftwidth = 4
@@ -79,3 +77,5 @@ vim.opt.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+
+vim.opt.shortmess:append("I") -- Hide the intro message

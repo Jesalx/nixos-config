@@ -2,7 +2,7 @@ require("lazy").setup({
   { import = "plugins" },
 }, {
   ui = {
-    icons = vim.g.have_nerd_font and {} or {
+    icons = {
       cmd = "⌘",
       config = "🛠",
       event = "📅",
