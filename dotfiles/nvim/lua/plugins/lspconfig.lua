@@ -174,6 +174,7 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf }) -- enable inlay hints by default
             map("<leader>th", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, "[T]oggle Inlay [H]ints")
@@ -232,6 +233,18 @@ return {
           settings = {
             gopls = {
               staticcheck = true, -- Enables additional checks
+              analyses = {
+                shadow = true,
+              },
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
             },
           },
         },
@@ -278,7 +291,20 @@ return {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        "stylua", -- Used to format Lua code
+        "stylua",
+        "gopls",
+        "goimports",
+        "yamlls",
+        "yamllint",
+        "yamlfmt",
+        "json-lsp",
+        "pyright",
+        "shfmt",
+        "prettier",
+        "prettierd",
+        "black",
+        "isort",
+        "tflint",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
