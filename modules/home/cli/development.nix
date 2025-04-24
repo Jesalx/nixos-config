@@ -11,6 +11,7 @@
   config = lib.mkIf config.development.enable {
 
     home.packages = with pkgs; [
+      tmux
       rustup
       nodejs_22
       deno
