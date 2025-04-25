@@ -40,6 +40,7 @@
       terraform
       qmk
       via
+      cockroachdb
       chromium
       keymapp
       hyprshot
