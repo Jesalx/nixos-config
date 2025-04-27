@@ -12,6 +12,7 @@
 
     home.packages = with pkgs; [
       tmux
+      docker
       rustup
       nodejs_22
       deno
