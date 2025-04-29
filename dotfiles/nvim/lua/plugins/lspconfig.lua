@@ -233,9 +233,6 @@ return {
           settings = {
             gopls = {
               staticcheck = true, -- Enables additional checks
-              analyses = {
-                shadow = true,
-              },
               hints = {
                 assignVariableTypes = true,
                 compositeLiteralFields = true,
