@@ -171,6 +171,13 @@
 
   services.tailscale.enable = true;
 
+  # Docker
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
+
+
   microcode = {
     enable = true;
   };
