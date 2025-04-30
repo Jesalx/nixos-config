@@ -18,6 +18,7 @@
       deno
       pyenv
       python3
+      uv
       go
       gopls
       golangci-lint
