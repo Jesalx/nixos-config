@@ -22,7 +22,7 @@
 
     environment.systemPackages = with pkgs; [
       protonup
-      lunar-client
+      # lunar-client
     ];
 
     environment.sessionVariables = {
