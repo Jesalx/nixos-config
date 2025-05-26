@@ -16,6 +16,7 @@
       background-blur-radius = 20
       window-decoration = false
       gtk-titlebar = false
+      font-family = Berkeley Mono Variable
     '';
   };
 }
