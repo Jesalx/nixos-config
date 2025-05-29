@@ -27,6 +27,7 @@ in
     zathura
     mpv
     discord
+    slack
     obsidian
     pandoc
   ];
