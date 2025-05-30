@@ -12,6 +12,7 @@
 
     home.packages = with pkgs; [
       tmux
+      jujutsu
       docker
       awscli2
       rustup
