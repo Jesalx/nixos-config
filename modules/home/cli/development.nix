@@ -12,7 +12,6 @@
 
     home.packages = with pkgs; [
       tmux
-      direnv
       docker
       awscli2
       rustup
