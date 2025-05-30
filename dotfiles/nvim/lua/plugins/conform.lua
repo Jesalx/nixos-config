@@ -29,9 +29,15 @@ return {
           }
         end
       end,
+
+      formatters = {
+        gofumpt = {
+          prepend_args = { "-extra" },
+        },
+      },
       formatters_by_ft = {
         lua = { "stylua" },
-        go = { "goimports", "gofmt" },
+        go = { "gofumpt" },
         python = { "isort", "black" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { "prettierd", "prettier", stop_after_first = true },

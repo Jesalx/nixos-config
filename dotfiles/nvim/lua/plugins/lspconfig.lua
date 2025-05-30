@@ -232,6 +232,7 @@ return {
         gopls = {
           settings = {
             gopls = {
+              gofumpt = true,
               staticcheck = true, -- Enables additional checks
               analyses = {
                 unreachable = true,
