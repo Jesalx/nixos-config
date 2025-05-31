@@ -44,6 +44,10 @@ in
         };
       };
     };
+
+    home.packages = with pkgs; [
+      lazyjj
+    ];
   };
 }
 
