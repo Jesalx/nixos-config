@@ -30,7 +30,11 @@ in
           email = userConfig.gitEmail;
         };
 
-        ui.editor = "nvim";
+        ui = {
+          editor = "nvim";
+          paginate = "never";
+          default-command = "log";
+        };
 
         signing = {
           behavior = "own";
