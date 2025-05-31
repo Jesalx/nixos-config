@@ -5,6 +5,7 @@
     ./ghostty.nix
     ./direnv.nix
     ./git.nix
+    ./jujutsu.nix
     ./kitty.nix
     ./neovim.nix
     ./ranger.nix
@@ -14,6 +15,7 @@
 
   development.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
+  jujutsu.enable = lib.mkDefault true;
   ghostty.enable = lib.mkDefault true;
   direnv.enable = lib.mkDefault true;
   lazygit.enable = lib.mkDefault true;
