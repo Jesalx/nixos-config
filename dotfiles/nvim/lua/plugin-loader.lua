@@ -19,5 +19,3 @@ require("lazy").setup({
     },
   },
 })
-
-require("custom.terminal")

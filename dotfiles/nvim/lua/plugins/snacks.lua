@@ -20,6 +20,18 @@ return {
         },
       },
     },
+    terminal = {
+      win = {
+        style = "terminal",
+        position = "float",
+        width = 0.8,
+        height = 0.8,
+        border = "rounded",
+        relative = "editor",
+      },
+      persistent = true,
+      autoinsert = true,
+    },
   },
   keys = {
     -- Smart file search (buffers, project files)
@@ -142,6 +154,37 @@ return {
         Snacks.picker.notifications()
       end,
       desc = "[N]otification History",
+    },
+
+    {
+      "<leader>.",
+      function()
+        Snacks.terminal.toggle()
+      end,
+      desc = "Toggle floating terminal",
+    },
+    {
+      "<leader>jj",
+      function()
+        Snacks.terminal.toggle("jjui", {
+          win = {
+            relative = "editor",
+            position = "float",
+            width = 0.85,
+            height = 0.85,
+            border = "rounded",
+            title = " jjui ",
+            title_pos = "center",
+          },
+        })
+      end,
+      desc = "Toggle jjui terminal",
+    },
+    {
+      "<esc><esc>",
+      "<C-\\><C-n>",
+      mode = "t",
+      desc = "Exit terminal mode",
     },
   },
 }
