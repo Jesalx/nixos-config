@@ -34,6 +34,7 @@ in
         })
         {
           # Common aliases for both platforms
+          cd = "z";
           jp-test = "${nix-helper-app}/bin/nix-rebuild test ${userConfig.profile}";
           jp-switch = "${nix-helper-app}/bin/nix-rebuild switch ${userConfig.profile}";
           jp-update = "${nix-helper-app}/bin/nix-rebuild update ${userConfig.profile}";
@@ -55,6 +56,11 @@ in
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
+    };
+
+    programs.zoxide = {
+      enable = true;
+      enableFishIntegration = true;
     };
 
     home.packages = with pkgs; [
