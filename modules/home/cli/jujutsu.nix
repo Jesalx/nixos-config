@@ -34,6 +34,11 @@ in
           editor = "nvim";
           paginate = "never";
           default-command = "log";
+          diff-editor = ":builtin";
+        };
+
+        git = {
+          private-commits = "description(glob:'private:*')";
         };
 
         signing = {
