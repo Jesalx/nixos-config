@@ -10,6 +10,7 @@
   };
   config = lib.mkIf config.ghostty.enable {
     xdg.configFile."ghostty/config".text = ''
+      shell-integration = fish
       background = 000000
       background-opacity = 0.8
       background-blur-radius = 20

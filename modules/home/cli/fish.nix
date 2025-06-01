@@ -12,11 +12,18 @@ let
 in
 {
   options = {
-    zsh.enable = lib.mkEnableOption "enables custom zsh config";
+    fish.enable = lib.mkEnableOption "enables custom fish config";
   };
-  config = lib.mkIf config.zsh.enable {
-    programs.zsh = {
+  config = lib.mkIf config.fish.enable {
+    programs.fish = {
       enable = true;
+
+      # Custom keybindings for fzf-fish
+      interactiveShellInit = ''
+        # Configure fzf.fish keybindings
+        # Ctrl+F for directory, Ctrl+R for history, Ctrl+T for variables  
+        fzf_configure_bindings --directory=\cf --history=\cr --variables=\ct
+      '';
 
       shellAliases = lib.mkMerge [
         (lib.mkIf pkgs.stdenv.isLinux {
@@ -41,14 +48,14 @@ in
         (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
       ];
     };
-    programs.zsh.oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-    };
+
     programs.direnv = {
       enable = true;
-      enableZshIntegration = true;
       nix-direnv.enable = true;
     };
+
+    home.packages = with pkgs; [
+      fishPlugins.fzf-fish
+    ];
   };
 }

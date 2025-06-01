@@ -8,7 +8,7 @@
   options = {
     starship.enable = lib.mkEnableOption "enables custom starship config";
   };
-  config = lib.mkIf config.zsh.enable {
+  config = lib.mkIf config.fish.enable {
     programs.starship.enable = true;
     programs.starship.settings = {
       add_newline = false;

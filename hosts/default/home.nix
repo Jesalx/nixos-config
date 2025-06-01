@@ -22,7 +22,6 @@ in
   systemd.user.startServices = "sd-switch";
 
   home.packages = with pkgs; [
-    kitty-themes
     nautilus
     zathura
     mpv

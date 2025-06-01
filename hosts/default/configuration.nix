@@ -106,7 +106,7 @@
         "docker"
         "audio"
       ];
-      shell = pkgs.zsh;
+      shell = pkgs.fish;
     };
   };
 
@@ -149,14 +149,14 @@
     #media-session.enable = true;
   };
 
-  # Install zsh
+  # Install fish and zsh
+  programs.fish.enable = true;
   programs.zsh.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     inputs.ghostty.packages.x86_64-linux.default
-    kitty
     neovim
     curl
     git

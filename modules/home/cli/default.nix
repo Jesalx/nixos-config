@@ -6,11 +6,10 @@
     ./direnv.nix
     ./git.nix
     ./jujutsu.nix
-    ./kitty.nix
     ./neovim.nix
     ./ranger.nix
     ./starship.nix
-    ./zsh.nix
+    ./fish.nix
   ];
 
   development.enable = lib.mkDefault true;
@@ -19,9 +18,8 @@
   ghostty.enable = lib.mkDefault true;
   direnv.enable = lib.mkDefault true;
   lazygit.enable = lib.mkDefault true;
-  kitty.enable = lib.mkDefault true;
   neovim.enable = lib.mkDefault true;
   ranger.enable = lib.mkDefault true;
-  zsh.enable = lib.mkDefault true;
+  fish.enable = lib.mkDefault true;
   starship.enable = lib.mkDefault true;
 }
