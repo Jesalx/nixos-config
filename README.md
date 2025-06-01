@@ -51,7 +51,7 @@ Replace `PROFILE` with the appropriate profile name for the device.
 If you haven't already, then you should generate an SSH key pair.
 
 ```bash
-ssh-keygen -t ed25519 -C "contact@jesalpa.tel"
+ssh-keygen -t ed25519 -C "mail@jesal.dev"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ```
@@ -60,9 +60,9 @@ ssh-add ~/.ssh/id_ed25519
 
 For convenience, several custom commands that wrap the regular nix commands are available to help manage your Nix environment:
 
-| Command | Description |
-|---------|-------------|
-| `jp-test` | Tests the current configuration without making retaining changes on reboot. |
-| `jp-switch` | Builds and activates the current configuration, making it the new default at boot. |
+| Command     | Description                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------- |
+| `jp-test`   | Tests the current configuration without making retaining changes on reboot.                           |
+| `jp-switch` | Builds and activates the current configuration, making it the new default at boot.                    |
 | `jp-update` | Update the flake and apply changes (equivalent to running `nix flake update` followed by `jp-switch`) |
-| `jp-clean` | Cleans up old generations of your nix/home-manager profiles and optimizes the Nix store. |
+| `jp-clean`  | Cleans up old generations of your nix/home-manager profiles and optimizes the Nix store.              |
