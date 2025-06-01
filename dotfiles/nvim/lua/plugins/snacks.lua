@@ -143,9 +143,19 @@ return {
     {
       "<leader>gg",
       function()
-        Snacks.lazygit.open()
+        Snacks.terminal.toggle("jjui", {
+          win = {
+            relative = "editor",
+            position = "float",
+            width = 0.85,
+            height = 0.85,
+            border = "rounded",
+            title = " jjui ",
+            title_pos = "center",
+          },
+        })
       end,
-      desc = "Open Lazy[G]it",
+      desc = "Open jjui",
     },
 
     {
@@ -178,7 +188,7 @@ return {
           },
         })
       end,
-      desc = "Toggle jjui terminal",
+      desc = "Open jjui",
     },
     {
       "<esc><esc>",
