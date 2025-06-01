@@ -13,6 +13,7 @@
     home.packages = with pkgs; [
       tmux
       docker
+      hyperfine
       awscli2
       rustup
       nodejs_22
