@@ -41,7 +41,12 @@ return {
         Snacks.picker.smart({
           multi = {
             "buffers",
-            { source = "files", cwd = vim.fn.getcwd(), hidden = true },
+            {
+              source = "files",
+              cwd = vim.fn.getcwd(),
+              hidden = true,
+              ignore = { "**/.jj/**" },
+            },
           },
         })
       end,
