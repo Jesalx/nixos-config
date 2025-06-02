@@ -45,6 +45,10 @@ in
           ls = "eza";
           l = "eza -al";
           ll = "eza -al";
+
+          # Workaround for tmux-sessionizer until it's ready for nix
+          tms = "/home/${user}/go/bin/tms";
+          ts = "/home/${user}/go/bin/tms";
         }
         (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
       ];
