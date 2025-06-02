@@ -42,6 +42,9 @@ in
           nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
           dt = "ssh jesal@deepthought";
+          ls = "eza";
+          l = "eza -al";
+          ll = "eza -al";
         }
         (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
       ];

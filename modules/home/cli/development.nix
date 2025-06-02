@@ -48,6 +48,9 @@
       chromium
       keymapp
       hyprshot
+      xh
+      eza
+      mprocs
     ];
   };
 }
