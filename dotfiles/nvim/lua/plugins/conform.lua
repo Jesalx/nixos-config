@@ -37,7 +37,7 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        go = { "goimports", "gofumpt" },
+        go = { "golangci-lint" },
         python = { "isort", "black" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { "prettierd", "prettier", stop_after_first = true },
