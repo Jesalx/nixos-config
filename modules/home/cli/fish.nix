@@ -20,6 +20,8 @@ in
 
       # Custom keybindings for fzf-fish
       interactiveShellInit = ''
+        set fish_greeting ""
+
         # Configure fzf.fish keybindings
         # Ctrl+F for directory, Ctrl+R for history, Ctrl+T for variables  
         fzf_configure_bindings --directory=\cf --history=\cr --variables=\ct
