@@ -40,6 +40,17 @@ in
           diff.format = "git";
         };
 
+        "--scope" = [
+          {
+            "--when" = {
+              commands = ["diff"];
+            };
+            ui = {
+              paginate = "auto";
+            };
+          }
+        ];
+
         git = {
           private-commits = "description(glob:'private:*')";
         };
