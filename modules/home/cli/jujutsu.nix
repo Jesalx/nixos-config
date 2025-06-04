@@ -30,6 +30,10 @@ in
           email = userConfig.gitEmail;
         };
 
+        aliases = {
+          init = ["git" "init"];
+        };
+
         ui = {
           editor = "nvim";
           paginate = "never";
