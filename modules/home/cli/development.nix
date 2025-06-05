@@ -33,6 +33,7 @@
       wget
       curl
       ripgrep
+      go-task
       fd
       fzf
       alejandra
