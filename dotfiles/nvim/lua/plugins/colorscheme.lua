@@ -22,7 +22,7 @@ return {
           -- Overlay colors (floating elements, borders)
           overlay0 = "#444444", -- srcery xgray4
           overlay1 = "#4E4E4E", -- srcery xgray5
-          overlay2 = "#585858", -- srcery xgray6
+          overlay2 = "#7c7c7c", -- srcery xgray6
 
           -- Text colors
           subtext0 = "#918175", -- srcery white (dimmed text)
@@ -41,7 +41,7 @@ return {
           sapphire = "#2C78BF", -- srcery blue
           blue = "#68A8E4", -- srcery bright_blue
           lavender = "#68A8E4", -- srcery bright_blue (duplicate for compatibility)
-          mauve = "#E02C6D", -- srcery magenta
+          mauve = "#d63e3c", -- srcery magenta
           pink = "#FF5C8F", -- srcery bright_magenta
           flamingo = "#FED06E", -- srcery bright_yellow
           rosewater = "#98BC37", -- srcery bright_green

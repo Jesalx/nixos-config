@@ -27,7 +27,7 @@
       palette = 2=#519f50
       palette = 3=#fbb829
       palette = 4=#2c78bf
-      palette = 5=#e02c6d
+      palette = 5=#d63e3c
       palette = 6=#0aaeb3
       palette = 7=#baa67f
       palette = 8=#918175
