@@ -11,33 +11,33 @@
   config = lib.mkIf config.ghostty.enable {
     xdg.configFile."ghostty/config".text = ''
       shell-integration = fish
+      background = 000000
       background-opacity = 0.8
       background-blur-radius = 20
       window-decoration = false
       gtk-titlebar = false
       font-family = Berkeley Mono Variable
+      # https://github.com/srcery-colors/srcery-terminal/
+      foreground = #fce8c3
+      selection-foreground = #1c1b19
+      selection-background = #fce8c3
 
-      background = 000000
-      foreground = ecf0c1
-      selection-background = 686f9a
-      selection-foreground = ffffff
-
-      palette = 0=#000000
-      palette = 1=#e33400
-      palette = 2=#5ccc96
-      palette = 3=#b3a1e6
-      palette = 4=#00a3cc
-      palette = 5=#f2ce00
-      palette = 6=#7a5ccc
-      palette = 7=#686f9a
-      palette = 8=#686f9a
-      palette = 9=#e33400
-      palette = 10=#5ccc96
-      palette = 11=#b3a1e6
-      palette = 12=#00a3cc
-      palette = 13=#f2ce00
-      palette = 14=#7a5ccc
-      palette = 15=#f0f1ce
+      palette = 0=#1c1b19
+      palette = 1=#ef2f27
+      palette = 2=#519f50
+      palette = 3=#fbb829
+      palette = 4=#2c78bf
+      palette = 5=#d63e3c
+      palette = 6=#0aaeb3
+      palette = 7=#baa67f
+      palette = 8=#918175
+      palette = 9=#f75341
+      palette = 10=#98bc37
+      palette = 11=#fed06e
+      palette = 12=#68a8e4
+      palette = 13=#ff5c8f
+      palette = 14=#2be4d0
+      palette = 15=#fce8c3
     '';
   };
 }
