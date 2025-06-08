@@ -52,6 +52,7 @@
       xh
       eza
       mprocs
+      claude-code
     ];
   };
 }
