@@ -40,8 +40,7 @@ in
           default-command = "log";
           diff-editor = ":builtin";
           # doing this weirdly to avoid delta returning exit code 1 and getting a warning
-          diff.tool = ["bash" "-c" "delta \"$left\" \"$right\" --file-transformation 's|.*/jj-diff-[^/]*/[^/]*/||' || true" "--"];
-          diff.format = "git";
+          diff-formatter = ["bash" "-c" "delta \"$left\" \"$right\" --file-transformation 's|.*/jj-diff-[^/]*/[^/]*/||' || true" "--"];
         };
 
         "--scope" = [
