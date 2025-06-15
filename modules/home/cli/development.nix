@@ -17,7 +17,6 @@
       awscli2
       rustup
       nodejs_22
-      deno
       pyenv
       python3
       uv
