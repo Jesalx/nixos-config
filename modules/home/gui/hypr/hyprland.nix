@@ -38,7 +38,7 @@
         "$browser" = "firefox";
         "$terminal" = "ghostty";
         "$fileManager" = "nautilus";
-        "$menu" = "pkill wofi || wofi -c /home/jesal/.config/wofi/config -I -a";
+        "$menu" = "pkill fuzzel || fuzzel";
 
         input = {
           kb_layout = "us";

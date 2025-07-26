@@ -7,8 +7,8 @@
     ./hypr/hypridle.nix
     ./theme.nix
     ./firefox.nix
+    ./fuzzel.nix
     ./waybar.nix
-    ./wofi.nix
   ];
 
   hyprland.enable = lib.mkDefault true;
@@ -18,5 +18,5 @@
   waybar.enable = lib.mkDefault true;
   theme.enable = lib.mkDefault true;
   firefox.enable = lib.mkDefault true;
-  wofi.enable = lib.mkDefault true;
+  fuzzel.enable = lib.mkDefault true;
 }
