@@ -47,6 +47,8 @@ in
           ls = "eza";
           l = "eza -al";
           ll = "eza -al";
+          http = "xh";
+          https = "xhs";
 
           # Workaround for tmux-sessionizer until it's ready for nix
           tms = "/home/${user}/go/bin/tms";
@@ -59,6 +61,8 @@ in
         gg = "jj";
         g = "jj";
         j = "jj";
+        xh = "http";
+        xhs = "https";
       };
 
       functions = {
