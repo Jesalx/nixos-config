@@ -49,6 +49,7 @@
       keymapp
       hyprshot
       xh
+      httpie-desktop
       eza
       mprocs
       claude-code
