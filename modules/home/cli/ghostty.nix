@@ -39,5 +39,9 @@
       palette = 14=#2be4d0
       palette = 15=#fce8c3
     '';
+
+    home.packages = with pkgs; [
+      ghostty
+    ];
   };
 }

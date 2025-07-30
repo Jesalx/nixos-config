@@ -14,8 +14,6 @@
 
     # AMD microcode updates
     ucodenix.url = "github:e-tho/ucodenix";
-
-    ghostty.url = "github:ghostty-org/ghostty";
   };
 
   outputs =
