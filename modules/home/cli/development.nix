@@ -13,6 +13,7 @@
     home.packages = with pkgs; [
       tmux
       docker
+      podman
       hyperfine
       awscli2
       rustup
