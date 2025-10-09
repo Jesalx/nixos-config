@@ -14,6 +14,7 @@
       tmux
       docker
       podman
+      opencode
       hyperfine
       awscli2
       rustup
