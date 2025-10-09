@@ -15,6 +15,7 @@
       docker
       podman
       opencode
+      lsof
       hyperfine
       awscli2
       rustup
