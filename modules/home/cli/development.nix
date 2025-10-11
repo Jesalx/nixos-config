@@ -15,6 +15,7 @@
       docker
       podman
       opencode
+      act
       lsof
       hyperfine
       awscli2
