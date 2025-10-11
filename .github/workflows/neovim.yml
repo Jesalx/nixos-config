@@ -1,0 +1,32 @@
+name: Neovim CI
+
+on:
+  push:
+    paths:
+      - 'dotfiles/nvim/**'
+  pull_request:
+    paths:
+      - 'dotfiles/nvim/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y luarocks neovim
+        luarocks install luacheck
+        # Install stylua
+        wget -q https://github.com/JohnnyMorganz/StyLua/releases/download/v0.20.0/stylua-linux-x86_64.zip
+        unzip -q stylua-linux-x86_64.zip
+        sudo mv stylua /usr/local/bin/
+    - name: Run luacheck
+      run: luacheck dotfiles/nvim/lua/
+    - name: Check stylua formatting
+      run: stylua --check dotfiles/nvim/lua/
+    - name: Test Neovim config loading
+      run: |
+        export XDG_CONFIG_HOME=$PWD/dotfiles
+        nvim --headless -c 'lua require("init")' -c 'qa'
