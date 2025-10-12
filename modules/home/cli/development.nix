@@ -18,7 +18,6 @@
       act
       lsof
       hyperfine
-      awscli2
       rustup
       nodejs_22
       pyenv
