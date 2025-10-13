@@ -30,6 +30,13 @@ return {
       "saghen/blink.cmp",
     },
     config = function()
+      vim.filetype.add({
+        pattern = {
+          [".*/templates/.*%.yaml"] = "helm",
+          [".*/templates/.*%.tpl"] = "helm",
+        },
+      })
+
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -275,6 +282,16 @@ return {
             },
           },
         },
+
+        helm_ls = {
+          settings = {
+            ["helm-ls"] = {
+              yamlls = {
+                path = "yaml-language-server",
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -306,6 +323,7 @@ return {
         "black",
         "isort",
         "tflint",
+        "helm-ls",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
