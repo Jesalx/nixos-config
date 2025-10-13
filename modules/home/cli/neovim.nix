@@ -35,7 +35,9 @@ in
         rust-analyzer
         fd
         tree-sitter
+        rustc
         cargo
+        gcc
         nil
         nixfmt-rfc-style
         lua

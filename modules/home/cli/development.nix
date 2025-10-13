@@ -15,10 +15,13 @@
       docker
       podman
       opencode
+      lua54Packages.luarocks
+      rustc
+      cargo
+      rust-analyzer
       act
       lsof
       hyperfine
-      rustup
       nodejs_22
       pyenv
       python3
