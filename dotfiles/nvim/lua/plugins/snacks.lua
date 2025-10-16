@@ -50,6 +50,7 @@ return {
       autoinsert = true,
     },
     bigfile = {},
+    quickfile = {},
   },
   keys = {
     -- Smart file search (buffers, project files)
