@@ -1,12 +1,13 @@
 return {
   { -- Autocompletion
     "saghen/blink.cmp",
-    event = "VimEnter",
+    event = "InsertEnter",
     version = "1.*",
     dependencies = {
       -- Snippet Engine
       {
         "L3MON4D3/LuaSnip",
+        event = "InsertEnter",
         version = "2.*",
         build = (function()
           -- Build Step is needed for regex support in snippets.
@@ -76,10 +77,7 @@ return {
       },
 
       sources = {
-        default = { "lsp", "path", "snippets", "lazydev" },
-        filetype = {
-          sql = { "vim-dadbod-completion", "buffer" },
-        },
+        default = { "lsp", "path", "snippets", "buffer", "lazydev" },
         providers = {
           lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
         },

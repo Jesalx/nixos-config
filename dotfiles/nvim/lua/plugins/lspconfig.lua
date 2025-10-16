@@ -15,6 +15,7 @@ return {
   {
     -- Main LSP Configuration
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -24,7 +25,7 @@ return {
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
       -- Useful status updates for LSP.
-      { "j-hui/fidget.nvim", opts = {} },
+      { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       "saghen/blink.cmp",
