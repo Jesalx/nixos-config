@@ -1,6 +1,13 @@
 return {
   { -- Collection of various small independent plugins/modules
     "echasnovski/mini.nvim",
+    keys = {
+      { "sa", mode = { "n", "v" } },
+      { "sd", mode = { "n", "v" } },
+      { "sr", mode = { "n", "v" } },
+      { "a", mode = { "x", "o" } },
+      { "i", mode = { "x", "o" } },
+    },
     config = function()
       -- Better Around/Inside textobjects
       --
