@@ -46,6 +46,7 @@ in
         gopls
         alejandra
         zls
+        mermaid-cli
       ];
     };
 

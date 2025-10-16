@@ -22,6 +22,15 @@ in
       interactiveShellInit = ''
         set fish_greeting ""
 
+        # Auto-start tmux with 'default' session (only for interactive shells)
+        if status is-interactive; and not set -q TMUX
+          if tmux has-session -t default 2>/dev/null
+            tmux attach-session -t default
+          else
+            tmux new-session -s default
+          end
+        end
+
         # Configure fzf.fish keybindings
         # Ctrl+F for directory, Ctrl+R for history, Ctrl+T for variables  
         fzf_configure_bindings --directory=\cf --history=\cr --variables=\ct
@@ -63,6 +72,8 @@ in
         j = "jj";
         xh = "http";
         xhs = "https";
+        oc = "opencode";
+        v = "nvim";
       };
 
       functions = {
