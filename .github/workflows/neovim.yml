@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    name: Test Neovim Config
+    name: Neovim (${{ matrix.nvim-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
