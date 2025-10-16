@@ -12,6 +12,9 @@ return {
     indent = {},
     explorer = {
       replace_netrw = true,
+      win = {
+        border = "rounded",
+      },
     },
     picker = {
       sources = {
