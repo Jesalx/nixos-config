@@ -49,6 +49,7 @@ return {
       persistent = true,
       autoinsert = true,
     },
+    bigfile = {},
   },
   keys = {
     -- Smart file search (buffers, project files)
