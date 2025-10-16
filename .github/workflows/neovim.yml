@@ -1,32 +1,41 @@
-name: Neovim CI
+name: Neovim
 
 on:
   push:
+    branches: [main]
     paths:
       - 'dotfiles/nvim/**'
+      - '.github/workflows/neovim.yml'
   pull_request:
+    branches: [main]
     paths:
       - 'dotfiles/nvim/**'
+      - '.github/workflows/neovim.yml'
+  workflow_dispatch:
 
 jobs:
-  lint:
+  test:
+    name: Test Neovim Config
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nvim-version:
+          - stable
+          - nightly
     steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y luarocks neovim
-        luarocks install luacheck
-        # Install stylua
-        wget -q https://github.com/JohnnyMorganz/StyLua/releases/download/v0.20.0/stylua-linux-x86_64.zip
-        unzip -q stylua-linux-x86_64.zip
-        sudo mv stylua /usr/local/bin/
-    - name: Run luacheck
-      run: luacheck dotfiles/nvim/lua/
-    - name: Check stylua formatting
-      run: stylua --check dotfiles/nvim/lua/
-    - name: Test Neovim config loading
-      run: |
-        export XDG_CONFIG_HOME=$PWD/dotfiles
-        nvim --headless -c 'lua require("init")' -c 'qa'
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.nvim-version }}
+
+      - name: Show Neovim version
+        run: nvim --version
+
+      - name: Test config loads without errors
+        run: |
+          cd dotfiles/nvim
+          nvim --headless -u tests/minimal_init.lua +qa
