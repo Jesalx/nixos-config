@@ -17,7 +17,7 @@ return {
           { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
           { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
           { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-          { icon = " ", key = "c", desc = "Config", action = ":e $MYVIMRC" },
+          { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.picker.files({ cwd = vim.fn.expand('~/.config') })" },
           { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
           { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
