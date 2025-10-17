@@ -50,6 +50,12 @@ return {
           rosewater = "#98BC37", -- srcery bright_green
         },
       },
+      custom_highlights = function(colors)
+        return {
+          -- make it so that relative line numbers are the same color as comments
+          LineNr = { fg = colors.overlay2 },
+        }
+      end,
     },
     config = function(_, opts)
       require("catppuccin").setup(opts)

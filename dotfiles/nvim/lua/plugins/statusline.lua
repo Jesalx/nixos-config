@@ -7,6 +7,7 @@ return {
       globalstatus = true,
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
+      disabled_filetypes = { statusline = { "snacks_dashboard" } },
     },
     sections = {
       lualine_a = { "mode" },
