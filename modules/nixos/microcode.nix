@@ -18,5 +18,7 @@
       enable = true;
       cpuModelId = "00A60F12";
     };
+
+    boot.kernelParams = [ "microcode.amd_sha_check=off" ];
   };
 }

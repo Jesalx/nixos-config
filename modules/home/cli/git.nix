@@ -25,9 +25,10 @@ in
     home.file.".ssh/allowed_signers".text = lib.mkDefault (createAllowedSigners sshKeyPath);
     programs.git = {
       enable = true;
-      userName = "Jesal Patel";
-      userEmail = userConfig.gitEmail;
-      extraConfig = {
+      settings = {
+        user.name = "Jesal Patel";
+        user.email = userConfig.gitEmail;
+        user.signingkey = sshKeyPath;
         core.editor = "nvim";
         github.user = "jesalx";
         push.autoSetupRemote = true;
@@ -38,7 +39,6 @@ in
         commit.gpgsign = true;
         gpg.format = "ssh";
         gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
-        user.signingkey = sshKeyPath;
       };
     };
 
