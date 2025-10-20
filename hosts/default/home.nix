@@ -33,6 +33,8 @@ in
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
 
+  home.sessionPath = [ "$HOME/.cargo/bin" ];
+
   home.sessionVariables = { };
 
   xdg.mimeApps.defaultApplications = {

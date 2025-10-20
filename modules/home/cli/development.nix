@@ -20,6 +20,7 @@
       cargo
       rust-analyzer
       rustfmt
+      clippy
       act
       lsof
       hyperfine
