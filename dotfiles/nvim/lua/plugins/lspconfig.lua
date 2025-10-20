@@ -265,8 +265,20 @@ return {
           },
         },
 
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              check = {
+                command = "clippy",
+              },
+              cargo = {
+                allFeatures = true,
+              },
+            },
+          },
+        },
+
         -- pyright = {},
-        -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -332,6 +344,8 @@ return {
         "isort",
         "tflint",
         "helm-ls",
+        "rust-analyzer",
+        "rustfmt",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

@@ -46,6 +46,7 @@ return {
         markdown = { "prettier" },
         html = { "prettier" },
         sh = { "shfmt" },
+        rust = { "rustfmt" },
       },
     },
   },
