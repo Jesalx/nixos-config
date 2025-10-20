@@ -47,6 +47,7 @@ in
         alejandra
         zls
         mermaid-cli
+        marksman
       ];
     };
 

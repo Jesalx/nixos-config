@@ -346,6 +346,7 @@ return {
         "helm-ls",
         "rust-analyzer",
         "rustfmt",
+        "markdownlint",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
