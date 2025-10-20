@@ -19,6 +19,7 @@
       rustc
       cargo
       rust-analyzer
+      rustfmt
       act
       lsof
       hyperfine
