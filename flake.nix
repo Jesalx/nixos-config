@@ -45,8 +45,15 @@
           gitEmail = "mail@jesal.dev";
         };
       };
+      overlays = {
+        helium = final: prev: {
+          helium = final.callPackage ./packages/helium { };
+        };
+      };
     in
     {
+      overlays = overlays;
+      
       homeManagerModules = ./modules/home;
 
       nixosConfigurations = {

@@ -29,7 +29,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nixpkgs = {
-    overlays = [ ];
+    overlays = [ outputs.overlays.helium ];
     # Configure your nixpkgs instance
     config = {
       # Allow unfree packages

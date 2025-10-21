@@ -29,6 +29,7 @@ in
     slack
     obsidian
     pandoc
+    helium
   ];
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
