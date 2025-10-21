@@ -30,12 +30,12 @@
           "rm $HOME/.cache/cliphist/db # delete clipboard history every boot"
 
           "[workspace 1 silent] ghostty"
-          "[workspace 1 silent] firefox"
+          "[workspace 1 silent] Helium"
           "[workspace special:term silent] ghostty"
           "[workspace special:notes silent] obsidian"
         ];
 
-        "$browser" = "firefox";
+        "$browser" = "Helium";
         "$terminal" = "ghostty";
         "$fileManager" = "nautilus";
         "$menu" = "pkill fuzzel || fuzzel";
