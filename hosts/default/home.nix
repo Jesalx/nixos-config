@@ -38,7 +38,11 @@ in
 
   home.sessionVariables = { };
 
+  xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
+    "x-scheme-handler/http" = [ "Helium.desktop" ];
+    "x-scheme-handler/https" = [ "Helium.desktop" ];
+    "text/html" = [ "Helium.desktop" ];
     "image/*" = [ "firefox.desktop" ];
     "application/pdf" = [ "zathura.desktop" ];
     "video/png" = [ "mpv.desktop" ];
