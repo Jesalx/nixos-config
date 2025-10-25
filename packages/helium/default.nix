@@ -30,7 +30,7 @@ let
     };
 
   desktopItem = makeDesktopItem {
-    name = pname;
+    name = "Helium";
     exec = pname;
     icon = pname;
     desktopName = "Helium";
