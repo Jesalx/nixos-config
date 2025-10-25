@@ -4,7 +4,6 @@
   appimageTools,
   fetchurl,
   makeDesktopItem,
-  copyDesktopItems,
 }:
 let
   pname = "helium-browser";
@@ -29,16 +28,27 @@ let
       url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-${arch}.AppImage";
       inherit hash;
     };
+
+  desktopItem = makeDesktopItem {
+    name = pname;
+    exec = pname;
+    icon = pname;
+    desktopName = "Helium";
+    genericName = "Web Browser";
+    categories = [ "Network" "WebBrowser" ];
+  };
 in
 appimageTools.wrapType2 {
   inherit pname version src;
-  nativeBuildInputs = [ copyDesktopItems ];
-  desktopItems = [
-    (makeDesktopItem {
 
-    })
-  ];
+  extraInstallCommands = ''
+    mkdir -p $out/share/applications
+    install -Dm444 ${desktopItem}/share/applications/* $out/share/applications/
+  '';
+
   meta = {
+    description = "A Chromium-based browser focused on privacy";
+    homepage = "https://github.com/imputnet/helium-linux";
     platforms = lib.attrNames architectures;
   };
 }
