@@ -18,6 +18,7 @@
       lua54Packages.luarocks
       rustc
       cargo
+      tokei
       rust-analyzer
       rustfmt
       clippy
