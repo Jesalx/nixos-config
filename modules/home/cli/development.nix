@@ -19,6 +19,7 @@
       rustc
       cargo
       tokei
+      gh
       rust-analyzer
       rustfmt
       clippy

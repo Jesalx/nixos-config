@@ -51,6 +51,7 @@ return {
     },
     bigfile = {},
     quickfile = {},
+    gh = {},
   },
   keys = {
     -- Smart file search (buffers, project files)
