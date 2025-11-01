@@ -20,6 +20,7 @@
       cargo
       tokei
       gh
+      tldr
       rust-analyzer
       rustfmt
       clippy
