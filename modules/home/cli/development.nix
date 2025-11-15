@@ -64,6 +64,7 @@
       eza
       mprocs
       claude-code
+      nethack
     ];
   };
 }
