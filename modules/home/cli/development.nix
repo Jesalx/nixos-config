@@ -25,6 +25,7 @@
       rustfmt
       clippy
       wrangler
+      lld
       act
       lsof
       hyperfine
