@@ -24,6 +24,7 @@
       rust-analyzer
       rustfmt
       clippy
+      wrangler
       act
       lsof
       hyperfine
