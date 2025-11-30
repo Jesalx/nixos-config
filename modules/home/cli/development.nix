@@ -33,7 +33,7 @@
       pyenv
       python3
       uv
-      go_1_25
+      go
       gopls
       golangci-lint
       crystal
