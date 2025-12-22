@@ -4,13 +4,11 @@
   config,
   userConfig,
   ...
-}:
-let
+}: let
   user = config.home.username;
   home = config.home.homeDirectory;
-  nix-helper-app = import ../scripts/nix-helper.nix { inherit pkgs user; };
-in
-{
+  nix-helper-app = import ../scripts/nix-helper.nix {inherit pkgs user;};
+in {
   options = {
     fish.enable = lib.mkEnableOption "enables custom fish config";
   };
@@ -32,7 +30,7 @@ in
         end
 
         # Configure fzf.fish keybindings
-        # Ctrl+F for directory, Ctrl+R for history, Ctrl+T for variables  
+        # Ctrl+F for directory, Ctrl+R for history, Ctrl+T for variables
         fzf_configure_bindings --directory=\cf --history=\cr --variables=\ct
       '';
 
@@ -63,7 +61,7 @@ in
           tms = "/home/${user}/go/bin/tms";
           ts = "/home/${user}/go/bin/tms";
         }
-        (lib.mkIf config.development.enable { cat = "bat --paging=never"; })
+        (lib.mkIf config.development.enable {cat = "bat --paging=never";})
       ];
 
       shellAbbrs = {

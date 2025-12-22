@@ -4,8 +4,7 @@
   config,
   userConfig,
   ...
-}:
-{
+}: {
   options = {
     steam.enable = lib.mkEnableOption "enables steam";
   };

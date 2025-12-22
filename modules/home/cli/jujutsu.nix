@@ -4,19 +4,19 @@
   config,
   userConfig,
   ...
-}:
-
-let
+}: let
   sshKeyPath = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
-  safeReadFile = path: if builtins.pathExists path then builtins.readFile path else "";
-  createAllowedSigners =
-    keyPath:
-    let
-      keyContent = safeReadFile keyPath;
-    in
-    if keyContent != "" then "${userConfig.gitEmail} ${keyContent}" else "";
-in
-{
+  safeReadFile = path:
+    if builtins.pathExists path
+    then builtins.readFile path
+    else "";
+  createAllowedSigners = keyPath: let
+    keyContent = safeReadFile keyPath;
+  in
+    if keyContent != ""
+    then "${userConfig.gitEmail} ${keyContent}"
+    else "";
+in {
   options = {
     jujutsu.enable = lib.mkEnableOption "enables custom jujutsu config";
   };
@@ -73,4 +73,3 @@ in
     ];
   };
 }
-

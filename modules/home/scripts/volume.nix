@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.writeShellApplication {
   name = "volume-control";
   runtimeInputs = with pkgs; [
@@ -8,7 +7,8 @@ pkgs.writeShellApplication {
     ripgrep
     coreutils
   ];
-  text = # bash
+  text =
+    # bash
     ''
       get_current_volume() {
         pactl get-sink-volume @DEFAULT_SINK@ | rg -oP '\d+%' | head -1 | tr -d '%'

@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     hyprland.enable = lib.mkEnableOption "enables custom hyprland config";
   };
@@ -85,7 +84,6 @@
             render_power = 3;
             color = "rgba(1a1a1aee)";
           };
-
         };
 
         animations = {
@@ -221,7 +219,6 @@
           "9, monitor:DP-2"
           "10, monitor:HDMI-A-1"
         ];
-
       };
     };
   };

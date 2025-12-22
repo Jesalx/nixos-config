@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     ghostty.enable = lib.mkEnableOption "enables custom ghostty config";
   };

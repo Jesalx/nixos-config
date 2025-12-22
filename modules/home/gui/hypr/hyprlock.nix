@@ -4,8 +4,7 @@
   config,
   userConfig,
   ...
-}:
-{
+}: {
   options = {
     hyprlock.enable = lib.mkEnableOption "enables custom hyprlock settings";
   };

@@ -6,8 +6,7 @@
   pkgs,
   userConfig,
   ...
-}:
-{
+}: {
   # You can import other NixOS modules here
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
@@ -29,7 +28,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nixpkgs = {
-    overlays = [ outputs.overlays.helium ];
+    overlays = [outputs.overlays.helium];
     # Configure your nixpkgs instance
     config = {
       # Allow unfree packages
@@ -37,32 +36,30 @@
     };
   };
 
-  nix =
-    let
-      flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-    in
-    {
-      settings = {
-        warn-dirty = false;
-        experimental-features = "nix-command flakes";
-        flake-registry = "";
-      };
-      # Opinionated: disable channels
-      channel.enable = false;
-
-      # TODO: Update nix config so that if nh module is enabled then it will use
-      # nh's garbage collection service, otherwise it will nix's default garbage
-      # collection service.
-
-      optimise = {
-        automatic = true;
-        dates = [ "03:45" ];
-      };
-
-      # Opinionated: make flake registry and nix path match flake inputs
-      registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
-      nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
+    settings = {
+      warn-dirty = false;
+      experimental-features = "nix-command flakes";
+      flake-registry = "";
     };
+    # Opinionated: disable channels
+    channel.enable = false;
+
+    # TODO: Update nix config so that if nh module is enabled then it will use
+    # nh's garbage collection service, otherwise it will nix's default garbage
+    # collection service.
+
+    optimise = {
+      automatic = true;
+      dates = ["03:45"];
+    };
+
+    # Opinionated: make flake registry and nix path match flake inputs
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  };
 
   system.autoUpgrade = {
     enable = true;
@@ -161,21 +158,22 @@
     curl
     git
     pulseaudio
+    ivpn-ui
   ];
 
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [ ];
+    libraries = with pkgs; [];
   };
 
   services.tailscale.enable = true;
+  services.ivpn.enable = true;
 
   # Docker
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
   };
-
 
   microcode = {
     enable = true;

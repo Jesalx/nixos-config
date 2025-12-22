@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     hyprpaper.enable = lib.mkEnableOption "enables custom hyprpaper settings";
   };

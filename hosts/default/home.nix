@@ -6,12 +6,10 @@
   pkgs,
   userConfig,
   ...
-}:
-let
+}: let
   wallpaper = ../../dotfiles/wallpaper/blackhole.png;
-in
-{
-  imports = [ outputs.homeManagerModules ];
+in {
+  imports = [outputs.homeManagerModules];
 
   home = {
     username = userConfig.user;
@@ -34,20 +32,20 @@ in
 
   home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
 
-  home.sessionPath = [ "$HOME/.cargo/bin" ];
+  home.sessionPath = ["$HOME/.cargo/bin"];
 
-  home.sessionVariables = { };
+  home.sessionVariables = {};
 
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
-    "x-scheme-handler/http" = [ "Helium.desktop" ];
-    "x-scheme-handler/https" = [ "Helium.desktop" ];
-    "text/html" = [ "Helium.desktop" ];
-    "image/*" = [ "firefox.desktop" ];
-    "application/pdf" = [ "zathura.desktop" ];
-    "video/png" = [ "mpv.desktop" ];
-    "video/jpg" = [ "mpv.desktop" ];
-    "video/*" = [ "mpv.desktop" ];
+    "x-scheme-handler/http" = ["Helium.desktop"];
+    "x-scheme-handler/https" = ["Helium.desktop"];
+    "text/html" = ["Helium.desktop"];
+    "image/*" = ["firefox.desktop"];
+    "application/pdf" = ["zathura.desktop"];
+    "video/png" = ["mpv.desktop"];
+    "video/jpg" = ["mpv.desktop"];
+    "video/*" = ["mpv.desktop"];
   };
 
   # Enable home-manager and git

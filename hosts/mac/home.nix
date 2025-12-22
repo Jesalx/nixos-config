@@ -5,11 +5,9 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   user = "jesal";
-in
-{
+in {
   imports = [
     ../../modules/home/cli/default.nix
     ../../modules/home/extra/default.nix
@@ -34,7 +32,7 @@ in
     fzf
   ];
 
-  home.sessionVariables = { };
+  home.sessionVariables = {};
 
   programs.home-manager.enable = true;
 

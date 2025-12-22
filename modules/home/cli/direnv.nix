@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     direnv.enable = lib.mkEnableOption "enables custom direnv config";
   };
@@ -17,4 +16,3 @@
     };
   };
 }
-

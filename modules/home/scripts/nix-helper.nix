@@ -1,4 +1,7 @@
-{ pkgs, user }:
+{
+  pkgs,
+  user,
+}:
 pkgs.writeShellApplication {
   name = "nix-rebuild";
   runtimeInputs = with pkgs; [
@@ -6,7 +9,8 @@ pkgs.writeShellApplication {
     nh
     home-manager
   ];
-  text = # bash
+  text =
+    # bash
     ''
       set -euo pipefail
 
@@ -34,7 +38,7 @@ pkgs.writeShellApplication {
         os=$(detect_os)
         local config_path
         config_path=$(get_config_path "$os")
-        
+
         pushd . > /dev/null || exit
         cd "$config_path" || exit
 

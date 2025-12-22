@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }:
 {
-  imports = [ ./fonts.nix ];
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [./fonts.nix];
 
   fonts.enable = lib.mkDefault true;
 }

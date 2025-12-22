@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     starship.enable = lib.mkEnableOption "enables custom starship config";
   };
@@ -76,7 +75,7 @@
           "docker-compose.yaml"
           "Dockerfile"
         ];
-        detect_folders = [ ];
+        detect_folders = [];
         disabled = false;
       };
 
@@ -151,9 +150,9 @@
           "python3"
           "python2"
         ];
-        detect_extensions = [ "py" ];
+        detect_extensions = ["py"];
         # Hacky fix to not show python in $HOME directory by negative matching .config/ directory;
-        detect_folders = [ "!.config" ];
+        detect_folders = ["!.config"];
         version_format = "\${raw}";
       };
 
@@ -175,7 +174,7 @@
           "package.json"
           ".node-version"
         ];
-        detect_folders = [ "node_modules" ];
+        detect_folders = ["node_modules"];
       };
     };
   };

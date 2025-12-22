@@ -3,13 +3,11 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     development.enable = lib.mkEnableOption "enables additional development tools";
   };
   config = lib.mkIf config.development.enable {
-
     home.packages = with pkgs; [
       tmux
       docker

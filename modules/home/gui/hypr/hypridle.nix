@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     hypridle.enable = lib.mkEnableOption "enables custom hypridle settings";
   };

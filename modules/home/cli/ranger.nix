@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     ranger.enable = lib.mkEnableOption "enables ranger";
   };

@@ -3,18 +3,17 @@
   lib,
   config,
   ...
-}:
-let
-  volumeScript = import ../scripts/volume.nix { inherit pkgs; };
-in
-{
+}: let
+  volumeScript = import ../scripts/volume.nix {inherit pkgs;};
+in {
   options = {
     waybar.enable = lib.mkEnableOption "enables waybar";
   };
   config = lib.mkIf config.waybar.enable {
     programs.waybar.enable = true;
     # xdg.configFile.waybar.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
-    home.file.".config/waybar/config.jsonc".text = # json
+    home.file.".config/waybar/config.jsonc".text =
+      # json
       ''
         {
             "output": "DP-2",
@@ -157,7 +156,8 @@ in
         }
       '';
 
-    home.file.".config/waybar/style.css".text = # css
+    home.file.".config/waybar/style.css".text =
+      # css
       ''
         @define-color foreground #e5e0dc;
         @define-color background #0d0e0d;

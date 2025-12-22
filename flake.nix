@@ -16,74 +16,71 @@
     ucodenix.url = "github:e-tho/ucodenix";
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
-    let
-      inherit (self) outputs;
-      userConfig = {
-        default = {
-          profile = "default";
-          user = "jesal";
-          hostName = "nixos";
-          gitEmail = "mail@jesal.dev";
-        };
-        mac = {
-          profile = "mac";
-          user = "jesal";
-          hostName = "jesals-mbp";
-          gitEmail = "mail@jesal.dev";
-        };
-        work = {
-          profile = "work";
-          user = "patel";
-          hostName = "patel-MBP";
-          gitEmail = "mail@jesal.dev";
-        };
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+    userConfig = {
+      default = {
+        profile = "default";
+        user = "jesal";
+        hostName = "nixos";
+        gitEmail = "mail@jesal.dev";
       };
-      overlays = {
-        helium = final: prev: {
-          helium = final.callPackage ./packages/helium { };
-        };
+      mac = {
+        profile = "mac";
+        user = "jesal";
+        hostName = "jesals-mbp";
+        gitEmail = "mail@jesal.dev";
       };
-    in
-    {
-      overlays = overlays;
-      
-      homeManagerModules = ./modules/home;
-
-      nixosConfigurations = {
-        default = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-            userConfig = userConfig.default;
-          };
-          modules = [ ./hosts/default/configuration.nix ];
-        };
-      };
-
-      # MacOS home manager configuration
-      homeConfigurations = {
-        "mac" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          extraSpecialArgs = {
-            inherit inputs;
-            userConfig = userConfig.mac;
-          };
-          modules = [ ./hosts/mac/configuration.nix ];
-        };
-        "work" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          extraSpecialArgs = {
-            inherit inputs;
-            userConfig = userConfig.work;
-          };
-          modules = [ ./hosts/work/configuration.nix ];
-        };
+      work = {
+        profile = "work";
+        user = "patel";
+        hostName = "patel-MBP";
+        gitEmail = "mail@jesal.dev";
       };
     };
+    overlays = {
+      helium = final: prev: {
+        helium = final.callPackage ./packages/helium {};
+      };
+    };
+  in {
+    overlays = overlays;
+
+    homeManagerModules = ./modules/home;
+
+    nixosConfigurations = {
+      default = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs;
+          userConfig = userConfig.default;
+        };
+        modules = [./hosts/default/configuration.nix];
+      };
+    };
+
+    # MacOS home manager configuration
+    homeConfigurations = {
+      "mac" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        extraSpecialArgs = {
+          inherit inputs;
+          userConfig = userConfig.mac;
+        };
+        modules = [./hosts/mac/configuration.nix];
+      };
+      "work" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        extraSpecialArgs = {
+          inherit inputs;
+          userConfig = userConfig.work;
+        };
+        modules = [./hosts/work/configuration.nix];
+      };
+    };
+  };
 }

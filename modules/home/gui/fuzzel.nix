@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     fuzzel.enable = lib.mkEnableOption "enables custom fuzzel config";
   };
@@ -48,4 +47,3 @@
     };
   };
 }
-

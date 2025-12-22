@@ -4,8 +4,7 @@
   config,
   userConfig,
   ...
-}:
-{
+}: {
   options = {
     nh.enable = lib.mkEnableOption "enables nix-helper";
   };

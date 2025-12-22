@@ -3,11 +3,9 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
-in
-{
+in {
   options = {
     neovim.enable = lib.mkEnableOption "enables custom neovim config";
   };

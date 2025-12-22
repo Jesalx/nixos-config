@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   options = {
     theme.enable = lib.mkEnableOption "enables custom theme";
   };
