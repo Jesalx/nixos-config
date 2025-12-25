@@ -93,6 +93,7 @@
 
   networking.hostName = userConfig.hostName;
   networking.networkmanager.enable = true;
+  networking.iproute2.enable = true;
 
   users.users = {
     ${userConfig.user} = {
@@ -168,6 +169,8 @@
 
   services.tailscale.enable = true;
   services.ivpn.enable = true;
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
   # Docker
   virtualisation.docker = {
