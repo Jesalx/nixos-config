@@ -58,6 +58,12 @@ in {
           private-commits = "description(glob:'private:*')";
         };
 
+       remotes = {
+          origin = {
+            auto-track-bookmarks = "glob:*";
+          };
+        };
+
         signing = {
           behavior = "own";
           backend = "ssh";
