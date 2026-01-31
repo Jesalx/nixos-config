@@ -1,0 +1,25 @@
+version: '3'
+tasks:
+  test:
+    desc: Build the configuration without activating it
+    dir: /home/jesal/nixos-config
+    cmds:
+      - git add --intent-to-add .
+      - nh os test --hostname default .
+  switch:
+    desc: Build and activate the configuration
+    dir: /home/jesal/nixos-config
+    cmds:
+      - git add --intent-to-add .
+      - nh os switch --hostname default .
+  update:
+    desc: Update flake lockfile and apply changes
+    dir: /home/jesal/nixos-config
+    cmds:
+      - git add --intent-to-add .
+      - nh os switch -u --hostname default .
+  clean:
+    desc: Clean old generations and run garbage collection
+    dir: /home/jesal/nixos-config
+    cmds:
+      - nh clean all --keep-since 7d --keep 10
