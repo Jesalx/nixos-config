@@ -22,7 +22,6 @@
       rust-analyzer
       rustfmt
       clippy
-      wrangler
       lld
       act
       lsof
@@ -56,7 +55,6 @@
       qmk
       via
       cockroachdb
-      chromium
       keymapp
       hyprshot
       xh
