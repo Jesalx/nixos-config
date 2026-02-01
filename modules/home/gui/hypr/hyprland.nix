@@ -121,10 +121,10 @@
           vrr = 2;
         };
 
-        windowrulev2 = [
-          "idleinhibit fullscreen, class:firefox, fullscreen:1"
-          "idleinhibit focus, class:mpv"
-          "opacity 0.85,class:^(kitty)$"
+        windowrule = [
+          "idle_inhibit fullscreen, match:class firefox, match:fullscreen 1"
+          "idle_inhibit focus, match:class mpv"
+          "opacity 0.85, match:class ^(kitty)$"
         ];
 
         "$mainMod" = "SUPER";
