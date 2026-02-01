@@ -92,8 +92,10 @@
           - revive         # Comprehensive Go linter
           - noctx          # Missing context.Context usage
           - makezero       # Slice declaration bugs
+          - modernize      # Modern Go code practices
           
           - dupword        # Duplicate word detection
+          - goconst        # Repeated constant strings
 
         disable:
           - unused         # gopls already detects unused code
@@ -125,15 +127,21 @@
               - name: superfluous-else
               - name: unreachable-code
               - name: redefines-builtin-id
+              - name: atomic
+              - name: defer
 
           gocritic:
             enabled-tags:
               - diagnostic
               - style
               - performance
-            disabled-checks:
-              - commentFormatting
-              - whyNoLint
+              - opinionated
+
+          modernize:
+            disable:
+              - any
+              - rangeint
+              - stringsbuilder
 
         exclusions:
           rules:
