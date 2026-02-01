@@ -248,9 +248,14 @@ return {
           settings = {
             gopls = {
               gofumpt = true,
-              staticcheck = true, -- Enables additional checks
+              staticcheck = true,
+              vulncheck = "Imports",
               analyses = {
                 unreachable = true,
+                nilness = true,
+                unusedparams = true,
+                unusedwrite = true,
+                useany = true,
               },
               hints = {
                 assignVariableTypes = true,

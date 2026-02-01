@@ -11,16 +11,26 @@ return {
         go = { "golangcilint" },
       }
 
-      local golangcilint = lint.linters.golangcilint
-      golangcilint.args = {
-        "run",
-        "--output.json.path=stdout",
-        "--output.text.path=",
-        "--show-stats=false",
-        "--issues-exit-code=0",
-        function()
-          return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p")
-        end,
+      lint.linters.golangcilint = {
+        cmd = "golangci-lint",
+        stdin = false,
+        append_fname = false,
+        args = {
+          "run",
+          "--config",
+          vim.fn.expand("~/.config/golangci-lint/config.yml"),
+          "--output.json.path=stdout",
+          "--output.text.path=",
+          "--show-stats=false",
+          "--issues-exit-code=0",
+          "--path-mode=abs",
+          function()
+            return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p")
+          end,
+        },
+        stream = "stdout",
+        ignore_exitcode = true,
+        parser = require("lint.linters.golangcilint").parser,
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
