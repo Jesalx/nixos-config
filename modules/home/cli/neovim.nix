@@ -37,7 +37,7 @@ in {
         cargo
         gcc
         nil
-        nixfmt-rfc-style
+        nixfmt
         lua
         lua-language-server
         stylua
