@@ -34,9 +34,7 @@
       gopls
       gofumpt
       golangci-lint
-      crystal
       shards
-      crystalline
       gcc
       gnumake
       unzip
