@@ -21,14 +21,13 @@ return {
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         opts = {
           ui = {
             border = "rounded",
           },
         },
       },
-      "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
       -- Useful status updates for LSP.
@@ -293,20 +292,13 @@ return {
         -- ts_ls = {},
         --
 
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = "Replace",
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
+        -- Note: lua_ls is configured separately below with special on_init handler
+
+        yamlls = {},  -- YAML language server with default settings
+
+        jsonls = {},  -- JSON language server with default settings
+
+        pyright = {},  -- Python language server with default settings
 
         helm_ls = {
           settings = {
@@ -319,56 +311,76 @@ return {
         },
       }
 
-      -- Ensure the servers and tools above are installed
-      --
-      -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run
-      --    :Mason
-      --
-      -- You can press `g?` for help in this menu.
-      --
-      -- `mason` had to be setup earlier: to configure its options see the
-      -- `dependencies` table for `nvim-lspconfig` above.
-      --
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        "stylua",
+      -- Ensure the servers and tools are installed via Mason
+      -- Run :Mason to view status or :MasonToolsInstall to trigger installation
+      local ensure_installed = {
+        -- LSP Servers
         "gopls",
-        "goimports",
-        "yamlls",
-        "yamllint",
-        "yamlfmt",
+        "rust-analyzer",
+        "helm-ls",
+        "yaml-language-server",
         "json-lsp",
         "pyright",
+        
+        -- Formatters
+        "stylua",
+        "goimports",
+        "gofumpt",
+        "yamlfmt",
         "shfmt",
         "prettier",
         "prettierd",
         "black",
         "isort",
+        
+        -- Linters
+        "golangci-lint",
+        "yamllint",
         "tflint",
-        "helm-ls",
-        "rust-analyzer",
-        "rustfmt",
         "markdownlint",
-      })
+        
+        -- Tools
+        "tree-sitter-cli",
+      }
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-      require("mason-lspconfig").setup({
-        ensure_installed = {}, -- explicitly set to an empty table (populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
-          end,
+      -- Setup LSP servers using the new vim.lsp.config and vim.lsp.enable API
+      for name, server in pairs(servers) do
+        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+        vim.lsp.config(name, server)
+        vim.lsp.enable(name)
+      end
+
+      -- Special Lua LSP configuration, as recommended by neovim help docs
+      vim.lsp.config("lua_ls", {
+        on_init = function(client)
+          if client.workspace_folders then
+            local path = client.workspace_folders[1].name
+            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
+              return
+            end
+          end
+
+          client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+            runtime = {
+              version = "LuaJIT",
+              path = { "lua/?.lua", "lua/?/init.lua" },
+            },
+            workspace = {
+              checkThirdParty = false,
+              library = vim.api.nvim_get_runtime_file("", true),
+            },
+          })
+        end,
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace",
+            },
+          },
         },
       })
+      vim.lsp.enable("lua_ls")
     end,
   },
 }
