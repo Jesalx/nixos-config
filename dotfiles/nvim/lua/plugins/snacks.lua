@@ -210,23 +210,6 @@ return {
       desc = "Toggle floating terminal",
     },
     {
-      "<leader>jj",
-      function()
-        Snacks.terminal.toggle("jjui", {
-          win = {
-            relative = "editor",
-            position = "float",
-            width = 0.85,
-            height = 0.85,
-            border = "rounded",
-            title = " jjui ",
-            title_pos = "center",
-          },
-        })
-      end,
-      desc = "Open jjui",
-    },
-    {
       "<esc><esc>",
       "<C-\\><C-n>",
       mode = "t",

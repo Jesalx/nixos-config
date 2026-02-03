@@ -30,8 +30,7 @@ return {
       spec = {
         { "<leader>s", group = "[S]earch" },
         { "<leader>t", group = "[T]oggle" },
-        { "<leader>g", group = "[G]it" },
-        { "<leader>j", group = "[J]ujutsu" },
+        { "<leader>g", group = "[G]ithub" },
         { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
       },
     },
