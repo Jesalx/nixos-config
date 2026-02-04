@@ -1,7 +1,4 @@
--- Set <space> as the leader key
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+-- NOTE: Order matters. Setting options early is important so that the proper leader key is set before plugins are loaded
 
 -- [[ Setting options ]]
 require("options")

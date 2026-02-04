@@ -1,7 +1,9 @@
 -- [[ Setting options ]]
 -- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
+
+-- Set leader early
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- Make line numbers default
 vim.opt.number = true
