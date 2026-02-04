@@ -28,7 +28,10 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nixpkgs = {
-    overlays = [outputs.overlays.helium];
+    overlays = [
+      outputs.overlays.helium
+      inputs.neovim-nightly-overlay.overlays.default
+    ];
     # Configure your nixpkgs instance
     config = {
       # Allow unfree packages
