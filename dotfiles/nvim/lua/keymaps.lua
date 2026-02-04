@@ -30,3 +30,6 @@ vim.keymap.set("n", "<leader>d", function()
   vim.cmd('silent! normal! gg"_dG')
 end, { desc = "[D]elete buffer content" })
 vim.keymap.set("n", "<leader>y", ":%y<CR>", { desc = "[Y]ank buffer" })
+
+-- Toggle autoformat on save
+vim.keymap.set("n", "<leader>tf", "<cmd>ToggleFormat<CR>", { desc = "[T]oggle [F]ormat" })

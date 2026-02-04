@@ -16,6 +16,11 @@ return {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
+        -- Check if autoformat is disabled globally
+        if not vim.g.autoformat then
+          return nil
+        end
+
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
@@ -49,5 +54,9 @@ return {
         rust = { "rustfmt" },
       },
     },
+    init = function()
+      -- Start auto-formatting by default (disable with ToggleFormat command)
+      vim.g.autoformat = true
+    end,
   },
 }
