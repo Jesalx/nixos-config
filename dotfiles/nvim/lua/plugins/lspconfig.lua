@@ -294,11 +294,11 @@ return {
 
         -- Note: lua_ls is configured separately below with special on_init handler
 
-        yamlls = {},  -- YAML language server with default settings
+        yamlls = {}, -- YAML language server with default settings
 
-        jsonls = {},  -- JSON language server with default settings
+        jsonls = {}, -- JSON language server with default settings
 
-        pyright = {},  -- Python language server with default settings
+        pyright = {}, -- Python language server with default settings
 
         helm_ls = {
           settings = {
@@ -321,7 +321,7 @@ return {
         "yaml-language-server",
         "json-lsp",
         "pyright",
-        
+
         -- Formatters
         "stylua",
         "goimports",
@@ -332,13 +332,13 @@ return {
         "prettierd",
         "black",
         "isort",
-        
+
         -- Linters
         "golangci-lint",
         "yamllint",
         "tflint",
         "markdownlint",
-        
+
         -- Tools
         "tree-sitter-cli",
       }
@@ -376,6 +376,12 @@ return {
           Lua = {
             completion = {
               callSnippet = "Replace",
+            },
+            diagnostics = {
+              globals = { "vim", "Snacks" },
+            },
+            telemetry = {
+              enable = false,
             },
           },
         },
