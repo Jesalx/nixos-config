@@ -1,6 +1,6 @@
 -- Toggle relative line numbers based on mode and focus
 local line_numbers_group = vim.api.nvim_create_augroup("jesal/toggle_line_numbers", {})
-vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "CmdlineLeave", "WinEnter" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CmdlineLeave", "WinEnter" }, {
   group = line_numbers_group,
   desc = "Toggle relative line numbers on",
   callback = function()
@@ -9,7 +9,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "Cmdline
     end
   end,
 })
-vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "CmdlineEnter", "WinLeave" }, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "CmdlineEnter", "WinLeave" }, {
   group = line_numbers_group,
   desc = "Toggle relative line numbers off",
   callback = function(args)
