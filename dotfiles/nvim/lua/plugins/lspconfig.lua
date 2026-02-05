@@ -47,7 +47,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
         callback = function(event)
-          for _, k in ipairs({ "gra", "grn", "grr", "gri" }) do
+          for _, k in ipairs({ "gra", "grn", "grr", "gri", "grt" }) do
             pcall(vim.keymap.del, "n", k)
           end
 
