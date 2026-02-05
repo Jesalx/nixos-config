@@ -8,9 +8,11 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "[Q]uickfix
 -- Exit terminal mode with double <Esc>
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- Automatically center when using C-d or C-u
-vim.keymap.set({ "n", "x" }, "<C-d>", "<C-d>zz", { noremap = true, silent = true })
-vim.keymap.set({ "n", "x" }, "<C-u>", "<C-u>zz", { noremap = true, silent = true })
+-- Keep cursor centered
+vim.keymap.set({ "n", "x" }, "<C-d>", "<C-d>zz", { desc = "Scroll downwards" })
+vim.keymap.set({ "n", "x" }, "<C-u>", "<C-u>zz", { desc = "Scroll upwards" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next result" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous result" })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -30,7 +32,7 @@ vim.keymap.set("n", "<leader>y", ":%y<CR>", { desc = "[Y]ank buffer" })
 vim.keymap.set("n", "<leader>tf", "<cmd>ToggleFormat<CR>", { desc = "[T]oggle [F]ormat on save" })
 
 -- Restart Neovim
-vim.keymap.set('n', '<leader>R', '<cmd>restart<cr>', { desc = '[R]estart Neovim' })
+vim.keymap.set("n", "<leader>R", "<cmd>restart<cr>", { desc = "[R]estart Neovim" })
 
 -- Open package manager
-vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy' })
+vim.keymap.set("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
