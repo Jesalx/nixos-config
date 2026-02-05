@@ -47,6 +47,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
         callback = function(event)
+          -- Delete default LSP keymaps that conflict with custom mappings
           for _, k in ipairs({ "gra", "grn", "grr", "gri", "grt" }) do
             pcall(vim.keymap.del, "n", k)
           end
@@ -158,15 +159,6 @@ return {
         virtual_text = {
           source = "if_many",
           spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
         },
       })
 
@@ -177,8 +169,6 @@ return {
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       local servers = {
-        -- clangd = {},
-
         gopls = {
           settings = {
             gopls = {
@@ -233,6 +223,26 @@ return {
             },
           },
         },
+
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = {
+                version = "LuaJIT",
+              },
+              diagnostics = {
+                globals = { "vim", "Snacks" },
+              },
+              workspace = {
+                checkThirdParty = false,
+                library = vim.api.nvim_get_runtime_file("", true),
+              },
+              telemetry = {
+                enable = false,
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools are installed via Mason
@@ -273,28 +283,6 @@ return {
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
-
-      -- Lua LSP configuration
-      vim.lsp.config("lua_ls", {
-        settings = {
-          Lua = {
-            runtime = {
-              version = "LuaJIT",
-            },
-            diagnostics = {
-              globals = { "vim", "Snacks" },
-            },
-            workspace = {
-              checkThirdParty = false,
-              library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-              enable = false,
-            },
-          },
-        },
-      })
-      vim.lsp.enable("lua_ls")
     end,
   },
 }
