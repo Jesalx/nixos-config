@@ -1,9 +1,8 @@
 return {
   { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
-    branch = "main", -- Use the rewritten version with new API
+    branch = "main",
     config = function()
-      -- Define the languages you want treesitter to support
       local filetypes = {
         "bash",
         "c",
@@ -30,7 +29,6 @@ return {
 
       require("nvim-treesitter").install(filetypes)
 
-      -- Enable treesitter highlighting for these filetypes
       vim.api.nvim_create_autocmd("FileType", {
         pattern = filetypes,
         callback = function()
