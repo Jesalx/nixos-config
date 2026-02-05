@@ -6,9 +6,8 @@
   pkgs,
   userConfig,
   ...
-}: let
-  wallpaper = ../../dotfiles/wallpaper/blackhole.png;
-in {
+}: 
+{
   imports = [outputs.homeManagerModules];
 
   home = {
@@ -29,8 +28,6 @@ in {
     pandoc
     helium
   ];
-
-  home.file."Pictures/Wallpaper/wallpaper.png".source = wallpaper;
 
   home.sessionPath = ["$HOME/.cargo/bin"];
 
