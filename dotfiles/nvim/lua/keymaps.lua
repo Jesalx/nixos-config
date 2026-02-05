@@ -27,4 +27,4 @@ end, { desc = "[D]elete buffer content" })
 vim.keymap.set("n", "<leader>y", ":%y<CR>", { desc = "[Y]ank buffer" })
 
 -- Toggle autoformat on save
-vim.keymap.set("n", "<leader>tf", "<cmd>ToggleFormat<CR>", { desc = "[T]oggle [F]ormat" })
+vim.keymap.set("n", "<leader>tf", "<cmd>ToggleFormat<CR>", { desc = "[T]oggle [F]ormat on save" })

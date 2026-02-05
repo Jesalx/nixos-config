@@ -74,7 +74,7 @@ return {
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+        group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
         callback = function(event)
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
@@ -161,7 +161,7 @@ return {
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -175,18 +175,15 @@ return {
             })
 
             vim.api.nvim_create_autocmd("LspDetach", {
-              group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+              group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+                vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
               end,
             })
           end
 
-          -- The following code creates a keymap to toggle inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
+          -- The following code creates a keymap to toggle inlay hints in the code
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             vim.lsp.inlay_hint.enable(true, { bufnr = event.buf }) -- enable inlay hints by default
             map("<leader>th", function()
@@ -231,15 +228,6 @@ return {
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
 
@@ -282,23 +270,11 @@ return {
           },
         },
 
-        -- pyright = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
+        yamlls = {},
 
-        -- Note: lua_ls is configured separately below with special on_init handler
+        jsonls = {},
 
-        yamlls = {}, -- YAML language server with default settings
-
-        jsonls = {}, -- JSON language server with default settings
-
-        pyright = {}, -- Python language server with default settings
+        pyright = {},
 
         helm_ls = {
           settings = {
@@ -344,7 +320,6 @@ return {
       }
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-      -- Setup LSP servers using the new vim.lsp.config and vim.lsp.enable API
       for name, server in pairs(servers) do
         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
         vim.lsp.config(name, server)
