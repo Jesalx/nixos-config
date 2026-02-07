@@ -1,10 +1,10 @@
-local root = vim.fn.fnamemodify(vim.fn.getcwd(), ":p")
+local root = vim.fn.fnamemodify(vim.fn.getcwd(), ':p')
 
 vim.opt.runtimepath:prepend(root)
-vim.opt.runtimepath:append(root .. "/lua")
+vim.opt.runtimepath:append(root .. '/lua')
 
-package.path = package.path .. ";" .. root .. "/lua/?.lua"
-package.path = package.path .. ";" .. root .. "/lua/?/init.lua"
+package.path = package.path .. ';' .. root .. '/lua/?.lua'
+package.path = package.path .. ';' .. root .. '/lua/?/init.lua'
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -29,10 +29,10 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
-require("options")
-require("keymaps")
+require('options')
+require('keymaps')
 
-print("✅ Config loaded successfully")
+print('✅ Config loaded successfully')

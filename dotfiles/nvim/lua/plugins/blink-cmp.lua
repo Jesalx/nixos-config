@@ -1,10 +1,10 @@
 return {
   { -- Autocompletion
-    "saghen/blink.cmp",
-    event = "InsertEnter",
-    version = "1.*",
+    'saghen/blink.cmp',
+    event = 'InsertEnter',
+    version = '1.*',
     dependencies = {
-      "folke/lazydev.nvim",
+      'folke/lazydev.nvim',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -22,40 +22,40 @@ return {
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
       keymap = {
-        preset = "default",
+        preset = 'default',
         -- Override C-y to prioritize blink.cmp popup, then fall back to Copilot ghost text
-        ["<C-y>"] = {
-          "select_and_accept",
+        ['<C-y>'] = {
+          'select_and_accept',
           function(cmp)
             return vim.lsp.inline_completion.get()
           end,
-          "fallback",
+          'fallback',
         },
       },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = "mono",
+        nerd_font_variant = 'mono',
       },
 
       completion = {
         menu = {
-          border = "rounded",
+          border = 'rounded',
         },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 500,
           window = {
-            border = "rounded",
+            border = 'rounded',
           },
         },
       },
 
       sources = {
-        default = { "lsp", "path", "buffer", "lazydev" },
+        default = { 'lsp', 'path', 'buffer', 'lazydev' },
         providers = {
-          lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         },
       },
 
@@ -66,13 +66,13 @@ return {
       -- the rust implementation via `'prefer_rust_with_warning'`
       --
       -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = "prefer_rust_with_warning" },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
 
       -- Shows a signature help window while you type arguments for a function
       signature = {
         enabled = true,
         window = {
-          border = "rounded",
+          border = 'rounded',
         },
       },
     },

@@ -1,16 +1,16 @@
 return {
   { -- Autoformat
-    "stevearc/conform.nvim",
-    event = { "BufWritePre" },
-    cmd = { "ConformInfo" },
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
     keys = {
       {
-        "<leader>f",
+        '<leader>f',
         function()
-          require("conform").format({ async = true, lsp_format = "fallback" })
+          require('conform').format({ async = true, lsp_format = 'fallback' })
         end,
-        mode = "",
-        desc = "[F]ormat buffer",
+        mode = '',
+        desc = '[F]ormat buffer',
       },
     },
     opts = {
@@ -20,26 +20,26 @@ return {
         if not vim.g.autoformat then
           return nil
         end
-        return { timeout_ms = 500, lsp_format = "fallback" }
+        return { timeout_ms = 500, lsp_format = 'fallback' }
       end,
 
       formatters = {
         gofumpt = {
-          prepend_args = { "-extra" },
+          prepend_args = { '-extra' },
         },
       },
       formatters_by_ft = {
-        lua = { "stylua" },
-        go = { "goimports", "gofumpt" },
-        python = { "isort", "black" },
-        javascript = { "prettierd", "prettier", stop_after_first = true },
-        typescript = { "prettierd", "prettier", stop_after_first = true },
-        yaml = { "yamlfmt" },
-        json = { "prettier" },
-        markdown = { "prettier" },
-        html = { "prettier" },
-        sh = { "shfmt" },
-        rust = { "rustfmt" },
+        lua = { 'stylua' },
+        go = { 'goimports', 'gofumpt' },
+        python = { 'isort', 'black' },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        yaml = { 'yamlfmt' },
+        json = { 'prettier' },
+        markdown = { 'prettier' },
+        html = { 'prettier' },
+        sh = { 'shfmt' },
+        rust = { 'rustfmt' },
       },
     },
     init = function()

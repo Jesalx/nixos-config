@@ -1,33 +1,33 @@
 return {
-  "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  'nvim-lualine/lualine.nvim',
+  event = 'VeryLazy',
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   opts = {
     options = {
       globalstatus = true,
-      component_separators = { left = "", right = "" },
-      section_separators = { left = "", right = "" },
-      disabled_filetypes = { statusline = { "snacks_dashboard" } },
+      component_separators = { left = '', right = '' },
+      section_separators = { left = '', right = '' },
+      disabled_filetypes = { statusline = { 'snacks_dashboard' } },
     },
     sections = {
-      lualine_a = { "mode" },
-      lualine_b = { "filename" },
+      lualine_a = { 'mode' },
+      lualine_b = { 'filename' },
       lualine_c = {
-        "branch",
+        'branch',
         {
-          "diff",
-          symbols = { added = "+", modified = "~", removed = "-" },
+          'diff',
+          symbols = { added = '+', modified = '~', removed = '-' },
         },
         {
-          "diagnostics",
-          symbols = { error = "󰅚 ", warn = "󰀪 ", info = "󰋽 ", hint = "󰌶 " },
+          'diagnostics',
+          symbols = { error = '󰅚 ', warn = '󰀪 ', info = '󰋽 ', hint = '󰌶 ' },
         },
       },
       lualine_x = {
-        "filetype",
+        'filetype',
       },
-      lualine_y = { "progress" },
-      lualine_z = { "location" },
+      lualine_y = { 'progress' },
+      lualine_z = { 'location' },
     },
   },
 }
