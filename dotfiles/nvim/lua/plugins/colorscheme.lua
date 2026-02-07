@@ -54,6 +54,12 @@ return {
         return {
           -- make it so that relative line numbers are the same color as comments
           LineNr = { fg = colors.overlay2 },
+
+          -- Sneak highlights
+          Sneak = { link = "Search" },
+          SneakCurrent = { link = "CurSearch" },
+          SneakScope = { link = "Visual" },
+          SneakLabel = { link = "IncSearch" },
         }
       end,
     },
