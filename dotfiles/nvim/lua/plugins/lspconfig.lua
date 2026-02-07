@@ -139,6 +139,11 @@ return {
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, { buffer = event.buf, desc = "[T]oggle Inlay [H]ints" })
           end
+
+          -- Enable inline completion for copilot
+          if client and client.name == "copilot" then
+            vim.lsp.inline_completion.enable(true, { bufnr = event.buf })
+          end
         end,
       })
 
@@ -243,6 +248,8 @@ return {
             },
           },
         },
+
+        copilot = {},
       }
 
       -- Ensure the servers and tools are installed via Mason
@@ -255,6 +262,7 @@ return {
         "yaml-language-server",
         "json-lsp",
         "pyright",
+        "copilot-language-server",
 
         -- Formatters
         "stylua",
