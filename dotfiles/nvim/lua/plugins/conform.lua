@@ -20,6 +20,7 @@ return {
         if not vim.g.autoformat then
           return nil
         end
+        return { timeout_ms = 500, lsp_format = "fallback" }
       end,
 
       formatters = {
