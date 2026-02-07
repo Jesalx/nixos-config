@@ -65,11 +65,6 @@ return {
         end)
       end, { desc = "Sign out from GitHub Copilot" })
 
-      -- Accept inline completion with <C-y>
-      vim.keymap.set("i", "<C-y>", function()
-        return vim.lsp.inline_completion.get() and "" or "<C-y>"
-      end, { expr = true, replace_keycodes = true, desc = "Accept inline completion" })
-
       -- Toggle inline completion on/off with <leader>cc
       vim.keymap.set("n", "<leader>cc", function()
         local bufnr = vim.api.nvim_get_current_buf()

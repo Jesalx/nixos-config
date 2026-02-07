@@ -21,7 +21,25 @@ return {
       -- C-k: Toggle signature help (if signature.enabled = true)
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = "default" },
+      keymap = {
+        preset = "default",
+        -- Override C-y to prioritize blink.cmp popup, then fall back to Copilot ghost text
+        ["<C-y>"] = {
+          function(cmp)
+            -- If the popup menu is visible, accept the selected item
+            if cmp.is_visible() then
+              return cmp.accept()
+            end
+            -- If the lsp inline completion text is visible, accept it
+            if vim.lsp.inline_completion.get() then
+              vim.lsp.inline_completion.accept()
+              return true
+            end
+
+            return false
+          end,
+        },
+      },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
