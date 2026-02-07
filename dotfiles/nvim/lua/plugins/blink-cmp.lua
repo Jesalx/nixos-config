@@ -25,19 +25,11 @@ return {
         preset = "default",
         -- Override C-y to prioritize blink.cmp popup, then fall back to Copilot ghost text
         ["<C-y>"] = {
+          "select_and_accept",
           function(cmp)
-            -- If the popup menu is visible, accept the selected item
-            if cmp.is_visible() then
-              return cmp.accept()
-            end
-            -- If the lsp inline completion text is visible, accept it
-            if vim.lsp.inline_completion.get() then
-              vim.lsp.inline_completion.accept()
-              return true
-            end
-
-            return false
+            return vim.lsp.inline_completion.get()
           end,
+          "fallback",
         },
       },
 
