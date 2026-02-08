@@ -51,6 +51,10 @@ return {
         },
       },
       custom_highlights = function(colors)
+        -- Calculate CursorLine background using Catppuccin's utility functions
+        local U = require('catppuccin.utils.colors')
+        local cursorline_bg = U.darken(colors.surface0, 0.64, colors.base)
+
         return {
           -- make it so that relative line numbers are the same color as comments
           LineNr = { fg = colors.overlay2 },
@@ -67,6 +71,9 @@ return {
           ['@comment.warning'] = { bg = colors.peach, fg = colors.crust, style = { 'bold' } },
           ['@comment.error'] = { bg = colors.red, fg = colors.crust, style = { 'bold' } },
           ['@lsp.type.comment'] = {}, -- Disable lsp comment highlight to avoid overwriting
+
+          -- Git blame virtual text
+          GitBlame = { fg = colors.overlay0, bg = cursorline_bg, style = { 'italic' } },
 
           -- Statusline highlights
           StatusLineNormal = { fg = colors.mantle, bg = colors.blue, bold = true },
