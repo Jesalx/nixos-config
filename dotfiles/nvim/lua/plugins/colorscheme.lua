@@ -84,7 +84,6 @@ return {
           StatusLineGitDelete = { fg = colors.red },
 
           StatusLineFiletype = { fg = colors.text },
-          StatusLineFiletypeIcon = { fg = colors.blue },
           StatusLineProgress = { fg = colors.text, bg = colors.surface0 },
           StatusLineLocation = { fg = colors.mantle, bg = colors.blue, bold = true },
         }

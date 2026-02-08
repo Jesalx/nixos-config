@@ -111,16 +111,11 @@ function M.filetype()
     mini_icons = require('mini.icons')
   end
 
-  -- Get icon from mini.icons
-  local icon = ''
-  local icon_str = mini_icons.get('filetype', ft)
-  if icon_str then
-    icon = icon_str .. ' '
-  end
+  -- Get icon and highlight from mini.icons
+  local icon, hl, is_default = mini_icons.get('filetype', ft)
 
-  -- Show icon in blue, filetype in default color
-  if icon ~= '' then
-    return string.format('%%#StatusLineFiletypeIcon# %s%%#StatusLineFiletype#%s %%*', icon, ft)
+  if icon and icon ~= '' then
+    return string.format('%%#%s# %s %%#StatusLineFiletype#%s %%*', hl, icon, ft)
   else
     return string.format('%%#StatusLineFiletype# %s %%*', ft)
   end
