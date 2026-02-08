@@ -146,10 +146,6 @@ function M.location()
 end
 
 function M.statusline()
-  if vim.bo.filetype == 'snacks_dashboard' then
-    return ''
-  end
-
   local left = table.concat({
     M.mode(),
     M.filename(),
