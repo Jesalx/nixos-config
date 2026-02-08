@@ -60,6 +60,13 @@ return {
           SneakCurrent = { link = 'CurSearch' },
           SneakScope = { link = 'Visual' },
           SneakLabel = { link = 'IncSearch' },
+
+          -- Comment highlights
+          ['@comment.todo'] = { bg = colors.blue, fg = colors.crust, style = { 'bold' } },
+          ['@comment.note'] = { bg = colors.blue, fg = colors.crust, style = { 'bold' } },
+          ['@comment.warning'] = { bg = colors.peach, fg = colors.crust, style = { 'bold' } },
+          ['@comment.error'] = { bg = colors.red, fg = colors.crust, style = { 'bold' } },
+          ['@lsp.type.comment'] = {}, -- Disable lsp comment highlight to avoid overwriting
         }
       end,
     },
