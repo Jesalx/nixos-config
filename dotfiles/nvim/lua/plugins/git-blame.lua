@@ -10,4 +10,7 @@ return {
       priority = 10000, -- High priority to appear as last virtual text
     },
   },
+  keys = {
+    { '<leader>tb', '<cmd>GitBlameToggle<CR>', desc = '[T]oggle Git [B]lame' },
+  },
 }
