@@ -67,6 +67,26 @@ return {
           ['@comment.warning'] = { bg = colors.peach, fg = colors.crust, style = { 'bold' } },
           ['@comment.error'] = { bg = colors.red, fg = colors.crust, style = { 'bold' } },
           ['@lsp.type.comment'] = {}, -- Disable lsp comment highlight to avoid overwriting
+
+          -- Statusline highlights
+          StatusLineNormal = { fg = colors.mantle, bg = colors.blue, bold = true },
+          StatusLineInsert = { fg = colors.mantle, bg = colors.green, bold = true },
+          StatusLineVisual = { fg = colors.mantle, bg = colors.mauve, bold = true },
+          StatusLineReplace = { fg = colors.mantle, bg = colors.red, bold = true },
+          StatusLineCommand = { fg = colors.mantle, bg = colors.peach, bold = true },
+          StatusLineTerminal = { fg = colors.mantle, bg = colors.teal, bold = true },
+          StatusLineSelect = { fg = colors.mantle, bg = colors.yellow, bold = true },
+
+          StatusLineFilename = { fg = colors.text, bg = colors.surface0 },
+
+          StatusLineGitAdd = { fg = colors.green },
+          StatusLineGitChange = { fg = colors.yellow },
+          StatusLineGitDelete = { fg = colors.red },
+
+          StatusLineFiletype = { fg = colors.text },
+          StatusLineFiletypeIcon = { fg = colors.blue },
+          StatusLineProgress = { fg = colors.text, bg = colors.surface0 },
+          StatusLineLocation = { fg = colors.mantle, bg = colors.blue, bold = true },
         }
       end,
     },

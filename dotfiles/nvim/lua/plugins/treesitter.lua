@@ -6,7 +6,7 @@ return {
       local filetypes = {
         'bash',
         'c',
-        'comments',
+        'comment',
         'cpp',
         'diff',
         'dockerfile',

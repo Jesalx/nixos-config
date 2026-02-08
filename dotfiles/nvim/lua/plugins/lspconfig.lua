@@ -165,6 +165,14 @@ return {
           source = 'if_many',
           spacing = 2,
         },
+        status = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚',
+            [vim.diagnostic.severity.WARN] = '󰀪',
+            [vim.diagnostic.severity.INFO] = '󰋽',
+            [vim.diagnostic.severity.HINT] = '󰌶',
+          },
+        },
       })
 
       -- LSP servers and clients are able to communicate to each other what features they support.
