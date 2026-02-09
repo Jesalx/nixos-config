@@ -48,8 +48,6 @@
       jq
       bat
       vscode
-      zig
-      zls
       terraform
       qmk
       via

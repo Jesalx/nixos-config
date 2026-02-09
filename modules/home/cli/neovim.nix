@@ -43,7 +43,6 @@ in {
         stylua
         gopls
         alejandra
-        zls
         mermaid-cli
         marksman
       ];
