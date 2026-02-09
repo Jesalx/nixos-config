@@ -51,10 +51,6 @@ return {
         },
       },
       custom_highlights = function(colors)
-        -- Calculate CursorLine background using Catppuccin's utility functions
-        local U = require('catppuccin.utils.colors')
-        local cursorline_bg = U.darken(colors.surface0, 0.64, colors.base)
-
         return {
           -- make it so that relative line numbers are the same color as comments
           LineNr = { fg = colors.overlay2 },
@@ -97,6 +93,7 @@ return {
     },
     config = function(_, opts)
       require('catppuccin').setup(opts)
+      vim.o.termguicolors = true
       vim.cmd.colorscheme('catppuccin')
     end,
   },
