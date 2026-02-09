@@ -72,9 +72,6 @@ return {
           ['@comment.error'] = { bg = colors.red, fg = colors.crust, style = { 'bold' } },
           ['@lsp.type.comment'] = {}, -- Disable lsp comment highlight to avoid overwriting
 
-          -- Git blame virtual text
-          GitBlame = { fg = colors.overlay0, bg = cursorline_bg, style = { 'italic' } },
-
           -- Statusline highlights
           StatusLineNormal = { fg = colors.mantle, bg = colors.blue, bold = true },
           StatusLineInsert = { fg = colors.mantle, bg = colors.green, bold = true },
