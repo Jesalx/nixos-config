@@ -26,6 +26,17 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'CmdlineEnter', 'WinLeave
   end,
 })
 
+-- Auto-reload files changed outside of Neovim
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  group = vim.api.nvim_create_augroup('checktime', { clear = true }),
+  desc = 'Reload files changed outside of Neovim',
+  callback = function()
+    if vim.fn.getcmdwintype() == '' then
+      vim.cmd.checktime()
+    end
+  end,
+})
+
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',

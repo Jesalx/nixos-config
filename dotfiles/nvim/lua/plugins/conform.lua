@@ -42,6 +42,7 @@ return {
         rust = { 'rustfmt' },
         terraform = { 'terraform_fmt' },
         ['terraform-vars'] = { 'terraform_fmt' },
+        nix = { 'nixfmt' },
       },
     },
     init = function()
