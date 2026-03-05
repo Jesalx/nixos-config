@@ -9,6 +9,7 @@ return {
         markdown = { 'markdownlint' },
         python = { 'ruff' },
         go = { 'golangcilint' },
+        terraform = { 'tflint' },
       }
 
       lint.linters.golangcilint = {

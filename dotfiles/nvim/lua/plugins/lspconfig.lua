@@ -227,6 +227,8 @@ return {
 
         pyright = {},
 
+        terraformls = {},
+
         helm_ls = {
           settings = {
             ['helm-ls'] = {
@@ -266,6 +268,7 @@ return {
         -- LSP Servers
         'gopls',
         'rust-analyzer',
+        'terraform-ls',
         'helm-ls',
         'yaml-language-server',
         'json-lsp',

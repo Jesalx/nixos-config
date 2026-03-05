@@ -40,6 +40,8 @@ return {
         html = { 'prettier' },
         sh = { 'shfmt' },
         rust = { 'rustfmt' },
+        terraform = { 'terraform_fmt' },
+        ['terraform-vars'] = { 'terraform_fmt' },
       },
     },
     init = function()
