@@ -260,8 +260,6 @@ return {
         },
 
         copilot = {},
-
-        nil_ls = {},
       }
 
       -- Ensure the servers and tools are installed via Mason
@@ -276,7 +274,6 @@ return {
         'json-lsp',
         'pyright',
         'copilot-language-server',
-        'nil',
 
         -- Formatters
         'stylua',
@@ -288,7 +285,6 @@ return {
         'prettierd',
         'black',
         'isort',
-        'nixfmt',
 
         -- Linters
         'golangci-lint',
