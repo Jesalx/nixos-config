@@ -30,7 +30,7 @@
       pyenv
       python3
       uv
-      go
+      go_1_26
       gopls
       gofumpt
       golangci-lint
