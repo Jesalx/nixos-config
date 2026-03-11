@@ -31,7 +31,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         go = { 'goimports', 'gofumpt' },
-        python = { 'isort', 'black' },
+        python = { 'ruff_fix', 'ruff_format' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         yaml = { 'yamlfmt' },

@@ -225,7 +225,12 @@ return {
 
         jsonls = {},
 
-        pyright = {},
+        pyright = {
+          settings = {
+            pyright = { disableOrganizeImports = true },
+          },
+        },
+        ruff = {},
 
         terraformls = {},
 
@@ -283,8 +288,7 @@ return {
         'shfmt',
         'prettier',
         'prettierd',
-        'black',
-        'isort',
+        'ruff',
 
         -- Linters
         'golangci-lint',
