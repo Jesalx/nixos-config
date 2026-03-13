@@ -75,21 +75,25 @@ need, and prefer well-maintained, narrowly scoped modules over large frameworks.
 
 ```go
 func TestParseSize(t *testing.T) {
+    t.Parallel()
+
     tests := []struct {
         name    string
         input   string
         want    int64
-        wantErr bool
+        wantErr error
     }{
         {name: "bytes", input: "512B", want: 512},
         {name: "kilobytes", input: "1KB", want: 1024},
-        {name: "empty", input: "", wantErr: true},
+        {name: "empty", input: "", wantErr: ErrInvalidSize},
     }
 
     for _, tt := range tests {
         t.Run(tt.name, func(t *testing.T) {
+            t.Parallel()
+
             got, err := ParseSize(tt.input)
-            if (err != nil) != tt.wantErr {
+            if !errors.Is(err, tt.wantErr) {
                 t.Fatalf("ParseSize(%q) error = %v, wantErr %v", tt.input, err, tt.wantErr)
             }
             if got != tt.want {
@@ -117,6 +121,8 @@ func TestParseSize(t *testing.T) {
 - Use struct literals with field names: `Point{X: 1, Y: 2}`, not `Point{1, 2}`.
 - Use `defer` for cleanup — but be aware of its performance in tight loops.
 - Use `make` with a size hint when the slice/map length is known or estimable.
+- Prefer `slices`, `maps`, and `cmp` packages over hand-rolled loops for
+  sorting, searching, collecting keys, etc.
 - Prefer `strings.Builder` for building strings in loops.
 - Use `time.Duration` in APIs, never bare `int` seconds or milliseconds.
 - Accept `io.Reader` / `io.Writer` in functions that process streams rather than
