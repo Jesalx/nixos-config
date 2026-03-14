@@ -10,10 +10,10 @@ in {
   };
   config = lib.mkIf config.claude.enable {
     home.file = {
-      ".claude/CLAUDE.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/CLAUDE.md";
-      ".claude/agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/agents";
-      ".claude/rules".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/rules";
-      ".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/skills";
+      ".claude/CLAUDE.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/CLAUDE.md";
+      ".claude/agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/agents";
+      ".claude/rules".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/rules";
+      ".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/skills";
     };
   };
 }
