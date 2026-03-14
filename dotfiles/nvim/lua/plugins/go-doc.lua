@@ -4,7 +4,7 @@ return {
   lazy = false,
   keys = {
     {
-      '<leader>dg',
+      '<leader>sG',
       function()
         Snacks.picker.pick({
           title = 'Go Documentation',
@@ -89,7 +89,7 @@ return {
           end,
         })
       end,
-      desc = 'Go documentation',
+      desc = '[S]earch [G]o documentation',
     },
   },
 }
