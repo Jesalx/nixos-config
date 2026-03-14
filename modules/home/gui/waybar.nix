@@ -11,7 +11,6 @@ in {
   };
   config = lib.mkIf config.waybar.enable {
     programs.waybar.enable = true;
-    # xdg.configFile.waybar.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
     home.file.".config/waybar/config.jsonc".text =
       # json
       ''
