@@ -1,6 +1,6 @@
 ---
-name: desc
-description: Generate a conventional commit description for current jj changes and apply it with jj desc
+name: commit
+description: Generate a conventional commit description for current jj changes, apply it with jj desc, then start a new change with jj new
 disable-model-invocation: true
 ---
 
@@ -13,6 +13,7 @@ Steps:
 3. Apply it by running: `jj desc --stdin <<'EOF'
 <message>
 EOF`
+4. Run `jj new` to start a new change
 
 Format:
 
