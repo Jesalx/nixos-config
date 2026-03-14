@@ -13,12 +13,12 @@ return {
     dashboard = {
       preset = {
         keys = {
-          { icon = ' ', key = 'f', desc = 'Find File', action = ':lua Snacks.picker.files()' },
-          { icon = ' ', key = '/', desc = 'Find Text', action = ':lua Snacks.picker.grep()' },
-          { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
-          { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.picker.files({ cwd = vim.fn.expand('~/.config') })" },
-          { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy' },
-          { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+          { icon = ' ', key = 'f', desc = 'Find File', action = function() Snacks.picker.files() end },
+          { icon = ' ', key = '/', desc = 'Find Text', action = function() Snacks.picker.grep() end },
+          { icon = ' ', key = 'n', desc = 'New File', action = function() vim.cmd('ene | startinsert') end },
+          { icon = ' ', key = 'c', desc = 'Config', action = function() Snacks.picker.files({ cwd = vim.fn.expand('~/.config') }) end },
+          { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = function() vim.cmd('Lazy') end },
+          { icon = ' ', key = 'q', desc = 'Quit', action = function() vim.cmd('qa') end },
         },
       },
     },
