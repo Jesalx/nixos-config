@@ -11,14 +11,22 @@ return {
         terraform = { 'tflint' },
       }
 
-      lint.linters.golangcilint = {
-        cmd = 'golangci-lint',
-        stdin = false,
-        append_fname = false,
-        args = {
-          'run',
-          '--config',
-          vim.fn.expand('~/.config/golangci-lint/config.yml'),
+      -- Config resolution: project-level (.golangci.yml walking up from cwd) >
+      -- user-level (~/.config/golangci-lint/config.yml) > omit flag entirely.
+      -- Resolved at plugin-load time; consistent with how golangci-lint uses the
+      -- working directory when invoked.
+      local function build_golangci_args()
+        local args = { 'run' }
+        local project_cfg = vim.fn.findfile('.golangci.yml', vim.fn.getcwd() .. ';')
+        if project_cfg ~= '' then
+          vim.list_extend(args, { '--config', vim.fn.fnamemodify(project_cfg, ':p') })
+        else
+          local user_cfg = vim.fn.expand('~/.config/golangci-lint/config.yml')
+          if vim.fn.filereadable(user_cfg) == 1 then
+            vim.list_extend(args, { '--config', user_cfg })
+          end
+        end
+        vim.list_extend(args, {
           '--output.json.path=stdout',
           '--output.text.path=',
           '--show-stats=false',
@@ -27,7 +35,15 @@ return {
           function()
             return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':p')
           end,
-        },
+        })
+        return args
+      end
+
+      lint.linters.golangcilint = {
+        cmd = 'golangci-lint',
+        stdin = false,
+        append_fname = false,
+        args = build_golangci_args(),
         stream = 'stdout',
         ignore_exitcode = true,
         parser = require('lint.linters.golangcilint').parser,
