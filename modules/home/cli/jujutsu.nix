@@ -20,7 +20,7 @@ in {
   options = {
     jujutsu.enable = lib.mkEnableOption "enables custom jujutsu config";
   };
-  config = lib.mkIf config.git.enable {
+  config = lib.mkIf config.jujutsu.enable {
     home.file.".ssh/allowed_signers".text = lib.mkDefault (createAllowedSigners sshKeyPath);
     programs.jujutsu = {
       enable = true;

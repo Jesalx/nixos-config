@@ -23,26 +23,11 @@ in {
 
       extraPackages = with pkgs; [
         git
-        gcc
-        gnumake
-        unzip
-        fzf
-        wget
-        curl
-        ripgrep
-        rust-analyzer
-        fd
         tree-sitter
-        rustc
-        cargo
-        gcc
         nil
-        nixfmt
         lua
         lua-language-server
         stylua
-        gopls
-        alejandra
         mermaid-cli
         marksman
       ];
