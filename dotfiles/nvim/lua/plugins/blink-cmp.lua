@@ -26,7 +26,7 @@ return {
         -- Override C-y to prioritize blink.cmp popup, then fall back to Copilot ghost text
         ['<C-y>'] = {
           'select_and_accept',
-          function(cmp)
+          function()
             return vim.lsp.inline_completion.get()
           end,
           'fallback',
