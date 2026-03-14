@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./claude.nix
     ./development.nix
     ./ghostty.nix
     ./direnv.nix
@@ -15,6 +16,7 @@
     ./fish.nix
   ];
 
+  claude.enable = lib.mkDefault true;
   development.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
   jujutsu.enable = lib.mkDefault true;
