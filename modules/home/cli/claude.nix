@@ -19,6 +19,7 @@ in {
       ".claude/agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/agents";
       ".claude/rules".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/rules";
       ".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/skills";
+      ".claude/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/settings.json";
     };
   };
 }
