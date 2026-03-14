@@ -1,6 +1,6 @@
 ---
-name: go-development
-description: Go development — use proactively for *any* task involving Go code.
+paths:
+  - "**/*.go"
 ---
 
 # Go Development Preferences
