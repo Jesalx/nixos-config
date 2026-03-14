@@ -92,9 +92,31 @@ end
 
 -- Get diagnostics
 function M.diagnostics()
-  local status = vim.diagnostic.status()
-  if status and status ~= '' then
-    return ' ' .. status .. ' '
+  local icons = {
+    [vim.diagnostic.severity.ERROR] = { icon = '󰅚', hl = 'DiagnosticError' },
+    [vim.diagnostic.severity.WARN] = { icon = '󰀪', hl = 'DiagnosticWarn' },
+    [vim.diagnostic.severity.INFO] = { icon = '󰋽', hl = 'DiagnosticInfo' },
+    [vim.diagnostic.severity.HINT] = { icon = '󰌶', hl = 'DiagnosticHint' },
+  }
+
+  local counts = vim.diagnostic.count(0)
+  local parts = {}
+
+  for _, severity in ipairs({
+    vim.diagnostic.severity.ERROR,
+    vim.diagnostic.severity.WARN,
+    vim.diagnostic.severity.INFO,
+    vim.diagnostic.severity.HINT,
+  }) do
+    local count = counts[severity]
+    if count and count > 0 then
+      local cfg = icons[severity]
+      table.insert(parts, string.format('%%#%s#%s %d%%*', cfg.hl, cfg.icon, count))
+    end
+  end
+
+  if #parts > 0 then
+    return ' ' .. table.concat(parts, ' ') .. ' '
   end
   return ''
 end
