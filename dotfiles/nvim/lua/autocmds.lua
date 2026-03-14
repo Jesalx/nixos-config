@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'CmdlineEnter', 'WinLeave
 
 -- Auto-reload files changed outside of Neovim
 vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
-  group = vim.api.nvim_create_augroup('checktime', { clear = true }),
+  group = vim.api.nvim_create_augroup('checktime', {}),
   desc = 'Reload files changed outside of Neovim',
   callback = function()
     if vim.fn.getcmdwintype() == '' then
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  group = vim.api.nvim_create_augroup('highlight-yank', {}),
   callback = function()
     vim.highlight.on_yank()
   end,
@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('mariasolos/close_with_q', { clear = true }),
+  group = vim.api.nvim_create_augroup('mariasolos/close_with_q', {}),
   desc = 'Close with <q>',
   pattern = {
     'git',
