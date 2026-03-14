@@ -2,12 +2,10 @@
   pkgs,
   lib,
   config,
-  userConfig,
   ...
 }: let
   user = config.home.username;
   home = config.home.homeDirectory;
-  nix-helper-app = import ../scripts/nix-helper.nix {inherit pkgs user;};
 in {
   options = {
     fish.enable = lib.mkEnableOption "enables custom fish config";
@@ -44,10 +42,6 @@ in {
         {
           # Common aliases for both platforms
           cd = "z";
-          jp-test = "${nix-helper-app}/bin/nix-rebuild test ${userConfig.profile}";
-          jp-switch = "${nix-helper-app}/bin/nix-rebuild switch ${userConfig.profile}";
-          jp-update = "${nix-helper-app}/bin/nix-rebuild update ${userConfig.profile}";
-          jp-clean = "${nix-helper-app}/bin/nix-rebuild clean ${userConfig.profile}";
           nixconfig = "nvim ${home}/nixos-config";
           vimconfig = "nvim ${home}/nixos-config/dotfiles/nvim";
           dt = "ssh jesal@deepthought";
