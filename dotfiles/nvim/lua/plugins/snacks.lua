@@ -178,11 +178,5 @@ return {
       end,
       desc = 'Toggle floating terminal',
     },
-    {
-      '<esc><esc>',
-      '<C-\\><C-n>',
-      mode = 't',
-      desc = 'Exit terminal mode',
-    },
   },
 }
