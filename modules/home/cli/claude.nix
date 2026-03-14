@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -9,6 +10,10 @@ in {
     claude.enable = lib.mkEnableOption "enables claude code config";
   };
   config = lib.mkIf config.claude.enable {
+    home.packages = with pkgs; [
+      claude-code
+    ];
+
     home.file = {
       ".claude/CLAUDE.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/CLAUDE.md";
       ".claude/agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/agents";

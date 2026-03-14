@@ -8,6 +8,7 @@
     ./hypr/hyprpaper.nix
     ./hypr/hyprlock.nix
     ./hypr/hypridle.nix
+    ./hypr/hyprshot.nix
     ./theme.nix
     ./firefox.nix
     ./fuzzel.nix
@@ -15,6 +16,7 @@
   ];
 
   hyprland.enable = lib.mkDefault true;
+  hyprshot.enable = lib.mkDefault true;
   hyprpaper.enable = lib.mkDefault true;
   hyprlock.enable = lib.mkDefault true;
   hypridle.enable = lib.mkDefault true;

@@ -22,7 +22,6 @@ in {
       withPython3 = true;
 
       extraPackages = with pkgs; [
-        git
         tree-sitter
         nil
         lua
