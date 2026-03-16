@@ -2,6 +2,7 @@
 name: commit
 description: Generate a conventional commit description for current jj changes, apply it with jj desc, then start a new change with jj new
 disable-model-invocation: true
+allowed-tools: Bash(jj diff *), Bash(jj desc *), Bash(jj new *)
 ---
 
 Generate a conventional commit message for the current changes and apply it.

@@ -4,6 +4,7 @@
 
 - Always run tests/linting after code changes if a test command is available
 - Do not add comments explaining what code does unless asked
+- Prefer built-in tools (Glob, Grep, Search, Read, Edit, etc) over Bash equivalents
 
 ## Code Style
 

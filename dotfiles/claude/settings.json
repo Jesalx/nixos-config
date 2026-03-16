@@ -1,5 +1,4 @@
 {
-  "effortLevel": "high",
   "permissions": {
     "deny": [
       "Bash(shred *)",
@@ -11,12 +10,14 @@
       "Bash(su *)",
       "Bash(passwd *)",
       "Bash(shutdown *)",
-      "Bash(reboot *)"
+      "Bash(reboot *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(cat *)"
     ],
     "ask": [
       "Bash(rm *)",
       "Bash(rmdir *)",
-      "Bash(git *)",
       "Bash(gh *)",
       "Bash(mv *)",
       "Bash(cp *)",
@@ -62,12 +63,14 @@
       "Bash(go doc *)",
       "Bash(go fix *)",
       "Bash(go vet *)",
+      "Bash(go test *)",
       "Bash(ls *)",
       "Bash(head *)",
       "Bash(tail *)",
+      "Bash(git log *)",
+      "Bash(git describe *)",
+      "Bash(git diff *)",
       "Bash(jj diff *)",
-      "Bash(jj desc *)",
-      "Bash(jj new *)",
       "Bash(wc *)",
       "Bash(fd *)",
       "Bash(which *)",
@@ -86,6 +89,12 @@
       "Bash(diff *)",
       "Bash(touch *)",
       "Bash(mkdir *)"
-    ]
-  }
+    ],
+    "defaultMode": "default"
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "high",
+  "showThinkingSummaries": true
 }
