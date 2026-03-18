@@ -5,8 +5,6 @@ paths:
 
 # Go Development Preferences
 
-## Core Philosophy
-
 Write clear, simple, idiomatic Go. Prefer readability over cleverness. Use
 modern Go practices — leverage the latest language features and standard library
 additions. Prefer the standard library and `golang.org/x/` packages. Never add
@@ -57,15 +55,6 @@ other external packages unless explicitly instructed by the user.
 - Use `sync.WaitGroup` for fan-out work where all goroutines should run to
   completion. Use `errgroup.Group` when you want fail-fast cancellation on the
   first error.
-
-## Testing
-
-- Use table-driven tests as the default pattern: named struct cases, `t.Run`
-  subtests, `errors.Is` for error comparison.
-- Use `t.Parallel()` in tests and subtests where safe.
-- Prefer real implementations (in-memory stores, temp dirs) over mocks. Only
-  mock at true external boundaries.
-- Always run tests with `-race`. Benchmark before optimizing with `testing.B`.
 
 ## Style and Conventions
 
