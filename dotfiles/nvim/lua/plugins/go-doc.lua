@@ -6,6 +6,7 @@ return {
     {
       '<leader>sG',
       function()
+        local origin_buf = vim.api.nvim_get_current_buf()
         Snacks.picker.pick({
           title = 'Go Documentation',
           finder = function()
@@ -74,11 +75,12 @@ return {
               win = vim.api.nvim_open_win(buf, true, { split = 'right' })
             else
               -- Take over the full window; q closes and returns to the previous buffer
-              local prev_buf = vim.api.nvim_get_current_buf()
               win = vim.api.nvim_get_current_win()
               vim.api.nvim_win_set_buf(win, buf)
               vim.keymap.set('n', 'q', function()
-                vim.api.nvim_win_set_buf(win, prev_buf)
+                if vim.api.nvim_buf_is_valid(origin_buf) then
+                  vim.api.nvim_win_set_buf(win, origin_buf)
+                end
                 vim.api.nvim_buf_delete(buf, { force = true })
               end, { buffer = buf, desc = 'Close Go docs' })
             end
