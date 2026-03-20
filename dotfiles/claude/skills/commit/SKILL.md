@@ -39,7 +39,9 @@ Rules:
   - Never list changes in the summary line (e.g. avoid "add x, fix y, update z")
 - Bullet points are optional — only include them if they add meaningful detail not already clear from the first line
 - Maximum 3 bullet points; use fewer if fewer are warranted
-- Bullet points should cover _why_ or _what specifically_, not restate the summary
+- Bullet points should cover _what specifically_ changed, not restate the summary
+- Do not speculate about reasons or motivations for changes — only include _why_ if the user provided that context. Stick to what is observable in the diff
 - There must be a blank line between the summary and the bullet points
 - Do not include the ``` fences in the applied message
 - After applying, output the final message so the user can see what was set
+- Run all `jj` commands in the current working directory. Only `cd` to the repo root if a command fails due to directory context
