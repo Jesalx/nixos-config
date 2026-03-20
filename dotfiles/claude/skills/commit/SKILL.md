@@ -44,4 +44,4 @@ Rules:
 - There must be a blank line between the summary and the bullet points
 - Do not include the ``` fences in the applied message
 - After applying, output the final message so the user can see what was set
-- Run all `jj` commands in the current working directory. Only `cd` to the repo root if a command fails due to directory context
+- Never `cd` — run all `jj` commands from the current working directory. `jj` works from any subdirectory within a repo, so changing directories is unnecessary and unwanted
