@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/*_test.go"
+  - "**/*.go"
 ---
 
 # Go Testing Preferences
