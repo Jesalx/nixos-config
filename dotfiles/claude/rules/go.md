@@ -45,6 +45,10 @@ other external packages unless explicitly instructed by the user.
   down from the top level.
 - Use `context.WithoutCancel` when work must outlive the request (e.g. async
   cleanup) rather than creating a new `context.Background()`.
+- Prefer `context.Cause(ctx)` over `ctx.Err()` when reporting cancellations —
+  it surfaces _why_ the context ended. Use the `*Cause` variants
+  (`WithCancelCause`, `WithTimeoutCause`, `WithDeadlineCause`) when there is a
+  meaningful reason to attach.
 
 ## Concurrency
 
