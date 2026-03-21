@@ -59,7 +59,6 @@ other external packages unless explicitly instructed by the user.
 ## Style and Conventions
 
 - Every exported identifier should have a doc comment.
-- Write comments that explain **why**, not **what**.
 - Use struct literals with field names: `Point{X: 1, Y: 2}`, not `Point{1, 2}`.
 - Method receivers are short — one or two letters, consistent across all methods
   on the type (e.g. `s` for `*Server`). Never `self` or `this`.
