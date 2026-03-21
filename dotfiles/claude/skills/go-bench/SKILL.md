@@ -51,6 +51,21 @@ func BenchmarkProcess(b *testing.B) {
 }
 ```
 
+Use `b.StopTimer()` / `b.StartTimer()` to exclude expensive per-iteration
+setup from measurement. Avoid when setup cost is negligible — the calls
+themselves have overhead.
+
+```go
+func BenchmarkInsert(b *testing.B) {
+    for b.Loop() {
+        b.StopTimer()
+        db := setupFreshTable()
+        b.StartTimer()
+        Insert(db, record)
+    }
+}
+```
+
 ### Sub-benchmarks
 
 Use `b.Run()` to compare variants, input sizes, or implementations:
