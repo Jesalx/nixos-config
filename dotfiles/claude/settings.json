@@ -64,6 +64,7 @@
       "Bash(go fix *)",
       "Bash(go vet *)",
       "Bash(go test *)",
+      "Bash(go build *)",
       "Bash(go mod tidy *)",
       "Bash(ls *)",
       "Bash(head *)",
