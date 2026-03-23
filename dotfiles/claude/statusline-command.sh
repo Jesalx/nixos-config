@@ -44,7 +44,8 @@ fi
 if [ -n "$five_hr_pct" ]; then
     reset_str=""
     if [ -n "$resets_at" ] && [ "$resets_at" -gt 0 ] 2>/dev/null; then
-        reset_time=$(date -r "$resets_at" "+%-I:%M%p" 2>/dev/null | tr '[:upper:]' '[:lower:]' | sed 's/:00\([ap]m\)/\1/')
+        reset_time=$(date -d @"$resets_at" "+%-I:%M%p" 2>/dev/null || date -r "$resets_at" "+%-I:%M%p" 2>/dev/null)
+        reset_time=$(printf '%s' "$reset_time" | tr '[:upper:]' '[:lower:]' | sed 's/:00\([ap]m\)/\1/')
         [ -n "$reset_time" ] && reset_str=$(printf " (%s)" "$reset_time")
     fi
     printf " \033[0;35m5h: %s%%%s\033[0m" "$five_hr_pct" "$reset_str"

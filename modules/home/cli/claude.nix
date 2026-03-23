@@ -20,6 +20,7 @@ in {
       ".claude/rules".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/rules";
       ".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/skills";
       ".claude/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/settings.json";
+      ".claude/statusline-command.sh".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/claude/statusline-command.sh";
     };
   };
 }
