@@ -13,8 +13,8 @@ paths:
   why) and let the user decide the fix. Structural refactors (e.g. converting
   to table-driven) are always fine.
 - **Proactively increase coverage.** When writing or modifying code, add tests
-  for uncovered edge cases, error paths, and boundary conditions — don't wait
-  to be asked.
+  for uncovered edge cases, error paths, and boundary conditions without
+  waiting to be asked.
 
 ## Style
 
@@ -24,9 +24,38 @@ paths:
 - Prefer real implementations (in-memory stores, temp dirs) over mocks. Only
   mock at true external boundaries.
 - Always run tests with `-race`. Benchmark before optimizing with `testing.B`.
-- Test helpers must call `t.Helper()` as their first line so failures report
-  the caller's location.
-- Use `cmp.Diff` for comparing structs and complex types — it produces readable
+- Use `cmp.Diff` for comparing structs and complex types. It produces readable
   diffs in failure output.
 - Use `t.Fatalf` when a failure would cause subsequent lines to panic, `t.Errorf`
   otherwise to continue collecting failures.
+
+## Test Helpers and `testing.TB`
+
+- Test helpers must call `tb.Helper()` as their first line so failures report
+  the caller's location.
+- Accept `testing.TB` instead of `*testing.T` in helpers that only use shared
+  methods (`Helper`, `Fatal`, `Cleanup`, `TempDir`, etc.). This makes helpers
+  reusable across tests, benchmarks, and fuzz functions. Narrow to the concrete
+  type only when you need type-specific methods (`t.Run`, `b.ResetTimer`).
+
+## Test Fixtures and `testdata/`
+
+- Store test fixtures, sample inputs, and golden files in a `testdata/`
+  directory within the package. The Go toolchain ignores `testdata/` during
+  build.
+- Reference fixtures with relative paths (`"testdata/input.json"`). `go test`
+  sets the working directory to the package's source directory.
+- For script-style or integration tests with multiple related files per case,
+  use `txtar` (`golang.org/x/tools/txtar`) to pack them into one archive.
+
+## Golden File Tests
+
+- Use golden files when the output under test is large, complex, or most
+  readable as a whole (formatted text, serialized data, code generation output).
+- Define a package-level flag for regeneration:
+  `var update = flag.Bool("update", false, "update golden files")`
+- Write to the golden file when `-update` is set, then read and compare.
+  Include a re-run hint in failure messages.
+- Derive golden file paths from `t.Name()` so subtests each get their own file
+  (e.g. `filepath.Join("testdata", t.Name()+".golden")`).
+- Commit golden files to version control. Diffs in review are the point.
