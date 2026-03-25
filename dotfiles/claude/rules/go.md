@@ -76,8 +76,8 @@ Never add other external packages unless explicitly instructed by the user.
 - Use channels for signaling and communication; use `sync.Mutex` for protecting
   shared state. Use whichever is simpler for the case.
 - Use `sync.WaitGroup` for fan-out work where all goroutines should run to
-  completion. Use `errgroup.Group` when you want fail-fast cancellation on the
-  first error.
+  completion. Use `errgroup.WithContext` when you want fail-fast cancellation
+  on the first error.
 
 ## Style and Conventions
 
