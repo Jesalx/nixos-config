@@ -24,8 +24,8 @@ paths:
 - Prefer real implementations (in-memory stores, temp dirs) over mocks. Only
   mock at true external boundaries.
 - Always run tests with `-race`. Benchmark before optimizing with `testing.B`.
-- Use `cmp.Diff` for comparing structs and complex types. It produces readable
-  diffs in failure output.
+- Use `cmp.Diff` (`github.com/google/go-cmp/cmp`) for comparing structs and
+  complex types. It produces readable diffs in failure output.
 - Use `t.Fatalf` when a failure would cause subsequent lines to panic, `t.Errorf`
   otherwise to continue collecting failures.
 

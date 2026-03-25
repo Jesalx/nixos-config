@@ -35,8 +35,8 @@ Never add other external packages unless explicitly instructed by the user.
 
 - Prefer concrete types and interfaces by default. Use generics when the logic
   is truly type-independent and you would otherwise duplicate code across types.
-- Constrain type parameters as tightly as possible. Prefer named constraints
-  from `cmp`, `slices`, or `maps` over `any`.
+- Constrain type parameters as tightly as possible. Prefer `cmp.Ordered`,
+  `comparable`, or a named constraint over `any`.
 
 ## Enums and Constants
 
