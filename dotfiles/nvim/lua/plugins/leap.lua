@@ -5,6 +5,7 @@ return {
       local leap = require('leap')
       leap.opts.labels = ''
       leap.opts.safe_labels = ''
+      leap.opts.max_highlighted_traversal_targets = 100
 
       local function silent_leap(opts)
         local orig_echo = vim.api.nvim_echo
