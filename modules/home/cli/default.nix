@@ -17,6 +17,7 @@
     ./ranger.nix
     ./starship.nix
     ./fish.nix
+    ./tmux.nix
   ];
 
   claude.enable = lib.mkDefault true;
@@ -33,4 +34,5 @@
   ranger.enable = lib.mkDefault true;
   fish.enable = lib.mkDefault true;
   starship.enable = lib.mkDefault true;
+  tmux.enable = lib.mkDefault true;
 }

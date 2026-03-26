@@ -39,6 +39,8 @@
       eza
       mprocs
       nethack
+      kubectl
+      awscli2
     ];
   };
 }
