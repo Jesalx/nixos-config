@@ -21,6 +21,12 @@ return {
           { icon = ' ', key = 'q', desc = 'Quit', action = function() vim.cmd('qa') end },
         },
       },
+      sections = {
+        function()
+          return { header = require('modules.dashboard').header(), padding = 1 }
+        end,
+        { section = 'keys', gap = 1, padding = 1 },
+      },
     },
     explorer = {
       replace_netrw = true,
