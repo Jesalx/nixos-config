@@ -76,6 +76,8 @@ local function lazy_info()
   return loaded .. '/' .. stats.count .. ' plugins', ms .. 'ms'
 end
 
+local min_val_w = 16
+
 local function system_box()
   local pkgs, startup = lazy_info()
   local rows = {
@@ -87,19 +89,23 @@ local function system_box()
     { 'START', startup },
   }
 
-  local val_w = 24
-  local label_w = 6
+  local label_w, val_w = 0, min_val_w
+  for _, r in ipairs(rows) do
+    label_w = math.max(label_w, vim.api.nvim_strwidth(r[1]))
+    val_w = math.max(val_w, vim.api.nvim_strwidth(r[2]))
+  end
 
   local function row(label, value)
     return '│ ' .. pad(label, label_w) .. ' │ ' .. pad(value, val_w) .. ' │'
   end
 
-  local border_inner = string.rep('─', val_w + 2)
-  local lines = { '╭────────┬' .. border_inner .. '╮' }
+  local border_label = string.rep('─', label_w + 2)
+  local border_val = string.rep('─', val_w + 2)
+  local lines = { '╭' .. border_label .. '┬' .. border_val .. '╮' }
   for _, r in ipairs(rows) do
     lines[#lines + 1] = row(r[1], r[2])
   end
-  lines[#lines + 1] = '╰────────┴' .. border_inner .. '╯'
+  lines[#lines + 1] = '╰' .. border_label .. '┴' .. border_val .. '╯'
   return table.concat(lines, '\n')
 end
 
