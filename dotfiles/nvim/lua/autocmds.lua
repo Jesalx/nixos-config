@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('jesal/close_with_q', {}),

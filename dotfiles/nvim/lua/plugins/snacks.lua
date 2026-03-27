@@ -2,7 +2,7 @@ local uname = vim.uv.os_uname()
 local is_darwin = uname.sysname == 'Darwin'
 
 local dashboard_icons = {
-  neovim = '',
+  neovim = '',
   apple = '󰀵',
   nixos = '󱄅',
   arch = '󰣇',
@@ -133,12 +133,54 @@ return {
     dashboard = {
       preset = {
         keys = {
-          { icon = ' ', key = 'f', desc = 'Find File', action = function() Snacks.picker.files() end },
-          { icon = ' ', key = '/', desc = 'Find Text', action = function() Snacks.picker.grep() end },
-          { icon = ' ', key = 'n', desc = 'New File', action = function() vim.cmd('ene | startinsert') end },
-          { icon = ' ', key = 'c', desc = 'Config', action = function() Snacks.picker.files({ cwd = vim.fn.expand('~/.config') }) end },
-          { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = function() vim.cmd('Lazy') end },
-          { icon = ' ', key = 'q', desc = 'Quit', action = function() vim.cmd('qa') end },
+          {
+            icon = ' ',
+            key = 'f',
+            desc = 'Find File',
+            action = function()
+              Snacks.picker.files()
+            end,
+          },
+          {
+            icon = ' ',
+            key = '/',
+            desc = 'Find Text',
+            action = function()
+              Snacks.picker.grep()
+            end,
+          },
+          {
+            icon = ' ',
+            key = 'n',
+            desc = 'New File',
+            action = function()
+              vim.cmd('ene | startinsert')
+            end,
+          },
+          {
+            icon = ' ',
+            key = 'c',
+            desc = 'Config',
+            action = function()
+              Snacks.picker.files({ cwd = vim.fn.expand('~/.config') })
+            end,
+          },
+          {
+            icon = '󰒲 ',
+            key = 'l',
+            desc = 'Lazy',
+            action = function()
+              vim.cmd('Lazy')
+            end,
+          },
+          {
+            icon = ' ',
+            key = 'q',
+            desc = 'Quit',
+            action = function()
+              vim.cmd('qa')
+            end,
+          },
         },
       },
       sections = {
