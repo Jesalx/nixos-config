@@ -1,12 +1,8 @@
-local M = {}
-
-local mini_icons
-
 local diagnostic_icons = {
   [vim.diagnostic.severity.ERROR] = { icon = '󰅚', hl = 'DiagnosticError' },
-  [vim.diagnostic.severity.WARN]  = { icon = '󰀪', hl = 'DiagnosticWarn' },
-  [vim.diagnostic.severity.INFO]  = { icon = '󰋽', hl = 'DiagnosticInfo' },
-  [vim.diagnostic.severity.HINT]  = { icon = '󰌶', hl = 'DiagnosticHint' },
+  [vim.diagnostic.severity.WARN] = { icon = '󰀪', hl = 'DiagnosticWarn' },
+  [vim.diagnostic.severity.INFO] = { icon = '󰋽', hl = 'DiagnosticInfo' },
+  [vim.diagnostic.severity.HINT] = { icon = '󰌶', hl = 'DiagnosticHint' },
 }
 
 local diagnostic_order = {
@@ -56,28 +52,29 @@ local modes = {
   ['!'] = { name = 'SHELL', hl = 'StatusLineCommand' },
 }
 
--- Get current mode
-function M.mode()
+local mini_icons
+
+local M = {}
+
+local function mode()
   local mode_code = vim.api.nvim_get_mode().mode
-  local mode = modes[mode_code] or { name = 'UNKNOWN', hl = 'StatusLine' }
-  return string.format('%%#%s# %s %%*', mode.hl, mode.name)
+  local m = modes[mode_code] or { name = 'UNKNOWN', hl = 'StatusLine' }
+  return string.format('%%#%s# %s %%*', m.hl, m.name)
 end
 
--- Get filename with modified indicator
-function M.filename()
-  local filename = vim.fn.expand('%:t')
-  if filename == '' then
-    filename = '[No Name]'
+local function filename()
+  local name = vim.fn.expand('%:t')
+  if name == '' then
+    name = '[No Name]'
   end
 
   local modified = vim.bo.modified and ' [+]' or ''
   local readonly = vim.bo.readonly and ' [RO]' or ''
 
-  return string.format('%%#StatusLineFilename# %s%s%s %%*', filename, modified, readonly)
+  return string.format('%%#StatusLineFilename# %s%s%s %%*', name, modified, readonly)
 end
 
--- Get git diff stats
-function M.git_diff()
+local function git_diff()
   local minidiff = vim.b.minidiff_summary
   if not minidiff then
     return ''
@@ -104,8 +101,7 @@ function M.git_diff()
   return ''
 end
 
--- Get diagnostics
-function M.diagnostics()
+local function diagnostics()
   local counts = vim.diagnostic.count(0)
   local parts = {}
 
@@ -123,8 +119,7 @@ function M.diagnostics()
   return ''
 end
 
--- Get filetype
-function M.filetype()
+local function filetype()
   local ft = vim.bo.filetype
   if ft == '' then
     return ''
@@ -145,8 +140,7 @@ function M.filetype()
   end
 end
 
--- Get progress through file
-function M.progress()
+local function progress()
   local cur_line = vim.fn.line('.')
   local total_lines = vim.fn.line('$')
 
@@ -161,8 +155,7 @@ function M.progress()
   end
 end
 
--- Get location (line:column)
-function M.location()
+local function location()
   local line = vim.fn.line('.')
   local col = vim.fn.col('.')
   -- Right-align line to 3 digits, left-align column to 3 digits for consistent width
@@ -171,25 +164,27 @@ end
 
 function M.statusline()
   local left = table.concat({
-    M.mode(),
-    M.filename(),
-    M.git_diff(),
-    M.diagnostics(),
+    mode(),
+    filename(),
+    git_diff(),
+    diagnostics(),
   })
 
   local right = table.concat({
-    M.filetype(),
-    M.progress(),
-    M.location(),
+    filetype(),
+    progress(),
+    location(),
   })
 
   return left .. '%=' .. right
 end
 
-function M.setup()
-  vim.opt.statusline = "%!v:lua.require('modules.statusline').statusline()"
-end
-
-M.setup()
-
-return M
+return {
+  name = 'statusline',
+  dir = vim.fn.stdpath('config'),
+  lazy = false,
+  config = function()
+    _G._statusline = M.statusline
+    vim.opt.statusline = '%!v:lua._statusline()'
+  end,
+}
