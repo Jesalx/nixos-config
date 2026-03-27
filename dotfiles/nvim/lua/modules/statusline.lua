@@ -187,7 +187,7 @@ function M.statusline()
 end
 
 function M.setup()
-  vim.opt.statusline = "%!v:lua.require('statusline').statusline()"
+  vim.opt.statusline = "%!v:lua.require('modules.statusline').statusline()"
 end
 
 M.setup()
