@@ -1,12 +1,14 @@
 -- Custom 2-character motion plugin.
 --   s + 2 chars: jump forward to match
 --   S + 2 chars: jump backward to match
---   ; : repeat forward (always later in file)
---   , : repeat backward (always earlier in file)
--- Case insensitive. All matches highlighted via the search register,
--- so :nohlsearch (<Esc>) clears them naturally.
+--   ; / , : repeat seek or native f/F/t/T (whichever was most recent)
+-- Case insensitive. All matches highlighted via matchadd,
+-- cleared on the next cursor movement.
 
 local last_pattern = nil
+local active = false
+local match_id = nil
+local seeking = false
 
 local function find_matches(bufnr, pattern)
   local matches = {}
@@ -27,7 +29,6 @@ local function find_matches(bufnr, pattern)
   return matches
 end
 
---- Find the index of the nearest match strictly in the given direction.
 --- @param matches table[] {row, col} pairs (0-indexed)
 --- @param row number 0-indexed cursor row
 --- @param col number 0-indexed cursor column
@@ -51,6 +52,20 @@ local function find_nearest(matches, row, col, direction)
   return nil
 end
 
+local function set_highlights(pattern)
+  if match_id then
+    pcall(vim.fn.matchdelete, match_id)
+  end
+  match_id = vim.fn.matchadd('Search', '\\c\\V' .. vim.fn.escape(pattern, '\\'))
+end
+
+local function clear_highlights()
+  if match_id then
+    pcall(vim.fn.matchdelete, match_id)
+    match_id = nil
+  end
+end
+
 local function jump_to_match(pattern, direction)
   local matches = find_matches(vim.api.nvim_get_current_buf(), pattern)
   if #matches == 0 then return end
@@ -58,12 +73,13 @@ local function jump_to_match(pattern, direction)
   local cursor = vim.api.nvim_win_get_cursor(0)
   local idx = find_nearest(matches, cursor[1] - 1, cursor[2], direction)
 
-  vim.fn.setreg('/', '\\c\\V' .. vim.fn.escape(pattern, '\\'))
-  vim.v.hlsearch = 1
+  set_highlights(pattern)
 
   if idx then
     local m = matches[idx]
+    seeking = true
     vim.api.nvim_win_set_cursor(0, { m[1] + 1, m[2] })
+    vim.schedule(function() seeking = false end)
   end
 end
 
@@ -77,6 +93,7 @@ local function seek(direction)
   if not ok2 or c2 == esc then return end
 
   last_pattern = c1 .. c2
+  active = true
   jump_to_match(last_pattern, direction)
 end
 
@@ -87,12 +104,38 @@ local function repeat_seek(direction)
 end
 
 return {
-  name = 'seek',
-  dir = vim.fn.stdpath('config'),
+  'seek',
+  virtual = true,
   keys = {
     { 's', function() seek(1) end, mode = { 'n', 'x', 'o' } },
     { 'S', function() seek(-1) end, mode = { 'n', 'x', 'o' } },
-    { ';', function() repeat_seek(1) end, mode = { 'n', 'x', 'o' } },
-    { ',', function() repeat_seek(-1) end, mode = { 'n', 'x', 'o' } },
   },
+  config = function()
+    for _, key in ipairs({ 'f', 'F', 't', 'T' }) do
+      vim.keymap.set({ 'n', 'x', 'o' }, key, function()
+        active = false
+        return key
+      end, { expr = true })
+    end
+
+    vim.keymap.set({ 'n', 'x', 'o' }, ';', function()
+      if active then repeat_seek(1) else vim.api.nvim_feedkeys(';', 'n', false) end
+    end)
+    vim.keymap.set({ 'n', 'x', 'o' }, ',', function()
+      if active then repeat_seek(-1) else vim.api.nvim_feedkeys(',', 'n', false) end
+    end)
+
+    vim.keymap.set('n', '<Esc>', function()
+      clear_highlights()
+      vim.cmd.nohlsearch()
+    end)
+
+    vim.api.nvim_create_autocmd('CursorMoved', {
+      group = vim.api.nvim_create_augroup('seek', { clear = true }),
+      callback = function()
+        if seeking then return end
+        clear_highlights()
+      end,
+    })
+  end,
 }

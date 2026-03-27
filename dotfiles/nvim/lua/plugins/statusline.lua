@@ -180,8 +180,8 @@ function M.statusline()
 end
 
 return {
-  name = 'statusline',
-  dir = vim.fn.stdpath('config'),
+  'statusline',
+  virtual = true,
   lazy = false,
   config = function()
     _G._statusline = M.statusline

@@ -1,6 +1,6 @@
 return {
-  name = 'go-doc',
-  dir = vim.fn.stdpath('config'),
+  'go-doc',
+  virtual = true,
   lazy = false,
   keys = {
     {
