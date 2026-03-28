@@ -46,6 +46,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Enable spell checking for prose filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('jesal/spell', {}),
+  desc = 'Enable spell checking for prose filetypes',
+  pattern = { 'gitcommit', 'markdown', 'plaintex', 'tex', 'text' },
+  callback = function()
+    vim.opt_local.spell = true
+  end,
+})
+
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('jesal/close_with_q', {}),

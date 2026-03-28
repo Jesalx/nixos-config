@@ -101,3 +101,6 @@ vim.opt.ruler = false
 vim.opt.shiftround = true
 
 vim.opt.shortmess:append('I')
+
+-- Set spell language
+vim.opt.spelllang = { 'en' }
