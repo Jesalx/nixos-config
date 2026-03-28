@@ -142,6 +142,7 @@ return {
       function()
         seek(1)
       end,
+      desc = 'Seek forward',
       mode = { 'n', 'x', 'o' },
     },
     {
@@ -149,6 +150,7 @@ return {
       function()
         seek(-1)
       end,
+      desc = 'Seek backward',
       mode = { 'n', 'x', 'o' },
     },
   },
@@ -167,14 +169,14 @@ return {
       else
         vim.api.nvim_feedkeys(';', 'n', false)
       end
-    end)
+    end, { desc = 'Next seek/f/t/F/T' })
     vim.keymap.set({ 'n', 'x', 'o' }, ',', function()
       if active then
         repeat_seek(-1)
       else
         vim.api.nvim_feedkeys(',', 'n', false)
       end
-    end)
+    end, { desc = 'Prev seek/f/t/F/T' })
 
     vim.keymap.set('n', '<Esc>', function()
       clear_highlights()
