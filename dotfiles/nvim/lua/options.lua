@@ -35,6 +35,7 @@ vim.opt.breakindent = true
 
 -- Save undo history
 vim.opt.undofile = true
+vim.opt.undolevels = 10000
 
 -- Use spaces instead of tabs
 vim.opt.expandtab = true
@@ -85,5 +86,18 @@ vim.opt.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+
+-- Use ripgrep for the built-in :grep command
+vim.opt.grepformat = '%f:%l:%c:%m'
+vim.opt.grepprg = 'rg --vimgrep'
+
+-- Restore viewport when jumping with <C-o>/<C-i>
+vim.opt.jumpoptions = 'view'
+
+-- Disable the default ruler, already shown in the statusline
+vim.opt.ruler = false
+
+-- Round indent to nearest multiple of shiftwidth
+vim.opt.shiftround = true
 
 vim.opt.shortmess:append('I')
