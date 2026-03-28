@@ -279,20 +279,13 @@ return {
       desc = '[S]earch Recent Files (["."] for repeat)',
     },
 
-    -- Word + Grep
+    -- Word
     {
       '<leader>sw',
       function()
         Snacks.picker.grep_word()
       end,
       desc = '[S]earch current [W]ord',
-    },
-    {
-      '<leader>sg',
-      function()
-        Snacks.picker.grep()
-      end,
-      desc = '[S]earch by [G]rep',
     },
 
     -- LSP + diagnostics

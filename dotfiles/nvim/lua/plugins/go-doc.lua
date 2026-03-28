@@ -4,7 +4,7 @@ return {
   lazy = false,
   keys = {
     {
-      '<leader>sG',
+      '<leader>sg',
       function()
         local origin_buf = vim.api.nvim_get_current_buf()
         Snacks.picker.pick({
