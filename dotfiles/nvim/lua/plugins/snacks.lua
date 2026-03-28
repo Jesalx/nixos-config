@@ -1,16 +1,9 @@
 local uname = vim.uv.os_uname()
-local is_darwin = uname.sysname == 'Darwin'
 
-local dashboard_icons = {
-  neovim = '',
-  apple = '󰀵',
+local distro_icons = {
   nixos = '󱄅',
   arch = '󰣇',
 }
-
-local function cmd(s)
-  return (vim.fn.system(s):gsub('%s+$', ''))
-end
 
 local function pad(s, width)
   s = tostring(s or '')
@@ -22,14 +15,9 @@ local function pad(s, width)
   return s
 end
 
-local function os_info()
-  if is_darwin then
-    local out = cmd('sw_vers')
-    local name = out:match('ProductName:%s*(.-)%s*\n') or 'macOS'
-    local version = out:match('ProductVersion:%s*(.-)%s*\n') or ''
-    return string.format('%s %s %s', dashboard_icons.apple, name, version)
-  end
+-- Pre-compute static values (these don't change within a session)
 
+local os_info = (function()
   local f = io.open('/etc/os-release', 'r')
   if f then
     local content = f:read('*a')
@@ -39,28 +27,30 @@ local function os_info()
     local pretty = content:match('PRETTY_NAME="([^"]+)"') or id
     pretty = pretty:gsub('%s*%b()', '')
 
-    local icon = dashboard_icons[id:lower()] or ''
+    local icon = distro_icons[id:lower()] or ''
 
     return string.format('%s %s', icon, pretty)
   end
 
   return uname.sysname
-end
+end)()
 
-local function nvim_version()
+local nvim_version = (function()
   local v = vim.version()
-  return string.format('%s %d.%d.%d', dashboard_icons.neovim, v.major, v.minor, v.patch)
-end
+  return string.format(' %d.%d.%d', v.major, v.minor, v.patch)
+end)()
 
-local function ip_info()
-  if is_darwin then
-    local ip = cmd('ipconfig getifaddr en0 || ipconfig getifaddr en1')
-    return ip ~= '' and ip or 'N/A'
+local ip_info = (function()
+  local addrs = vim.uv.interface_addresses()
+  for _, iface in pairs(addrs) do
+    for _, addr in ipairs(iface) do
+      if not addr.internal and addr.family == 'inet' then
+        return addr.ip
+      end
+    end
   end
-  local raw = cmd('hostname -I')
-  local ip = raw:match('%S+') or 'N/A'
-  return ip
-end
+  return 'N/A'
+end)()
 
 local function lazy_info()
   local ok, lazy = pcall(require, 'lazy')
@@ -81,7 +71,7 @@ local function system_box()
     { 'USER', vim.uv.os_get_passwd().username },
     { 'KERNEL', uname.release },
     { 'SHELL', vim.env.SHELL and vim.fn.fnamemodify(vim.env.SHELL, ':t') or '??' },
-    { 'IP', ip_info() },
+    { 'IP', ip_info },
     { 'PKGS', pkgs },
     { 'START', startup },
   }
@@ -115,7 +105,7 @@ local function dashboard_header()
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
 
-  return header .. '\n\n' .. os_info() .. '  |  ' .. nvim_version() .. '\n\n' .. system_box()
+  return header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box()
 end
 
 return {
