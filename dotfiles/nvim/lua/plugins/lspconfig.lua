@@ -318,7 +318,8 @@ return {
           return
         end
 
-        client.request('signInInitiate', nil, function(err, result)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        client:request('signInInitiate', nil, function(err, result)
           if err then
             vim.notify('Copilot sign in error: ' .. vim.inspect(err), vim.log.levels.ERROR)
             return
@@ -332,7 +333,8 @@ return {
             )
             vim.notify(message, vim.log.levels.INFO)
 
-            client.request('signInConfirm', { userCode = result.userCode }, function(confirm_err, confirm_result)
+            ---@diagnostic disable-next-line: param-type-mismatch
+            client:request('signInConfirm', { userCode = result.userCode }, function(confirm_err, confirm_result)
               if confirm_err then
                 vim.notify('Copilot sign in confirmation error: ' .. vim.inspect(confirm_err), vim.log.levels.ERROR)
                 return
@@ -355,7 +357,8 @@ return {
           return
         end
 
-        client.request('signOut', nil, function(err, result)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        client:request('signOut', nil, function(err, _)
           if err then
             vim.notify('Copilot sign out error: ' .. vim.inspect(err), vim.log.levels.ERROR)
             return
