@@ -37,7 +37,7 @@ end)()
 
 local nvim_version = (function()
   local v = vim.version()
-  return string.format(' %d.%d.%d', v.major, v.minor, v.patch)
+  return string.format(' %d.%d.%d', v.major, v.minor, v.patch)
 end)()
 
 local ip_info = (function()
