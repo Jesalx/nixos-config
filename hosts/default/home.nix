@@ -1,13 +1,9 @@
 {
-  inputs,
   outputs,
-  lib,
-  config,
   pkgs,
   userConfig,
   ...
-}: 
-{
+}: {
   imports = [outputs.homeManagerModules];
 
   home = {

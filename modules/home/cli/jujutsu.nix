@@ -58,7 +58,7 @@ in {
           private-commits = "description(glob:'private:*')";
         };
 
-       remotes = {
+        remotes = {
           origin = {
             auto-track-bookmarks = "glob:*";
           };

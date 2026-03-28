@@ -2,7 +2,6 @@
   inputs,
   outputs,
   lib,
-  config,
   pkgs,
   userConfig,
   ...
@@ -20,12 +19,13 @@
     ./hardware-configuration.nix
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use most recent linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
   nixpkgs = {
     overlays = [
@@ -90,9 +90,11 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  networking.hostName = userConfig.hostName;
-  networking.networkmanager.enable = true;
-  networking.iproute2.enable = true;
+  networking = {
+    inherit (userConfig) hostName;
+    networkmanager.enable = true;
+    iproute2.enable = true;
+  };
 
   users.users = {
     ${userConfig.user} = {
@@ -119,29 +121,37 @@
     };
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
+  services = {
+    xserver = {
+      enable = true;
+      xkb.layout = "us";
+      xkb.variant = "";
+    };
+    displayManager.gdm.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    tailscale.enable = true;
+    ivpn.enable = true;
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
   };
 
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
-  # Install fish and zsh
-  programs.fish.enable = true;
-  programs.zsh.enable = true;
+  programs = {
+    fish.enable = true;
+    zsh.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [];
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     ghostty
@@ -151,16 +161,6 @@
     pulseaudio
     ivpn-ui
   ];
-
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [];
-  };
-
-  services.tailscale.enable = true;
-  services.ivpn.enable = true;
-  services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
   # Docker
   virtualisation.docker = {

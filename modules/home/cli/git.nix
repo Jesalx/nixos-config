@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   userConfig,
@@ -26,9 +25,11 @@ in {
     programs.git = {
       enable = true;
       settings = {
-        user.name = "Jesal Patel";
-        user.email = userConfig.gitEmail;
-        user.signingkey = sshKeyPath;
+        user = {
+          name = "Jesal Patel";
+          email = userConfig.gitEmail;
+          signingkey = sshKeyPath;
+        };
         core.editor = "nvim";
         github.user = "jesalx";
         push.autoSetupRemote = true;

@@ -48,12 +48,12 @@
       };
     };
     overlays = {
-      helium = final: prev: {
+      helium = final: _: {
         helium = final.callPackage ./packages/helium {};
       };
     };
   in {
-    overlays = overlays;
+    inherit overlays;
 
     homeManagerModules = ./modules/home;
 

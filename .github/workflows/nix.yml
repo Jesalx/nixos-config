@@ -1,0 +1,54 @@
+name: nix
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.nix'
+      - 'flake.lock'
+      - '.github/workflows/nix.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.nix'
+      - 'flake.lock'
+      - '.github/workflows/nix.yml'
+  workflow_dispatch:
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check formatting
+        run: nix run nixpkgs#alejandra -- --check .
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Statix
+        run: nix run nixpkgs#statix -- check --ignore 'hosts/default/hardware-configuration.nix' .
+      - name: Deadnix
+        run: nix run nixpkgs#deadnix -- --fail --exclude hosts/default/hardware-configuration.nix .
+  check:
+    name: Flake check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Evaluate flake
+        run: nix flake check --no-build

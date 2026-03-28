@@ -31,6 +31,8 @@
       fd
       fzf
       alejandra
+      statix
+      deadnix
       jq
       bat
       terraform
