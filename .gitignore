@@ -1,4 +1,5 @@
 dotfiles/nvim/lazy-lock.json
+dotfiles/nvim/spell/*.spl
 combined_output.txt
 mprocs.log
 dotfiles/claude/agents/sun-*/

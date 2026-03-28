@@ -52,7 +52,16 @@ vim.api.nvim_create_autocmd('FileType', {
   desc = 'Enable spell checking for prose filetypes',
   pattern = { 'gitcommit', 'markdown', 'plaintex', 'tex', 'text' },
   callback = function()
+    local spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
     vim.opt_local.spell = true
+    vim.opt_local.spellfile = spellfile
+
+    -- Recompile the custom word list when the .add file is newer than the .spl
+    local add_stat = vim.uv.fs_stat(spellfile)
+    local spl_stat = vim.uv.fs_stat(spellfile .. '.spl')
+    if add_stat and (not spl_stat or add_stat.mtime.sec > spl_stat.mtime.sec) then
+      vim.cmd.mkspell({ spellfile, bang = true, mods = { silent = true } })
+    end
   end,
 })
 
