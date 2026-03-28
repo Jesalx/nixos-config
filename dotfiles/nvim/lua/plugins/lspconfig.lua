@@ -7,8 +7,8 @@ return {
     ft = 'lua',
     opts = {
       library = {
-        -- Load luvit types when the `vim.uv` word is found
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        { path = 'snacks.nvim', words = { 'Snacks' } },
       },
     },
   },
@@ -150,26 +150,12 @@ return {
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
-          },
-        },
+        signs = { text = require('icons').diagnostic_signs },
         virtual_text = {
           source = 'if_many',
           spacing = 2,
         },
-        status = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚',
-            [vim.diagnostic.severity.WARN] = '󰀪',
-            [vim.diagnostic.severity.INFO] = '󰋽',
-            [vim.diagnostic.severity.HINT] = '󰌶',
-          },
-        },
+        status = { text = require('icons').diagnostic_status },
       })
 
       -- LSP servers and clients are able to communicate to each other what features they support.
@@ -245,10 +231,7 @@ return {
           settings = {
             Lua = {
               diagnostics = {
-                globals = { 'vim', 'Snacks' },
-              },
-              workspace = {
-                checkThirdParty = false,
+                disable = { 'param-type-mismatch', 'missing-fields' },
               },
               telemetry = {
                 enable = false,
@@ -319,7 +302,6 @@ return {
           return
         end
 
-        ---@diagnostic disable-next-line: param-type-mismatch
         client:request('signInInitiate', nil, function(err, result)
           if err then
             vim.notify('Copilot sign in error: ' .. vim.inspect(err), vim.log.levels.ERROR)
@@ -334,7 +316,6 @@ return {
             )
             vim.notify(message, vim.log.levels.INFO)
 
-            ---@diagnostic disable-next-line: param-type-mismatch
             client:request('signInConfirm', { userCode = result.userCode }, function(confirm_err, confirm_result)
               if confirm_err then
                 vim.notify('Copilot sign in confirmation error: ' .. vim.inspect(confirm_err), vim.log.levels.ERROR)
@@ -358,7 +339,6 @@ return {
           return
         end
 
-        ---@diagnostic disable-next-line: param-type-mismatch
         client:request('signOut', nil, function(err, _)
           if err then
             vim.notify('Copilot sign out error: ' .. vim.inspect(err), vim.log.levels.ERROR)

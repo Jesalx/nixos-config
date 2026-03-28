@@ -1,9 +1,5 @@
+local icons = require('icons')
 local uname = vim.uv.os_uname()
-
-local distro_icons = {
-  nixos = '󱄅',
-  arch = '󰣇',
-}
 
 local function pad(s, width)
   s = tostring(s or '')
@@ -27,7 +23,7 @@ local os_info = (function()
     local pretty = content:match('PRETTY_NAME="([^"]+)"') or id
     pretty = pretty:gsub('%s*%b()', '')
 
-    local icon = distro_icons[id:lower()] or ''
+    local icon = icons.distros[id:lower()] or ''
 
     return string.format('%s %s', icon, pretty)
   end
@@ -37,7 +33,7 @@ end)()
 
 local nvim_version = (function()
   local v = vim.version()
-  return string.format(' %d.%d.%d', v.major, v.minor, v.patch)
+  return string.format('%s %d.%d.%d', icons.nvim, v.major, v.minor, v.patch)
 end)()
 
 local ip_info = (function()
@@ -124,7 +120,7 @@ return {
       preset = {
         keys = {
           {
-            icon = ' ',
+            icon = icons.dashboard.find_file,
             key = 'f',
             desc = 'Find File',
             action = function()
@@ -132,7 +128,7 @@ return {
             end,
           },
           {
-            icon = ' ',
+            icon = icons.dashboard.find_text,
             key = '/',
             desc = 'Find Text',
             action = function()
@@ -140,7 +136,7 @@ return {
             end,
           },
           {
-            icon = ' ',
+            icon = icons.dashboard.new_file,
             key = 'n',
             desc = 'New File',
             action = function()
@@ -148,7 +144,7 @@ return {
             end,
           },
           {
-            icon = ' ',
+            icon = icons.dashboard.config,
             key = 'c',
             desc = 'Config',
             action = function()
@@ -156,7 +152,7 @@ return {
             end,
           },
           {
-            icon = '󰒲 ',
+            icon = icons.dashboard.lazy,
             key = 'l',
             desc = 'Lazy',
             action = function()
@@ -164,7 +160,7 @@ return {
             end,
           },
           {
-            icon = ' ',
+            icon = icons.dashboard.quit,
             key = 'q',
             desc = 'Quit',
             action = function()

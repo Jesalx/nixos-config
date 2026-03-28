@@ -1,9 +1,4 @@
-local diagnostic_icons = {
-  [vim.diagnostic.severity.ERROR] = { icon = '󰅚', hl = 'DiagnosticError' },
-  [vim.diagnostic.severity.WARN] = { icon = '󰀪', hl = 'DiagnosticWarn' },
-  [vim.diagnostic.severity.INFO] = { icon = '󰋽', hl = 'DiagnosticInfo' },
-  [vim.diagnostic.severity.HINT] = { icon = '󰌶', hl = 'DiagnosticHint' },
-}
+local diagnostic_icons = require('icons').diagnostics
 
 local diagnostic_order = {
   vim.diagnostic.severity.ERROR,

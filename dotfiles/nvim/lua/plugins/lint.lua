@@ -5,6 +5,12 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require('lint')
+      -- Run selene from the nearest ancestor containing selene.toml,
+      -- so it picks up our config even for files in subdirectories.
+      local selene = lint.linters.selene
+      selene.cwd = vim.fn.fnamemodify(vim.fn.findfile('selene.toml', '.;'), ':p:h')
+      lint.linters.selene = selene
+
       lint.linters_by_ft = {
         lua = { 'selene' },
         markdown = { 'markdownlint' },
@@ -21,7 +27,10 @@ return {
         local args = { 'run' }
         local project_cfg = vim.fn.findfile('.golangci.yml', vim.fn.getcwd() .. ';')
         if project_cfg ~= '' then
-          vim.list_extend(args, { '--config', vim.fn.fnamemodify(project_cfg, ':p') })
+          vim.list_extend(args, {
+            '--config',
+            vim.fn.fnamemodify(project_cfg, ':p'),
+          })
         else
           local user_cfg = vim.fn.expand('~/.config/golangci-lint/config.yml')
           if vim.fn.filereadable(user_cfg) == 1 then
