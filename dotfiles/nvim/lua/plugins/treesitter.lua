@@ -2,6 +2,7 @@ return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
+    build = ':TSUpdate',
     config = function()
       local filetypes = {
         'bash',
