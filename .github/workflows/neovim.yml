@@ -1,5 +1,4 @@
-name: Neovim
-
+name: neovim
 on:
   push:
     branches: [main]
@@ -12,8 +11,19 @@ on:
       - 'dotfiles/nvim/**'
       - '.github/workflows/neovim.yml'
   workflow_dispatch:
-
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install stylua
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check dotfiles/nvim
   test:
     name: Neovim (${{ matrix.nvim-version }})
     runs-on: ubuntu-latest
@@ -25,16 +35,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Install Neovim
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
           version: ${{ matrix.nvim-version }}
-
       - name: Show Neovim version
         run: nvim --version
-
       - name: Test config loads without errors
         run: |
           cd dotfiles/nvim
