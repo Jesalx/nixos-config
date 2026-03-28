@@ -286,6 +286,7 @@ return {
 
         -- Linters
         'golangci-lint',
+        'selene',
         'yamllint',
         'tflint',
         'markdownlint',
