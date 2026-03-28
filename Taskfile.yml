@@ -27,6 +27,8 @@ tasks:
       - deadnix --fail --exclude hosts/default/hardware-configuration.nix .
       - stylua --check dotfiles/nvim
       - cd dotfiles/nvim && selene .
+      - actionlint
+      - nix flake check --no-build
   clean:
     desc: Clean old generations and run garbage collection
     dir: /home/jesal/nixos-config
