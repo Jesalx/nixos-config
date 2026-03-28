@@ -41,14 +41,14 @@ return {
         },
       })
 
+      -- Delete default LSP keymaps that conflict with custom mappings
+      for _, k in ipairs({ 'gra', 'grn', 'grr', 'gri', 'grt' }) do
+        pcall(vim.keymap.del, 'n', k)
+      end
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('jesal/lsp-attach', { clear = true }),
         callback = function(event)
-          -- Delete default LSP keymaps that conflict with custom mappings
-          for _, k in ipairs({ 'gra', 'grn', 'grr', 'gri', 'grt' }) do
-            pcall(vim.keymap.del, 'n', k)
-          end
-
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = event.buf, desc = '[R]e[n]ame' })
