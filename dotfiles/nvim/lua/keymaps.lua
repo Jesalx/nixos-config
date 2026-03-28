@@ -27,9 +27,6 @@ vim.keymap.set('n', '<leader>D', function()
 end, { desc = '[D]elete buffer content' })
 vim.keymap.set('n', '<leader>y', ':%y<CR>', { desc = '[Y]ank buffer' })
 
--- Toggle autoformat on save
-vim.keymap.set('n', '<leader>tf', '<cmd>ToggleFormat<CR>', { desc = '[T]oggle [F]ormat on save' })
-
 -- Restart Neovim
 vim.keymap.set('n', '<leader>R', '<cmd>restart<cr>', { desc = '[R]estart Neovim' })
 

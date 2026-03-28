@@ -16,7 +16,6 @@ return {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        -- Check if autoformat is disabled globally
         if not vim.g.autoformat then
           return nil
         end
@@ -45,8 +44,17 @@ return {
       },
     },
     init = function()
-      -- Start auto-formatting by default (disable with ToggleFormat command)
       vim.g.autoformat = true
+
+      require('snacks.toggle')({
+        name = 'Format on Save',
+        get = function()
+          return vim.g.autoformat
+        end,
+        set = function(state)
+          vim.g.autoformat = state
+        end,
+      }):map('<leader>tf')
     end,
   },
 }
