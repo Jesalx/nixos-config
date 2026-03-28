@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install selene
         run: |
-          gh release download --repo Kampfkarren/selene -p 'selene-light-*-linux-x86_64.zip' -O /tmp/selene.zip
+          gh release download --repo Kampfkarren/selene -p 'selene-light-*-linux.zip' -O /tmp/selene.zip
           unzip /tmp/selene.zip -d /usr/local/bin/
           chmod +x /usr/local/bin/selene
         env:
