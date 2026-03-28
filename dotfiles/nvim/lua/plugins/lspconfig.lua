@@ -268,6 +268,7 @@ return {
         'yamlfmt',
         'shfmt',
         'biome',
+        'codespell',
         'prettier',
         'prettierd',
         'ruff',

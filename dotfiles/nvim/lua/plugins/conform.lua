@@ -7,7 +7,7 @@ return {
       {
         '<leader>f',
         function()
-          require('conform').format({ async = true, lsp_format = 'fallback' })
+          require('conform').format({ async = true })
         end,
         mode = '',
         desc = '[F]ormat buffer',
@@ -15,11 +15,14 @@ return {
     },
     opts = {
       notify_on_error = false,
+      default_format_opts = {
+        lsp_format = 'fallback',
+      },
       format_on_save = function(_bufnr)
         if not vim.g.autoformat then
           return nil
         end
-        return { timeout_ms = 500, lsp_format = 'fallback' }
+        return { timeout_ms = 500 }
       end,
 
       formatters = {
@@ -42,6 +45,7 @@ return {
         rust = { 'rustfmt', lsp_format = 'prefer' },
         terraform = { 'terraform_fmt' },
         ['terraform-vars'] = { 'terraform_fmt' },
+        ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace', 'trim_newlines' },
       },
     },
