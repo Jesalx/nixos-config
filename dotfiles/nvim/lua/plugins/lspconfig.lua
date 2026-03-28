@@ -38,6 +38,7 @@ return {
         pattern = {
           ['.*/templates/.*%.yaml'] = 'helm',
           ['.*/templates/.*%.tpl'] = 'helm',
+          ['.*/%.github/workflows/.*%.ya?ml'] = 'yaml.ghaction',
         },
       })
 
@@ -268,6 +269,7 @@ return {
         'ruff',
 
         -- Linters
+        'actionlint',
         'golangci-lint',
         'selene',
         'yamllint',

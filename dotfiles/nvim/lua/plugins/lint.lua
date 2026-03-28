@@ -17,6 +17,7 @@ return {
         go = { 'golangcilint' },
         terraform = { 'tflint' },
         yaml = { 'yamllint' },
+        ghaction = { 'actionlint' },
       }
 
       -- Config resolution: project-level (.golangci.yml walking up from cwd) >

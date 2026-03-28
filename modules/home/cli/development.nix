@@ -35,6 +35,7 @@
       deadnix
       stylua
       selene
+      actionlint
       jq
       bat
       terraform
