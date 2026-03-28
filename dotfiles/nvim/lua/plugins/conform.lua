@@ -46,6 +46,7 @@ return {
       },
     },
     init = function()
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       vim.g.autoformat = true
 
       require('snacks.toggle')({
