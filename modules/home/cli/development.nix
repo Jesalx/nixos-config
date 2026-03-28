@@ -33,6 +33,7 @@
       alejandra
       statix
       deadnix
+      biome
       stylua
       selene
       actionlint

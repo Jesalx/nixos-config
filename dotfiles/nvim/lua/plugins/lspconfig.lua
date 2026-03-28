@@ -216,6 +216,8 @@ return {
         },
         ruff = {},
 
+        clangd = {},
+
         terraformls = {},
 
         helm_ls = {
@@ -255,6 +257,7 @@ return {
         'yaml-language-server',
         'json-lsp',
         'pyright',
+        'clangd',
         'copilot-language-server',
         'lua-language-server',
 
@@ -264,6 +267,7 @@ return {
         'gofumpt',
         'yamlfmt',
         'shfmt',
+        'biome',
         'prettier',
         'prettierd',
         'ruff',
