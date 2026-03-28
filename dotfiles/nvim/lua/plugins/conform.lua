@@ -16,13 +16,14 @@ return {
     opts = {
       notify_on_error = false,
       default_format_opts = {
+        timeout_ms = 500,
         lsp_format = 'fallback',
       },
-      format_on_save = function(_bufnr)
+      format_on_save = function(_)
         if not vim.g.autoformat then
           return nil
         end
-        return { timeout_ms = 500 }
+        return {}
       end,
 
       formatters = {
