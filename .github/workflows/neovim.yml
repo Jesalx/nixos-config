@@ -12,18 +12,35 @@ on:
       - '.github/workflows/neovim.yml'
   workflow_dispatch:
 jobs:
+  format:
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check formatting
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check dotfiles/nvim
   lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Install selene
+        run: |
+          gh release download --repo Kampfkarren/selene -p 'selene-light-*-linux-x86_64.zip' -O /tmp/selene.zip
+          unzip /tmp/selene.zip -d /usr/local/bin/
+          chmod +x /usr/local/bin/selene
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Lint
-        uses: JohnnyMorganz/stylua-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: latest
-          args: --check dotfiles/nvim
+        run: |
+          cd dotfiles/nvim
+          selene .
   test:
     name: neovim (${{ matrix.nvim-version }})
     runs-on: ubuntu-latest

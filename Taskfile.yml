@@ -19,12 +19,14 @@ tasks:
       - git add --intent-to-add .
       - nh os switch -u --hostname default .
   lint:
-    desc: Run Nix formatting and linting checks
+    desc: Run formatting and linting checks
     dir: /home/jesal/nixos-config
     cmds:
       - alejandra --check .
       - statix check --ignore 'hosts/default/hardware-configuration.nix' .
       - deadnix --fail --exclude hosts/default/hardware-configuration.nix .
+      - stylua --check dotfiles/nvim
+      - cd dotfiles/nvim && selene .
   clean:
     desc: Clean old generations and run garbage collection
     dir: /home/jesal/nixos-config

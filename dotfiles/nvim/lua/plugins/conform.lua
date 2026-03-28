@@ -15,7 +15,7 @@ return {
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(bufnr)
+      format_on_save = function(_bufnr)
         if not vim.g.autoformat then
           return nil
         end

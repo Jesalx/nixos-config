@@ -33,6 +33,8 @@
       alejandra
       statix
       deadnix
+      stylua
+      selene
       jq
       bat
       terraform

@@ -1,0 +1,10 @@
+std = "lua51"
+
+[lints]
+# lazy.nvim plugin specs intentionally mix array and dictionary entries
+mixed_table = "allow"
+# neovim configs use _G to expose functions to vimscript via v:lua
+global_usage = "allow"
+# lua_ls + lazydev.nvim handles these with full type information
+undefined_variable = "allow"
+unscoped_variables = "allow"
