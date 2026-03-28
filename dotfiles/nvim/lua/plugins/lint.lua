@@ -9,6 +9,7 @@ return {
         markdown = { 'markdownlint' },
         go = { 'golangcilint' },
         terraform = { 'tflint' },
+        yaml = { 'yamllint' },
       }
 
       -- Config resolution: project-level (.golangci.yml walking up from cwd) >
