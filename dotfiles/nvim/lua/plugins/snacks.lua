@@ -315,6 +315,14 @@ return {
     },
 
     {
+      '<leader>u',
+      function()
+        Snacks.picker.undo()
+      end,
+      desc = '[U]ndo History',
+    },
+
+    {
       '<leader>n',
       function()
         Snacks.picker.notifications()
