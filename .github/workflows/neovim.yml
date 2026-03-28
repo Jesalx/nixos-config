@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 jobs:
   lint:
-    name: Lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,7 +25,7 @@ jobs:
           version: latest
           args: --check dotfiles/nvim
   test:
-    name: Neovim (${{ matrix.nvim-version }})
+    name: neovim (${{ matrix.nvim-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:

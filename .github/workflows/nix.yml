@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 jobs:
   format:
-    name: Format
+    name: format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       - name: Check formatting
         run: nix run nixpkgs#alejandra -- --check .
   lint:
-    name: Lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
       - name: Deadnix
         run: nix run nixpkgs#deadnix -- --fail --exclude hosts/default/hardware-configuration.nix .
   check:
-    name: Flake check
+    name: flake check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
