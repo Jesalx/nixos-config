@@ -14,23 +14,6 @@ return {
       long_message_to_split = true,
       lsp_doc_border = true,
     },
-    views = {
-      cmdline_popup = {
-        border = {
-          style = 'rounded',
-        },
-      },
-      popupmenu = {
-        border = {
-          style = 'rounded',
-        },
-      },
-      confirm = {
-        border = {
-          style = 'rounded',
-        },
-      },
-    },
   },
   dependencies = {
     'MunifTanjim/nui.nvim',

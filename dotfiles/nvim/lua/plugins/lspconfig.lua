@@ -22,11 +22,7 @@ return {
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       {
         'mason-org/mason.nvim',
-        opts = {
-          ui = {
-            border = 'rounded',
-          },
-        },
+        opts = {},
       },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -43,7 +39,7 @@ return {
       })
 
       -- Delete default LSP keymaps that conflict with custom mappings
-      for _, k in ipairs({ 'gra', 'grn', 'grr', 'gri', 'grt' }) do
+      for _, k in ipairs({ 'gra', 'grn', 'grr', 'gri', 'grt', 'grx' }) do
         pcall(vim.keymap.del, 'n', k)
       end
 
@@ -149,7 +145,7 @@ return {
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config({
         severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
+        float = { source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = { text = require('icons').diagnostic_signs },
         virtual_text = {

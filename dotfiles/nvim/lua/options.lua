@@ -104,3 +104,6 @@ vim.opt.shortmess:append('I')
 
 -- Set spell language
 vim.opt.spelllang = { 'en' }
+
+-- Set default border for all floating windows
+vim.opt.winborder = 'rounded'
