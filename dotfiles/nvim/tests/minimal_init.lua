@@ -5,6 +5,7 @@ vim.opt.runtimepath:append(root .. '/lua')
 
 package.path = package.path .. ';' .. root .. '/lua/?.lua'
 package.path = package.path .. ';' .. root .. '/lua/?/init.lua'
+package.path = package.path .. ';' .. root .. '/tests/?.lua'
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -28,11 +29,3 @@ vim.g.loaded_rrhelper = 1
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
-
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
-require('options')
-require('keymaps')
-
-print('✅ Config loaded successfully')

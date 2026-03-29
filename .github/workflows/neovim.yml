@@ -21,7 +21,7 @@ jobs:
       - name: Check formatting
         uses: JohnnyMorganz/stylua-action@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           version: latest
           args: --check dotfiles/nvim
   lint:
@@ -30,7 +30,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Cache selene
+        id: cache-selene
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/bin/selene
+          key: selene-${{ runner.os }}
       - name: Install selene
+        if: steps.cache-selene.outputs.cache-hit != 'true'
         run: |
           gh release download --repo Kampfkarren/selene -p 'selene-light-*-linux.zip' -O /tmp/selene.zip
           unzip /tmp/selene.zip -d /usr/local/bin/
@@ -59,7 +66,7 @@ jobs:
           version: ${{ matrix.nvim-version }}
       - name: Show Neovim version
         run: nvim --version
-      - name: Test config loads without errors
+      - name: Run tests
         run: |
           cd dotfiles/nvim
-          nvim --headless -u tests/minimal_init.lua +qa
+          nvim --headless -u tests/minimal_init.lua +"luafile tests/run.lua"
