@@ -238,6 +238,9 @@ return {
               diagnostics = {
                 disable = { 'param-type-mismatch', 'missing-fields' },
               },
+              workspace = {
+                library = { vim.env.VIMRUNTIME .. '/lua' },
+              },
               telemetry = {
                 enable = false,
               },
