@@ -23,6 +23,8 @@ path: **/.github/workflows/**
 - Never hardcode secrets — use `${{ secrets.* }}` or `${{ github.token }}`
 - Use `${{ github.token }}` (scoped to the repo) over `${{ secrets.GITHUB_TOKEN }}`
   where the default token permissions suffice
+- Prefer first-party (`actions/*`) and verified-creator actions over community
+  actions to reduce supply chain risk
 - Avoid `pull_request_target` unless you understand the security implications —
   prefer `pull_request` for PR-triggered workflows
 
