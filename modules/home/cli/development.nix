@@ -34,7 +34,6 @@
       statix
       deadnix
       biome
-      codespell
       stylua
       selene
       actionlint

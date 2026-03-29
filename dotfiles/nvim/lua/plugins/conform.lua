@@ -47,7 +47,6 @@ return {
         rust = { 'rustfmt', lsp_format = 'prefer' },
         terraform = { 'terraform_fmt' },
         ['terraform-vars'] = { 'terraform_fmt' },
-        ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace', 'trim_newlines' },
       },
     },
