@@ -214,7 +214,13 @@ return {
             pyright = { disableOrganizeImports = true },
           },
         },
-        ruff = {},
+        ruff = {
+          -- Disable hover; pyright provides richer type information.
+          -- Ruff hover only shows lint rule docs for `# noqa` comments.
+          on_attach = function(client)
+            client.server_capabilities.hoverProvider = false
+          end,
+        },
 
         clangd = {},
 

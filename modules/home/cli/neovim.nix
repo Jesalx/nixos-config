@@ -28,6 +28,8 @@ in {
         lua-language-server
         stylua
         mermaid-cli
+        pyright
+        ruff
       ];
     };
 
