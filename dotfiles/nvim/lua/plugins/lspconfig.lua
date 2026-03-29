@@ -274,8 +274,7 @@ return {
         'yamlfmt',
         'shfmt',
         'biome',
-        'prettier',
-        'prettierd',
+        'dprint',
         'ruff',
 
         -- Linters
