@@ -49,20 +49,14 @@ local ip_info = (function()
 end)()
 
 local function pack_info()
-  local lock_path = vim.fn.stdpath('config') .. '/nvim-pack-lock.json'
-  local count = 0
-  local f = io.open(lock_path, 'r')
-  if f then
-    local content = f:read('*a')
-    f:close()
-    local lock = vim.json.decode(content)
-    if lock and lock.plugins then
-      for _ in pairs(lock.plugins) do
-        count = count + 1
-      end
+  local plugins = vim.pack.get()
+  local active = 0
+  for _, p in ipairs(plugins) do
+    if p.active then
+      active = active + 1
     end
   end
-  return count .. ' plugins'
+  return active .. '/' .. #plugins .. ' plugins'
 end
 
 local _startup_ms
