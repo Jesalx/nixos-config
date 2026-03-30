@@ -11,6 +11,14 @@ return {
       selene.cwd = vim.fn.fnamemodify(vim.fn.findfile('selene.toml', '.;'), ':p:h')
       lint.linters.selene = selene
 
+      lint.linters.yamllint.args = {
+        '-d',
+        '{extends: default, rules: {document-start: disable, line-length: {max: 100}}}',
+        '-f',
+        'parsable',
+        '-',
+      }
+
       lint.linters_by_ft = {
         lua = { 'selene' },
         markdown = { 'markdownlint' },
