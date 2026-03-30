@@ -2,13 +2,14 @@
 --   s + 2 chars: jump forward to match
 --   S + 2 chars: jump backward to match
 --   ; / , : repeat seek or native f/F/t/T (whichever was most recent)
--- Case insensitive. All matches highlighted via matchadd,
+-- Case insensitive. All matches highlighted via extmarks,
 -- cleared on the next cursor movement.
 
 local last_pattern = nil
 local active = false
-local match_id = nil
 local seeking = false
+local ns = vim.api.nvim_create_namespace('jesal/seek')
+local highlighted_buf = nil
 
 --- @type { search_range: number|nil }
 local config = {
@@ -72,22 +73,27 @@ local function find_nearest(matches, row, col, direction)
   return nil
 end
 
-local function set_highlights(pattern)
-  if match_id then
-    pcall(vim.fn.matchdelete, match_id)
+local function clear_highlights()
+  if highlighted_buf and vim.api.nvim_buf_is_valid(highlighted_buf) then
+    vim.api.nvim_buf_clear_namespace(highlighted_buf, ns, 0, -1)
+    highlighted_buf = nil
   end
-  match_id = vim.fn.matchadd('Search', '\\c\\V' .. vim.fn.escape(pattern, '\\'))
 end
 
-local function clear_highlights()
-  if match_id then
-    pcall(vim.fn.matchdelete, match_id)
-    match_id = nil
+local function set_highlights(bufnr, matches, pattern_len)
+  clear_highlights()
+  for _, m in ipairs(matches) do
+    vim.api.nvim_buf_set_extmark(bufnr, ns, m[1], m[2], {
+      end_col = m[2] + pattern_len,
+      hl_group = 'Search',
+    })
   end
+  highlighted_buf = bufnr
 end
 
 local function jump_to_match(pattern, direction)
-  local matches = find_matches(vim.api.nvim_get_current_buf(), pattern)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local matches = find_matches(bufnr, pattern)
   if #matches == 0 then
     return
   end
@@ -95,7 +101,7 @@ local function jump_to_match(pattern, direction)
   local cursor = vim.api.nvim_win_get_cursor(0)
   local idx = find_nearest(matches, cursor[1] - 1, cursor[2], direction)
 
-  set_highlights(pattern)
+  set_highlights(bufnr, matches, #pattern)
 
   if idx then
     local m = matches[idx]

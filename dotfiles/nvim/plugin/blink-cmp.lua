@@ -1,7 +1,10 @@
 vim.api.nvim_create_autocmd('PackChanged', {
   callback = function(ev)
     if ev.data.spec.name == 'blink.cmp' and (ev.data.kind == 'install' or ev.data.kind == 'update') then
-      vim.system({ 'cargo', 'build', '--release' }, { cwd = ev.data.path }):wait()
+      local result = vim.system({ 'cargo', 'build', '--release' }, { cwd = ev.data.path }):wait()
+      if result.code ~= 0 then
+        vim.notify('blink.cmp: cargo build failed (exit ' .. result.code .. '). Falling back to Lua fuzzy matcher.', vim.log.levels.WARN)
+      end
     end
   end,
   desc = 'Build blink.cmp fuzzy matcher from source after install/update',
