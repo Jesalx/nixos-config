@@ -36,7 +36,6 @@ local nvim_version = (function()
   return string.format('%s %d.%d.%d', icons.nvim, v.major, v.minor, v.patch)
 end)()
 
-
 local function pack_info()
   local plugins = vim.pack.get()
   local active = 0
