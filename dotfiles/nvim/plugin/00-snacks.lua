@@ -164,7 +164,7 @@ require('snacks').setup({
           key = 'p',
           desc = 'Packages',
           action = function()
-            vim.pack.update(nil, { offline = true })
+            vim.pack.update()
           end,
         },
         {
