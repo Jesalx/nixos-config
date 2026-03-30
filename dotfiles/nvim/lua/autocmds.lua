@@ -1,5 +1,5 @@
 -- Toggle relative line numbers based on mode and focus
-local line_numbers_group = vim.api.nvim_create_augroup('jesal/toggle_line_numbers', {})
+local line_numbers_group = vim.api.nvim_create_augroup('jesal/toggle-line-numbers', {})
 vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'CmdlineLeave', 'WinEnter' }, {
   group = line_numbers_group,
   desc = 'Toggle relative line numbers on',
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('jesal/highlight_yank', {}),
+  group = vim.api.nvim_create_augroup('jesal/highlight-yank', {}),
   callback = function()
     vim.highlight.on_yank()
   end,
@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('jesal/close_with_q', {}),
+  group = vim.api.nvim_create_augroup('jesal/close-with-q', {}),
   desc = 'Close with <q>',
   pattern = {
     'git',

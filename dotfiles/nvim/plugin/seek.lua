@@ -169,7 +169,7 @@ vim.keymap.set('n', '<Esc>', function()
 end)
 
 vim.api.nvim_create_autocmd('CursorMoved', {
-  group = vim.api.nvim_create_augroup('seek', { clear = true }),
+  group = vim.api.nvim_create_augroup('jesal/seek', { clear = true }),
   callback = function()
     if seeking then
       return
