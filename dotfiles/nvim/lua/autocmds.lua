@@ -74,6 +74,7 @@ vim.api.nvim_create_autocmd('FileType', {
     'godoc',
     'help',
     'man',
+    'nvim-pack',
     'qf',
     'scratch',
   },
