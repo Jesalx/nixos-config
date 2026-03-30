@@ -36,17 +36,6 @@ local nvim_version = (function()
   return string.format('%s %d.%d.%d', icons.nvim, v.major, v.minor, v.patch)
 end)()
 
-local ip_info = (function()
-  local addrs = vim.uv.interface_addresses()
-  for _, iface in pairs(addrs) do
-    for _, addr in ipairs(iface) do
-      if not addr.internal and addr.family == 'inet' then
-        return addr.ip
-      end
-    end
-  end
-  return 'N/A'
-end)()
 
 local function pack_info()
   local plugins = vim.pack.get()
@@ -73,9 +62,6 @@ local function system_box()
   local pkgs = pack_info()
   local rows = {
     { 'USER', vim.uv.os_get_passwd().username },
-    { 'KERNEL', uname.release },
-    { 'SHELL', vim.env.SHELL and vim.fn.fnamemodify(vim.env.SHELL, ':t') or '??' },
-    { 'IP', ip_info },
     { 'PKGS', pkgs },
     { 'START', startup_time() },
   }
