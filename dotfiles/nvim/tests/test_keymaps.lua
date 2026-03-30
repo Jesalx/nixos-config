@@ -37,7 +37,7 @@ t.describe('keymaps', function()
     { key = 'y', desc = 'yank buffer' },
     { key = 'q', desc = 'quickfix list' },
     { key = 'R', desc = 'restart' },
-    { key = 'L', desc = 'Lazy' },
+    { key = 'L', desc = 'Packages' },
   }) do
     t.it('maps leader-' .. mapping.key .. ' to ' .. mapping.desc, function()
       t.ok(n[leader .. mapping.key], 'missing <leader>' .. mapping.key .. ' mapping')

@@ -31,4 +31,6 @@ vim.keymap.set('n', '<leader>y', ':%y<CR>', { desc = '[Y]ank buffer' })
 vim.keymap.set('n', '<leader>R', '<cmd>restart<cr>', { desc = '[R]estart Neovim' })
 
 -- Open package manager
-vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy' })
+vim.keymap.set('n', '<leader>L', function()
+  vim.pack.update(nil, { offline = true })
+end, { desc = 'Packages' })

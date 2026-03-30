@@ -11,7 +11,10 @@ local match_id = nil
 local seeking = false
 
 --- @type { search_range: number|nil }
-local config = {}
+local config = {
+  -- Max lines above/below cursor to search. nil searches the entire buffer.
+  search_range = nil,
+}
 
 --- @param bufnr number
 --- @param pattern string
@@ -128,69 +131,49 @@ local function repeat_seek(direction)
   end
 end
 
-return {
-  'seek',
-  virtual = true,
-  --- @type { search_range: number|nil }
-  opts = {
-    -- Max lines above/below cursor to search. nil searches the entire buffer.
-    search_range = nil,
-  },
-  keys = {
-    {
-      's',
-      function()
-        seek(1)
-      end,
-      desc = 'Seek forward',
-      mode = { 'n', 'x', 'o' },
-    },
-    {
-      'S',
-      function()
-        seek(-1)
-      end,
-      desc = 'Seek backward',
-      mode = { 'n', 'x', 'o' },
-    },
-  },
-  config = function(_, opts)
-    config = opts
-    for _, key in ipairs({ 'f', 'F', 't', 'T' }) do
-      vim.keymap.set({ 'n', 'x', 'o' }, key, function()
-        active = false
-        return key
-      end, { expr = true })
+-- Keymaps
+vim.keymap.set({ 'n', 'x', 'o' }, 's', function()
+  seek(1)
+end, { desc = 'Seek forward' })
+
+vim.keymap.set({ 'n', 'x', 'o' }, 'S', function()
+  seek(-1)
+end, { desc = 'Seek backward' })
+
+for _, key in ipairs({ 'f', 'F', 't', 'T' }) do
+  vim.keymap.set({ 'n', 'x', 'o' }, key, function()
+    active = false
+    return key
+  end, { expr = true })
+end
+
+vim.keymap.set({ 'n', 'x', 'o' }, ';', function()
+  if active then
+    repeat_seek(1)
+  else
+    vim.api.nvim_feedkeys(';', 'n', false)
+  end
+end, { desc = 'Next seek/f/t/F/T' })
+
+vim.keymap.set({ 'n', 'x', 'o' }, ',', function()
+  if active then
+    repeat_seek(-1)
+  else
+    vim.api.nvim_feedkeys(',', 'n', false)
+  end
+end, { desc = 'Prev seek/f/t/F/T' })
+
+vim.keymap.set('n', '<Esc>', function()
+  clear_highlights()
+  vim.cmd.nohlsearch()
+end)
+
+vim.api.nvim_create_autocmd('CursorMoved', {
+  group = vim.api.nvim_create_augroup('seek', { clear = true }),
+  callback = function()
+    if seeking then
+      return
     end
-
-    vim.keymap.set({ 'n', 'x', 'o' }, ';', function()
-      if active then
-        repeat_seek(1)
-      else
-        vim.api.nvim_feedkeys(';', 'n', false)
-      end
-    end, { desc = 'Next seek/f/t/F/T' })
-    vim.keymap.set({ 'n', 'x', 'o' }, ',', function()
-      if active then
-        repeat_seek(-1)
-      else
-        vim.api.nvim_feedkeys(',', 'n', false)
-      end
-    end, { desc = 'Prev seek/f/t/F/T' })
-
-    vim.keymap.set('n', '<Esc>', function()
-      clear_highlights()
-      vim.cmd.nohlsearch()
-    end)
-
-    vim.api.nvim_create_autocmd('CursorMoved', {
-      group = vim.api.nvim_create_augroup('seek', { clear = true }),
-      callback = function()
-        if seeking then
-          return
-        end
-        clear_highlights()
-      end,
-    })
+    clear_highlights()
   end,
-}
+})

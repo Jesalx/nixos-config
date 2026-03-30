@@ -21,7 +21,7 @@ M.dashboard = {
   find_text = ' ',
   new_file = ' ',
   config = ' ',
-  lazy = '󰒲 ',
+  packages = '󰒲 ',
   quit = ' ',
 }
 

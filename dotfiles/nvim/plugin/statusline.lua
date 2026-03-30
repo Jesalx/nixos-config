@@ -174,12 +174,5 @@ function M.statusline()
   return left .. '%=' .. right
 end
 
-return {
-  'statusline',
-  virtual = true,
-  lazy = false,
-  config = function()
-    _G._statusline = M.statusline
-    vim.opt.statusline = '%!v:lua._statusline()'
-  end,
-}
+_G._statusline = M.statusline
+vim.opt.statusline = '%!v:lua._statusline()'

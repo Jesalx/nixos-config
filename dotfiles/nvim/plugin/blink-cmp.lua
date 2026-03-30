@@ -1,14 +1,12 @@
-return {
-  { -- Autocompletion
-    'saghen/blink.cmp',
-    event = 'InsertEnter',
-    version = '1.*',
-    dependencies = {
-      'folke/lazydev.nvim',
-    },
-    --- @module 'blink.cmp'
-    --- @type blink.cmp.Config
-    opts = {
+vim.api.nvim_create_autocmd('InsertEnter', {
+  once = true,
+  callback = function()
+    vim.pack.add({
+      'https://github.com/folke/lazydev.nvim',
+      { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.x') },
+    })
+
+    require('blink.cmp').setup({
       -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
       -- 'super-tab' for mappings similar to vscode (tab to accept)
       -- 'enter' for enter to accept
@@ -66,6 +64,6 @@ return {
       signature = {
         enabled = true,
       },
-    },
-  },
-}
+    })
+  end,
+})

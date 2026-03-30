@@ -1,7 +1,10 @@
-return {
-  'folke/noice.nvim',
-  event = 'VeryLazy',
-  opts = {
+vim.schedule(function()
+  vim.pack.add({
+    'https://github.com/MunifTanjim/nui.nvim',
+    'https://github.com/folke/noice.nvim',
+  })
+
+  require('noice').setup({
     lsp = {
       override = {
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
@@ -14,8 +17,5 @@ return {
       long_message_to_split = true,
       lsp_doc_border = true,
     },
-  },
-  dependencies = {
-    'MunifTanjim/nui.nvim',
-  },
-}
+  })
+end)
