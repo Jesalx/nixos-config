@@ -59,11 +59,12 @@ end
 
 local function system_box()
   local min_val_w = 16
+  local start = startup_time()
   local pkgs = pack_info()
   local rows = {
     { 'USER', vim.uv.os_get_passwd().username },
     { 'PKGS', pkgs },
-    { 'START', startup_time() },
+    { 'START', start },
   }
 
   local label_w, val_w = 0, min_val_w
