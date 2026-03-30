@@ -1,3 +1,12 @@
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    if ev.data.spec.name == 'blink.cmp' and (ev.data.kind == 'install' or ev.data.kind == 'update') then
+      vim.system({ 'cargo', 'build', '--release' }, { cwd = ev.data.path }):wait()
+    end
+  end,
+  desc = 'Build blink.cmp fuzzy matcher from source after install/update',
+})
+
 vim.api.nvim_create_autocmd('InsertEnter', {
   once = true,
   callback = function()
