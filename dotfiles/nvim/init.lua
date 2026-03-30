@@ -2,6 +2,7 @@
 -- leader key is set before plugins are loaded.
 
 vim.loader.enable()
+_G._init_start = vim.uv.hrtime()
 
 require('options')
 require('autocmds')

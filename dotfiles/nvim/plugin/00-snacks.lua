@@ -62,6 +62,15 @@ local function pack_info()
   return count .. ' plugins'
 end
 
+local _startup_ms
+local function startup_time()
+  if not _startup_ms and _G._init_start then
+    _startup_ms = string.format('%.2fms', (vim.uv.hrtime() - _G._init_start) / 1e6)
+    _G._init_start = nil
+  end
+  return _startup_ms or '??'
+end
+
 local function system_box()
   local min_val_w = 16
   local pkgs = pack_info()
@@ -71,6 +80,7 @@ local function system_box()
     { 'SHELL', vim.env.SHELL and vim.fn.fnamemodify(vim.env.SHELL, ':t') or '??' },
     { 'IP', ip_info },
     { 'PKGS', pkgs },
+    { 'START', startup_time() },
   }
 
   local label_w, val_w = 0, min_val_w
