@@ -5,6 +5,17 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Disable unused built-in plugins
+vim.g.loaded_tar = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_rplugin = 1
+vim.g.loaded_tohtml = 1
+vim.g.loaded_tutor = 1
+
 -- Make line numbers default
 vim.opt.number = true
 vim.opt.relativenumber = true

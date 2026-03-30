@@ -8,17 +8,6 @@ require('options')
 require('autocmds')
 require('keymaps')
 
--- Disable unused built-in plugins
-vim.g.loaded_tar = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_zip = 1
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_rplugin = 1
-vim.g.loaded_tohtml = 1
-vim.g.loaded_tutor = 1
-
 -- Plugin hooks must be defined before the first vim.pack.add() call
 -- (plugin/ files are sourced after init.lua, so this ordering is guaranteed)
 vim.api.nvim_create_autocmd('PackChanged', {
