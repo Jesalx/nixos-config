@@ -55,8 +55,11 @@ local function pack_info()
   if f then
     local content = f:read('*a')
     f:close()
-    for _ in content:gmatch('"[^"]+"%s*:') do
-      count = count + 1
+    local lock = vim.json.decode(content)
+    if lock and lock.plugins then
+      for _ in pairs(lock.plugins) do
+        count = count + 1
+      end
     end
   end
   return count .. ' plugins'
