@@ -40,17 +40,6 @@ local nvim_version = (function()
   return string.format('%s %d.%d.%d', icons.nvim, v.major, v.minor, v.patch)
 end)()
 
-local function pack_info()
-  local plugins = vim.pack.get()
-  local active = 0
-  for _, p in ipairs(plugins) do
-    if p.active then
-      active = active + 1
-    end
-  end
-  return active .. '/' .. #plugins .. ' plugins'
-end
-
 local _startup_ms
 local function startup_time()
   if not _startup_ms and _G._init_start then
@@ -60,14 +49,12 @@ local function startup_time()
   return _startup_ms or '??'
 end
 
-local function system_box()
+local function system_box(pkgs)
   local min_val_w = 16
-  local start = startup_time()
-  local pkgs = pack_info()
   local rows = {
     { 'USER', vim.uv.os_get_passwd().username },
     { 'PKGS', pkgs },
-    { 'START', start },
+    { 'START', startup_time() },
   }
 
   local label_w, val_w = 0, min_val_w
@@ -90,7 +77,7 @@ local function system_box()
   return table.concat(lines, '\n')
 end
 
-local function dashboard_header()
+local _dashboard_header = (function()
   local header = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
 ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
@@ -98,9 +85,28 @@ local function dashboard_header()
 ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
+  return header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box('00/00 plugins')
+end)()
 
-  return header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box()
-end
+vim.schedule(function()
+  local plugins = vim.pack.get()
+  local active = 0
+  for _, p in ipairs(plugins) do
+    if p.active then
+      active = active + 1
+    end
+  end
+  local pkgs = string.format('%02d/%02d plugins', active, #plugins)
+  local header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
+  _dashboard_header = header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box(pkgs)
+  Snacks.dashboard.update()
+end)
 
 vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
@@ -166,7 +172,7 @@ require('snacks').setup({
     },
     sections = {
       function()
-        return { header = dashboard_header(), padding = 1 }
+        return { header = _dashboard_header, padding = 1 }
       end,
       { section = 'keys', gap = 1, padding = 1 },
     },
