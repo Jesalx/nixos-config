@@ -87,7 +87,6 @@ end
 
 local _dashboard_header = build_header('00/00 plugins')
 
-local _pkg_string
 vim.api.nvim_create_autocmd('UIEnter', {
   once = true,
   callback = function()
@@ -95,25 +94,19 @@ vim.api.nvim_create_autocmd('UIEnter', {
       _startup_ms = string.format('%.2fms', (vim.uv.hrtime() - _G._init_start) / 1e6)
       _G._init_start = nil
     end
-    if _pkg_string then
-      _dashboard_header = build_header(_pkg_string)
+    vim.schedule(function()
+      local plugins = vim.pack.get()
+      local active = 0
+      for _, p in ipairs(plugins) do
+        if p.active then
+          active = active + 1
+        end
+      end
+      _dashboard_header = build_header(string.format('%02d/%02d plugins', active, #plugins))
       Snacks.dashboard.update()
-    end
+    end)
   end,
 })
-
-vim.schedule(function()
-  local plugins = vim.pack.get()
-  local active = 0
-  for _, p in ipairs(plugins) do
-    if p.active then
-      active = active + 1
-    end
-  end
-  _pkg_string = string.format('%02d/%02d plugins', active, #plugins)
-  _dashboard_header = build_header(_pkg_string)
-  Snacks.dashboard.update()
-end)
 
 vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
