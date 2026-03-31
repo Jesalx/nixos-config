@@ -42,10 +42,6 @@ end)()
 
 local _startup_ms
 local function startup_time()
-  if not _startup_ms and _G._init_start then
-    _startup_ms = string.format('%.2fms', (vim.uv.hrtime() - _G._init_start) / 1e6)
-    _G._init_start = nil
-  end
   return _startup_ms or '??'
 end
 
@@ -77,16 +73,34 @@ local function system_box(pkgs)
   return table.concat(lines, '\n')
 end
 
-local _dashboard_header = (function()
-  local header = [[
+local neovim_header = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
 ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
 ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
 ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
-  return header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box('00/00 plugins')
-end)()
+
+local function build_header(pkgs)
+  return neovim_header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box(pkgs)
+end
+
+local _dashboard_header = build_header('00/00 plugins')
+
+local _pkg_string
+vim.api.nvim_create_autocmd('UIEnter', {
+  once = true,
+  callback = function()
+    if _G._init_start then
+      _startup_ms = string.format('%.2fms', (vim.uv.hrtime() - _G._init_start) / 1e6)
+      _G._init_start = nil
+    end
+    if _pkg_string then
+      _dashboard_header = build_header(_pkg_string)
+      Snacks.dashboard.update()
+    end
+  end,
+})
 
 vim.schedule(function()
   local plugins = vim.pack.get()
@@ -96,15 +110,8 @@ vim.schedule(function()
       active = active + 1
     end
   end
-  local pkgs = string.format('%02d/%02d plugins', active, #plugins)
-  local header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
-  _dashboard_header = header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box(pkgs)
+  _pkg_string = string.format('%02d/%02d plugins', active, #plugins)
+  _dashboard_header = build_header(_pkg_string)
   Snacks.dashboard.update()
 end)
 
