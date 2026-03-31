@@ -149,7 +149,7 @@ require('snacks').setup({
           key = 'c',
           desc = 'Config',
           action = function()
-            Snacks.picker.files({ cwd = vim.fn.expand('~/.config') })
+            Snacks.picker.files({ cwd = vim.fn.expand('~/.config/nvim') })
           end,
         },
         {
