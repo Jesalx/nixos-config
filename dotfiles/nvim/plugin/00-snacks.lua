@@ -28,6 +28,10 @@ local os_info = (function()
     return string.format('%s %s', icon, pretty)
   end
 
+  if uname.sysname == 'Darwin' then
+    return string.format('%s macOS', icons.distros.apple)
+  end
+
   return uname.sysname
 end)()
 

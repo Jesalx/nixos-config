@@ -28,6 +28,7 @@ M.dashboard = {
 M.distros = {
   nixos = '󱄅',
   arch = '󰣇',
+  apple = '󰀵',
 }
 
 M.nvim = ''
