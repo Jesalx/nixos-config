@@ -263,10 +263,6 @@ vim.keymap.set('n', '<leader>e', function()
   Snacks.explorer.open()
 end, { desc = '[E]xplorer' })
 
-vim.keymap.set('n', '<leader>u', function()
-  Snacks.picker.undo()
-end, { desc = '[U]ndo History' })
-
 vim.keymap.set('n', '<leader>n', function()
   Snacks.picker.notifications()
 end, { desc = '[N]otification History' })
