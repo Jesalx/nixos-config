@@ -42,7 +42,7 @@ end)()
 
 local _startup_ms
 local function startup_time()
-  return _startup_ms or '??'
+  return _startup_ms or '00.00ms'
 end
 
 local function system_box(pkgs)
