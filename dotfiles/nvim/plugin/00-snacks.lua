@@ -199,6 +199,9 @@ require('snacks').setup({
       height = 0.8,
       border = 'rounded',
       relative = 'editor',
+      keys = {
+        term_normal = false,
+      },
     },
     persistent = true,
     autoinsert = true,

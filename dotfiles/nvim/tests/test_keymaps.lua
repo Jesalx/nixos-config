@@ -44,7 +44,7 @@ t.describe('keymaps', function()
     end)
   end
 
-  t.it('maps double Esc for terminal exit', function()
-    t.ok(term['<Esc><Esc>'], 'missing terminal <Esc><Esc> mapping')
+  t.it('maps Esc for terminal exit', function()
+    t.ok(term['<Esc>'], 'missing terminal <Esc> mapping')
   end)
 end)
