@@ -111,6 +111,9 @@ vim.opt.ruler = false
 -- Round indent to nearest multiple of shiftwidth
 vim.opt.shiftround = true
 
+-- Hide ~ markers after end of buffer
+vim.opt.fillchars = { eob = ' ' }
+
 vim.opt.shortmess:append('I')
 
 -- Set spell language
