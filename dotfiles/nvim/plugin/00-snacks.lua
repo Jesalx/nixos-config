@@ -125,7 +125,7 @@ require('snacks').setup({
           key = 'f',
           desc = 'Find File',
           action = function()
-            Snacks.picker.files()
+            MiniPick.builtin.files()
           end,
         },
         {
@@ -133,7 +133,7 @@ require('snacks').setup({
           key = '/',
           desc = 'Find Text',
           action = function()
-            Snacks.picker.grep()
+            MiniPick.builtin.grep_live()
           end,
         },
         {
@@ -149,7 +149,7 @@ require('snacks').setup({
           key = 'c',
           desc = 'Config',
           action = function()
-            Snacks.picker.files({ cwd = vim.fn.expand('~/.config/nvim') })
+            MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand('~/.config/nvim') } })
           end,
         },
         {
@@ -183,14 +183,6 @@ require('snacks').setup({
       border = 'rounded',
     },
   },
-  picker = {
-    sources = {
-      explorer = {
-        layout = { preset = 'sidebar', preview = false },
-        hidden = true,
-      },
-    },
-  },
   terminal = {
     win = {
       style = 'terminal',
@@ -210,64 +202,42 @@ require('snacks').setup({
   quickfile = {},
 })
 
--- Keymaps (converted from lazy.nvim keys table)
+-- Keymaps
 
 vim.keymap.set('n', '<leader><leader>', function()
-  Snacks.picker.smart({
-    multi = {
-      'buffers',
-      {
-        source = 'files',
-        cwd = vim.fn.getcwd(),
-        hidden = true,
-        ignore = { '**/.jj/**' },
-      },
-    },
-  })
+  MiniPick.builtin.files()
 end, { desc = '[ ] Search Files' })
 
 vim.keymap.set('n', '<leader>/', function()
-  Snacks.picker.grep({ hidden = true })
+  MiniPick.builtin.grep_live()
 end, { desc = '[/] Search by Grep' })
 
 vim.keymap.set('n', '<leader>sh', function()
-  Snacks.picker.help()
+  MiniPick.builtin.help()
 end, { desc = '[S]earch [H]elp' })
 
 vim.keymap.set('n', '<leader>sk', function()
-  Snacks.picker.keymaps()
+  MiniExtra.pickers.keymaps()
 end, { desc = '[S]earch [K]eymaps' })
 
 vim.keymap.set('n', '<leader>sf', function()
-  Snacks.picker.files()
+  MiniPick.builtin.files()
 end, { desc = '[S]earch [F]iles' })
 
 vim.keymap.set('n', '<leader>s.', function()
-  Snacks.picker.recent()
+  MiniExtra.pickers.oldfiles()
 end, { desc = '[S]earch Recent Files (["."] for repeat)' })
 
-vim.keymap.set('n', '<leader>sw', function()
-  Snacks.picker.grep_word()
-end, { desc = '[S]earch current [W]ord' })
-
 vim.keymap.set('n', '<leader>sd', function()
-  Snacks.picker.diagnostics()
+  MiniExtra.pickers.diagnostic()
 end, { desc = '[S]earch [D]iagnostics' })
-
-vim.keymap.set('n', '<leader>sr', function()
-  Snacks.picker.resume()
-end, { desc = '[S]earch [R]esume' })
-
-vim.keymap.set('n', '<leader>ss', function()
-  Snacks.picker()
-end, { desc = '[S]earch [S]elect Picker' })
 
 vim.keymap.set('n', '<leader>e', function()
   Snacks.explorer.open()
 end, { desc = '[E]xplorer' })
 
 vim.keymap.set('n', '<leader>n', function()
-  Snacks.picker.notifications()
+  Snacks.notifier.show_history()
 end, { desc = '[N]otification History' })
 
 vim.keymap.set('n', '<leader>.', function()

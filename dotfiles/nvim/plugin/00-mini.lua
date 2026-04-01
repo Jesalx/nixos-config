@@ -4,6 +4,8 @@ require('mini.icons').setup()
 require('mini.diff').setup()
 require('mini.ai').setup({ n_lines = 50 })
 require('mini.pairs').setup()
+require('mini.pick').setup()
+require('mini.extra').setup()
 
 -- Snacks loads after mini alphabetically (00-mini < 00-snacks),
 -- so defer the toggle registration until all plugin/ files are sourced
