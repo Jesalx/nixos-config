@@ -1,13 +1,12 @@
 vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
   once = true,
   callback = function()
-    -- Load dependencies in order, then lspconfig
+    -- Load dependencies
     vim.pack.add({
       'https://github.com/folke/lazydev.nvim',
       'https://github.com/mason-org/mason.nvim',
       'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
       { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.x') },
-      'https://github.com/neovim/nvim-lspconfig',
     })
 
     require('lazydev').setup({
@@ -144,101 +143,25 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
       status = { text = require('icons').diagnostic_status },
     })
 
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP specification.
-    --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
+    -- Broadcast blink.cmp capabilities to all LSP servers
+    vim.lsp.config('*', {
+      capabilities = require('blink.cmp').get_lsp_capabilities(),
+    })
 
-    local servers = {
-      gopls = {
-        settings = {
-          gopls = {
-            gofumpt = true,
-            staticcheck = true,
-            vulncheck = 'Imports',
-            analyses = {
-              unreachable = true,
-              nilness = true,
-              unusedparams = true,
-              unusedwrite = true,
-              useany = true,
-            },
-            hints = {
-              assignVariableTypes = true,
-              compositeLiteralFields = true,
-              compositeLiteralTypes = true,
-              constantValues = true,
-              functionTypeParameters = true,
-              parameterNames = true,
-              rangeVariableTypes = true,
-            },
-          },
-        },
-      },
-
-      rust_analyzer = {
-        settings = {
-          ['rust-analyzer'] = {
-            check = {
-              command = 'clippy',
-            },
-            cargo = {
-              allFeatures = true,
-            },
-          },
-        },
-      },
-
-      yamlls = {},
-
-      jsonls = {},
-
-      pyright = {
-        settings = {
-          pyright = { disableOrganizeImports = true },
-        },
-      },
-      ruff = {
-        -- Disable hover; pyright provides richer type information.
-        -- Ruff hover only shows lint rule docs for `# noqa` comments.
-        on_attach = function(client)
-          client.server_capabilities.hoverProvider = false
-        end,
-      },
-
-      clangd = {},
-
-      terraformls = {},
-
-      helm_ls = {
-        settings = {
-          ['helm-ls'] = {
-            yamlls = {
-              path = 'yaml-language-server',
-            },
-          },
-        },
-      },
-
-      lua_ls = {
-        settings = {
-          Lua = {
-            diagnostics = {
-              disable = { 'param-type-mismatch', 'missing-fields' },
-            },
-            workspace = {
-              library = { vim.env.VIMRUNTIME .. '/lua' },
-            },
-            telemetry = {
-              enable = false,
-            },
-          },
-        },
-      },
-
-      copilot = {},
-    }
+    -- Enable LSP servers (configs live in lsp/<server>.lua)
+    vim.lsp.enable({
+      'clangd',
+      'copilot',
+      'gopls',
+      'helm_ls',
+      'jsonls',
+      'lua_ls',
+      'pyright',
+      'ruff',
+      'rust_analyzer',
+      'terraformls',
+      'yamlls',
+    })
 
     -- Ensure the servers and tools are installed via Mason
     -- Run :Mason to view status or :MasonToolsInstall to trigger installation
@@ -277,12 +200,6 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
       'tree-sitter-cli',
     }
     require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
-
-    for name, server in pairs(servers) do
-      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      vim.lsp.config(name, server)
-      vim.lsp.enable(name)
-    end
 
     -- Copilot helper function
     local function get_copilot_client()
