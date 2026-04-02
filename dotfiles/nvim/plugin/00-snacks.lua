@@ -109,7 +109,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
 vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
 require('snacks').setup({
-  input = {},
   notifier = {},
   indent = {},
   dashboard = {
