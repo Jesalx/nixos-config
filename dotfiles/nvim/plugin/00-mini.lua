@@ -2,7 +2,7 @@ vim.pack.add({ 'https://github.com/echasnovski/mini.nvim' })
 
 require('mini.icons').setup()
 require('mini.diff').setup()
-require('mini.ai').setup({ n_lines = 50 })
+require('mini.ai').setup({ n_lines = 50, silent = true })
 require('mini.pairs').setup()
 require('mini.pick').setup()
 require('mini.extra').setup()
