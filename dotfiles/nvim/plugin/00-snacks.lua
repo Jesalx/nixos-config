@@ -187,8 +187,6 @@ require('snacks').setup({
     persistent = true,
     autoinsert = true,
   },
-  bigfile = {},
-  quickfile = {},
 })
 
 -- Keymaps

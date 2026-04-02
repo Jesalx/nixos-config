@@ -65,6 +65,30 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Disable expensive features for large files
+vim.api.nvim_create_autocmd('BufReadPre', {
+  group = vim.api.nvim_create_augroup('jesal/bigfile', {}),
+  desc = 'Disable expensive features for large files',
+  callback = function(args)
+    local size = vim.fn.getfsize(args.match)
+    if size <= 0 or size < 1024 * 1024 then
+      return
+    end
+
+    vim.b[args.buf].bigfile = true
+    vim.opt_local.swapfile = false
+    vim.opt_local.foldmethod = 'manual'
+    vim.opt_local.undolevels = -1
+    vim.opt_local.undoreload = 0
+    vim.opt_local.list = false
+
+    vim.schedule(function()
+      vim.bo[args.buf].syntax = ''
+      vim.treesitter.stop(args.buf)
+    end)
+  end,
+})
+
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('jesal/close-with-q', {}),
