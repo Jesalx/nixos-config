@@ -47,7 +47,7 @@ local modes = {
   ['!'] = { name = 'SHELL', hl = 'StatusLineCommand' },
 }
 
-local mini_icons
+local mini_icons = require('mini.icons')
 
 local M = {}
 
@@ -120,12 +120,6 @@ local function filetype()
     return ''
   end
 
-  -- Lazy-load mini.icons on first use
-  if not mini_icons then
-    mini_icons = require('mini.icons')
-  end
-
-  -- Get icon and highlight from mini.icons
   local icon, hl = mini_icons.get('filetype', ft)
 
   if icon and icon ~= '' then
