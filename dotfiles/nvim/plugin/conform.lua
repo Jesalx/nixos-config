@@ -2,17 +2,10 @@
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 vim.g.autoformat = true
 
-vim.schedule(function()
-  require('snacks.toggle')({
-    name = 'Format on Save',
-    get = function()
-      return vim.g.autoformat
-    end,
-    set = function(state)
-      vim.g.autoformat = state
-    end,
-  }):map('<leader>tf')
-end)
+vim.keymap.set('n', '<leader>tf', function()
+  vim.g.autoformat = not vim.g.autoformat
+  vim.notify(string.format('Format on save %s', vim.g.autoformat and 'enabled' or 'disabled'), vim.log.levels.INFO)
+end, { desc = '[T]oggle [F]ormat on Save' })
 
 vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
   once = true,

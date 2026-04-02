@@ -51,16 +51,7 @@ vim.keymap.set('n', '<leader>sd', function()
   MiniExtra.pickers.diagnostic()
 end, { desc = '[S]earch [D]iagnostics' })
 
--- Snacks loads after mini alphabetically (00-mini < 00-snacks),
--- so defer the toggle registration until all plugin/ files are sourced
-vim.schedule(function()
-  Snacks.toggle({
-    name = 'Auto Pairs',
-    get = function()
-      return not vim.g.minipairs_disable
-    end,
-    set = function(state)
-      vim.g.minipairs_disable = not state
-    end,
-  }):map('<leader>tp')
-end)
+vim.keymap.set('n', '<leader>tp', function()
+  vim.g.minipairs_disable = not vim.g.minipairs_disable
+  vim.notify(string.format('Auto pairs %s', vim.g.minipairs_disable and 'disabled' or 'enabled'), vim.log.levels.INFO)
+end, { desc = '[T]oggle Auto [P]airs' })

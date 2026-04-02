@@ -109,9 +109,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
 vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
 require('snacks').setup({
-  toggle = {
-    which_key = true,
-  },
   input = {},
   notifier = {},
   indent = {},
