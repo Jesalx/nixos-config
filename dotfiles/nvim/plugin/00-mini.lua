@@ -6,6 +6,20 @@ require('mini.ai').setup({ n_lines = 50 })
 require('mini.pairs').setup()
 require('mini.pick').setup()
 require('mini.extra').setup()
+require('mini.files').setup({
+  mappings = {
+    go_in_plus = '<CR>',
+  },
+  options = {
+    use_as_default_explorer = true,
+  },
+})
+
+vim.keymap.set('n', '<leader>e', function()
+  if not MiniFiles.close() then
+    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+  end
+end, { desc = '[E]xplorer' })
 
 -- Picker keymaps
 

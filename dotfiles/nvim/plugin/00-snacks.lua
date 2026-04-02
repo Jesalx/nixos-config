@@ -177,12 +177,6 @@ require('snacks').setup({
       { section = 'keys', gap = 1, padding = 1 },
     },
   },
-  explorer = {
-    replace_netrw = true,
-    win = {
-      border = 'rounded',
-    },
-  },
   terminal = {
     win = {
       style = 'terminal',
@@ -203,10 +197,6 @@ require('snacks').setup({
 })
 
 -- Keymaps
-
-vim.keymap.set('n', '<leader>e', function()
-  Snacks.explorer.open()
-end, { desc = '[E]xplorer' })
 
 vim.keymap.set('n', '<leader>n', function()
   Snacks.notifier.show_history()
