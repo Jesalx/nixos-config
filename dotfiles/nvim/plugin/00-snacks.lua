@@ -81,20 +81,11 @@ local neovim_header = [[
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
 
-local function plugin_count()
-  local plugins = vim.pack.get()
-  local active = 0
-  for _, p in ipairs(plugins) do
-    if p.active then
-      active = active + 1
-    end
-  end
-  return string.format('%02d/%02d plugins', active, #plugins)
+local function build_header(pkgs)
+  return neovim_header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box(pkgs)
 end
 
-local function build_header()
-  return neovim_header .. '\n\n' .. os_info .. '  |  ' .. nvim_version .. '\n\n' .. system_box(plugin_count())
-end
+local _dashboard_header = build_header('00/00 plugins')
 
 vim.api.nvim_create_autocmd('UIEnter', {
   once = true,
@@ -103,6 +94,17 @@ vim.api.nvim_create_autocmd('UIEnter', {
       _startup_ms = string.format('%.2fms', (vim.uv.hrtime() - _G._init_start) / 1e6)
       _G._init_start = nil
     end
+    vim.schedule(function()
+      local plugins = vim.pack.get()
+      local active = 0
+      for _, p in ipairs(plugins) do
+        if p.active then
+          active = active + 1
+        end
+      end
+      _dashboard_header = build_header(string.format('%02d/%02d plugins', active, #plugins))
+      Snacks.dashboard.update()
+    end)
   end,
 })
 
@@ -166,7 +168,7 @@ require('snacks').setup({
     },
     sections = {
       function()
-        return { header = build_header(), padding = 1 }
+        return { header = _dashboard_header, padding = 1 }
       end,
       { section = 'keys', gap = 1, padding = 1 },
     },
