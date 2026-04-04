@@ -24,7 +24,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>D', function()
   vim.cmd('silent! normal! gg"_dG')
 end, { desc = '[D]elete buffer content' })
-vim.keymap.set('n', '<leader>y', ':%y<CR>', { desc = '[Y]ank buffer' })
+vim.keymap.set('n', '<leader>y', '<cmd>%y<CR>', { desc = '[Y]ank buffer' })
 
 -- Restart Neovim
 vim.keymap.set('n', '<leader>R', '<cmd>restart<cr>', { desc = '[R]estart Neovim' })
