@@ -47,6 +47,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Enable spell checking for prose filetypes
+local spell_compiled = false
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('jesal/spell', {}),
   desc = 'Enable spell checking for prose filetypes',
@@ -57,10 +58,13 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.spellfile = spellfile
 
     -- Recompile the custom word list when the .add file is newer than the .spl
-    local add_stat = vim.uv.fs_stat(spellfile)
-    local spl_stat = vim.uv.fs_stat(spellfile .. '.spl')
-    if add_stat and (not spl_stat or add_stat.mtime.sec > spl_stat.mtime.sec) then
-      vim.cmd.mkspell({ spellfile, bang = true, mods = { silent = true } })
+    if not spell_compiled then
+      spell_compiled = true
+      local add_stat = vim.uv.fs_stat(spellfile)
+      local spl_stat = vim.uv.fs_stat(spellfile .. '.spl')
+      if add_stat and (not spl_stat or add_stat.mtime.sec > spl_stat.mtime.sec) then
+        vim.cmd.mkspell({ spellfile, bang = true, mods = { silent = true } })
+      end
     end
   end,
 })
