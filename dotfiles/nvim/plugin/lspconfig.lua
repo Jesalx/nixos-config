@@ -249,12 +249,17 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
       end)
     end, { desc = 'Sign out from GitHub Copilot' })
 
-    -- Toggle inline completion on/off with <leader>tc
     vim.keymap.set('n', '<leader>tc', function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local is_enabled = vim.lsp.inline_completion.is_enabled({ bufnr = bufnr })
-      vim.lsp.inline_completion.enable(not is_enabled, { bufnr = bufnr })
-      vim.notify(string.format('Copilot inline completion %s', is_enabled and 'disabled' or 'enabled'), vim.log.levels.INFO)
+      local clients = vim.lsp.get_clients({ name = 'copilot' })
+      if #clients > 0 then
+        for _, client in ipairs(clients) do
+          client:stop()
+        end
+        vim.notify('Copilot disabled', vim.log.levels.INFO)
+      else
+        vim.lsp.enable('copilot')
+        vim.notify('Copilot enabled', vim.log.levels.INFO)
+      end
     end, { desc = '[T]oggle [C]opilot' })
   end,
 })

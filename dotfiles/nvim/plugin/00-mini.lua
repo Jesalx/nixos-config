@@ -39,10 +39,6 @@ vim.keymap.set('n', '<leader>sk', function()
   MiniExtra.pickers.keymaps()
 end, { desc = '[S]earch [K]eymaps' })
 
-vim.keymap.set('n', '<leader>sf', function()
-  MiniPick.builtin.files()
-end, { desc = '[S]earch [F]iles' })
-
 vim.keymap.set('n', '<leader>s.', function()
   MiniExtra.pickers.oldfiles()
 end, { desc = '[S]earch Recent Files (["."] for repeat)' })
