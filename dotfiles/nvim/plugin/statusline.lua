@@ -128,6 +128,26 @@ local function diagnostics()
   return cached_diagnostics
 end
 
+local lsp_progress_timer = assert(vim.uv.new_timer())
+
+vim.api.nvim_create_autocmd('LspProgress', {
+  group = vim.api.nvim_create_augroup('jesal/statusline-lsp-progress', {}),
+  callback = function()
+    vim.cmd.redrawstatus()
+    -- vim.lsp.status() clears on an internal timer after the final event,
+    -- so schedule a trailing redraw to pick up the cleared state.
+    lsp_progress_timer:start(1000, 0, vim.schedule_wrap(vim.cmd.redrawstatus))
+  end,
+})
+
+local function lsp_status()
+  local status = vim.lsp.status()
+  if status == '' then
+    return ''
+  end
+  return string.format(' %%#StatusLineFiletype#%s %%*', status)
+end
+
 local function filetype()
   local ft = vim.bo.filetype
   if ft == '' then
@@ -174,6 +194,7 @@ function M.statusline()
   })
 
   local right = table.concat({
+    lsp_status(),
     filetype(),
     progress(),
     location(),

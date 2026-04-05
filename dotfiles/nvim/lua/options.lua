@@ -29,8 +29,7 @@ vim.opt.showmode = false
 -- Enable global statusline (single statusline for all windows)
 vim.opt.laststatus = 3
 
--- Noice handles the cmdline via floating popups, so the native cmdline row
--- is unused space that causes a layout shift.
+-- Hide the cmdline row when idle to avoid wasted space.
 vim.opt.cmdheight = 0
 
 -- Sync clipboard between OS and Neovim.
