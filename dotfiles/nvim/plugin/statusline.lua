@@ -96,10 +96,10 @@ local function git_diff()
   return ''
 end
 
-local diag_cache = {} ---@type table<integer, string>
+local cached_diagnostics = ''
 
-local function rebuild_diagnostics(buf)
-  local counts = vim.diagnostic.count(buf)
+local function rebuild_diagnostics()
+  local counts = vim.diagnostic.count(0)
   local parts = {}
 
   for _, severity in ipairs(diagnostic_order) do
@@ -111,30 +111,21 @@ local function rebuild_diagnostics(buf)
   end
 
   local result = #parts > 0 and (' ' .. table.concat(parts, ' ') .. ' ') or ''
-  if diag_cache[buf] ~= result then
-    diag_cache[buf] = result
+  if cached_diagnostics ~= result then
+    cached_diagnostics = result
     vim.cmd.redrawstatus()
   end
 end
 
-local diag_group = vim.api.nvim_create_augroup('jesal/statusline-diagnostics', {})
-
 vim.api.nvim_create_autocmd('DiagnosticChanged', {
-  group = diag_group,
-  callback = function(args)
-    rebuild_diagnostics(args.buf)
-  end,
-})
-
-vim.api.nvim_create_autocmd('BufDelete', {
-  group = diag_group,
-  callback = function(args)
-    diag_cache[args.buf] = nil
+  group = vim.api.nvim_create_augroup('jesal/statusline-diagnostics', {}),
+  callback = function()
+    rebuild_diagnostics()
   end,
 })
 
 local function diagnostics()
-  return diag_cache[vim.api.nvim_get_current_buf()] or ''
+  return cached_diagnostics
 end
 
 local function filetype()
