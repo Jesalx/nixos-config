@@ -59,62 +59,55 @@ vim.keymap.set('n', '<leader>st', function()
     return
   end
 
-  ---@diagnostic disable-next-line: undefined-global
-  MiniPick.start({
-    source = {
-      name = 'Tmux Sessions',
-      items = function()
-        local items = {}
+  local items = {}
 
-        -- Fire both tmux queries in parallel
-        local current_handle = vim.system({ 'tmux', 'display-message', '-p', '#S' }, { text = true })
-        local sessions_handle = vim.system({ 'tmux', 'list-sessions', '-F', '#{session_name}' }, { text = true })
-        local current = current_handle:wait()
-        local sessions = sessions_handle:wait()
+  local current_handle = vim.system({ 'tmux', 'display-message', '-p', '#S' }, { text = true })
+  local sessions_handle = vim.system({ 'tmux', 'list-sessions', '-F', '#{session_name}' }, { text = true })
+  local current = current_handle:wait()
+  local sessions = sessions_handle:wait()
 
-        local current_name = current.code == 0 and vim.trim(current.stdout) or ''
+  local current_name = current.code == 0 and vim.trim(current.stdout) or ''
 
-        local session_names = {}
-        if sessions.code == 0 then
-          for _, s in ipairs(vim.split(sessions.stdout, '\n', { trimempty = true })) do
-            session_names[s] = true
-            if s ~= current_name then
-              table.insert(items, { text = icon_session .. s, session = s })
-            end
-          end
+  local session_names = {}
+  if sessions.code == 0 then
+    for _, s in ipairs(vim.split(sessions.stdout, '\n', { trimempty = true })) do
+      session_names[s] = true
+      if s ~= current_name then
+        table.insert(items, { session = s })
+      end
+    end
+  end
+
+  for _, sp in ipairs(search_paths) do
+    local stat = vim.uv.fs_stat(sp.path)
+    if stat and stat.type == 'directory' then
+      for _, dir in ipairs(find_dirs(sp.path, sp.depth)) do
+        local basename = vim.fn.fnamemodify(dir, ':t')
+        local name = format_session_name(basename)
+        if name ~= '' and not session_names[name] then
+          table.insert(items, { session = name, dir = dir })
         end
+      end
+    end
+  end
 
-        for _, sp in ipairs(search_paths) do
-          local stat = vim.uv.fs_stat(sp.path)
-          if stat and stat.type == 'directory' then
-            for _, dir in ipairs(find_dirs(sp.path, sp.depth)) do
-              local basename = vim.fn.fnamemodify(dir, ':t')
-              local name = format_session_name(basename)
-              if name ~= '' and not session_names[name] then
-                table.insert(items, { text = icon_dir .. basename, dir = dir, session = name })
-              end
-            end
-          end
-        end
+  if #items == 0 then
+    vim.notify('No sessions or directories found', vim.log.levels.INFO)
+    return
+  end
 
-        if #items == 0 then
-          vim.notify('No sessions or directories found', vim.log.levels.INFO)
-          return {}
-        end
-
-        return items
-      end,
-
-      choose = function(item)
-        if not item then
-          return
-        end
-
-        if item.dir then
-          vim.system({ 'tmux', 'new-session', '-ds', item.session, '-c', item.dir }):wait()
-        end
-        vim.system({ 'tmux', 'switch-client', '-t', item.session })
-      end,
-    },
-  })
+  vim.ui.select(items, {
+    prompt = 'Tmux Sessions',
+    format_item = function(item)
+      return (item.dir and icon_dir or icon_session) .. item.session
+    end,
+  }, function(item)
+    if not item then
+      return
+    end
+    if item.dir then
+      vim.system({ 'tmux', 'new-session', '-ds', item.session, '-c', item.dir }):wait()
+    end
+    vim.system({ 'tmux', 'switch-client', '-t', item.session })
+  end)
 end, { desc = '[S]earch [T]mux Sessions' })
