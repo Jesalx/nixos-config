@@ -93,6 +93,37 @@ vim.api.nvim_create_autocmd('BufReadPre', {
   end,
 })
 
+-- Detect filetype for stdin buffers (e.g. curl ... | nvim)
+vim.api.nvim_create_autocmd('StdinReadPost', {
+  group = vim.api.nvim_create_augroup('jesal/stdin-filetype', {}),
+  desc = 'Detect filetype from content when reading from stdin',
+  callback = function(args)
+    vim.bo[args.buf].modified = false
+    if vim.bo[args.buf].filetype ~= '' then
+      return
+    end
+    local line_count = vim.api.nvim_buf_line_count(args.buf)
+    if vim.api.nvim_buf_get_offset(args.buf, line_count) > 1024 * 1024 then
+      return
+    end
+    local lines = vim.api.nvim_buf_get_lines(args.buf, 0, -1, false)
+    local first_char
+    for _, line in ipairs(lines) do
+      first_char = line:match('%S')
+      if first_char then
+        break
+      end
+    end
+    if first_char ~= '{' and first_char ~= '[' then
+      return
+    end
+    local ok = pcall(vim.json.decode, table.concat(lines, '\n'))
+    if ok then
+      vim.bo[args.buf].filetype = 'json'
+    end
+  end,
+})
+
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('jesal/close-with-q', {}),
