@@ -111,7 +111,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
 vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
 require('snacks').setup({
-  notifier = {},
   indent = {},
   dashboard = {
     preset = {
@@ -191,10 +190,6 @@ require('snacks').setup({
 })
 
 -- Keymaps
-
-vim.keymap.set('n', '<leader>n', function()
-  Snacks.notifier.show_history()
-end, { desc = '[N]otification History' })
 
 vim.keymap.set('n', '<leader>.', function()
   Snacks.terminal.toggle()

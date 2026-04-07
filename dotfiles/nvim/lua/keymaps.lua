@@ -26,8 +26,10 @@ vim.keymap.set('n', '<leader>D', function()
 end, { desc = '[D]elete buffer content' })
 vim.keymap.set('n', '<leader>y', '<cmd>%y<CR>', { desc = '[Y]ank buffer' })
 
--- Messages
-vim.keymap.set('n', '<leader>m', '<cmd>messages<cr>', { desc = '[M]essages' })
+-- Notifications
+vim.keymap.set('n', '<leader>n', function()
+  vim.cmd('messages')
+end, { desc = '[N]otifications' })
 
 -- Restart Neovim
 vim.keymap.set('n', '<leader>R', '<cmd>restart<cr>', { desc = '[R]estart Neovim' })
