@@ -28,7 +28,12 @@ vim.keymap.set('n', '<leader>y', '<cmd>%y<CR>', { desc = '[Y]ank buffer' })
 
 -- Notifications
 vim.keymap.set('n', '<leader>n', function()
-  vim.cmd('messages')
+  local msgs = vim.api.nvim_exec2('messages', { output = true }).output
+  if msgs == '' then
+    vim.notify('No messages')
+  else
+    vim.cmd('messages')
+  end
 end, { desc = '[N]otifications' })
 
 -- Restart Neovim
