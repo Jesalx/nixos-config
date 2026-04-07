@@ -1,6 +1,6 @@
 require('vim._core.ui2').enable({
   msg = {
-    targets = 'cmd',
+    targets = 'msg',
     msg = {
       timeout = 4000,
     },
