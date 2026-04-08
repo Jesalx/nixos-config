@@ -19,6 +19,12 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
       '-',
     }
 
+    lint.linters.markdownlint.args = {
+      '--stdin',
+      '--disable',
+      'MD013',
+    }
+
     lint.linters_by_ft = {
       lua = { 'selene' },
       markdown = { 'markdownlint' },
