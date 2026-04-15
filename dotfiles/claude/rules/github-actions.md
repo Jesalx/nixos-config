@@ -1,5 +1,5 @@
 ---
-path: **/.github/workflows/**
+path: "**/.github/workflows/**"
 ---
 
 # GitHub Actions
