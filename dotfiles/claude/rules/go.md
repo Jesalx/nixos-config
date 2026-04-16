@@ -156,7 +156,9 @@ Never add other external packages unless explicitly instructed by the user.
 
 ## Style and Conventions
 
-- Every exported identifier should have a doc comment.
+- Every exported identifier has a doc comment. Doc comments are complete
+  sentences that begin with the identifier's name (`// Owner returns the
+  repository owner.`).
 - Use struct literals with field names: `Point{X: 1, Y: 2}`, not `Point{1, 2}`.
 - Method receivers are short: one or two letters, consistent across all methods
   on the type (e.g. `s` for `*Server`). Never `self` or `this`.
