@@ -25,6 +25,11 @@ Never add other external packages unless explicitly instructed by the user.
   fixed signatures and meanings. Match them only when your type means the
   same thing. Name a string converter `String()`, not `ToString()`.
 - Use `MixedCaps` or `mixedCaps` for multiword names, never underscores.
+- Initialisms keep consistent case: `URL` or `url` (never `Url`), `ID` not
+  `Id`, `ServeHTTP` not `ServeHttp`.
+- Variable names grow with scope: single letters (`i`, `c`, `r`) for
+  short-lived locals, descriptive names for package-level or long-lived
+  identifiers.
 
 ## Error Handling
 
@@ -37,6 +42,9 @@ Never add other external packages unless explicitly instructed by the user.
   package level when callers need to match on them. Define custom error types
   only when callers need to extract structured data; otherwise prefer sentinels
   or wrapped strings.
+- Avoid in-band error signals. Return a separate `(value, ok)` or
+  `(value, error)` instead of overloading the primary return with magic
+  values like `-1` or an empty string.
 - Return early on errors to keep the happy path unindented.
 - Error strings are lowercase with no trailing punctuation, prefixed with the
   package or operation to identify their origin (`"image: unknown format"`).
@@ -125,6 +133,9 @@ Never add other external packages unless explicitly instructed by the user.
 
 ## Concurrency
 
+- Prefer synchronous functions that return results directly over ones that
+  spawn goroutines or invoke callbacks. Callers can add concurrency; they
+  cannot easily remove it.
 - Always ensure goroutines can be stopped. Accept a `context.Context` or provide
   a shutdown/close mechanism.
 - Share memory by communicating: default to passing values on channels. Use
@@ -148,6 +159,9 @@ Never add other external packages unless explicitly instructed by the user.
   on the type (e.g. `s` for `*Server`). Never `self` or `this`.
 - Use `defer` for resource cleanup immediately after acquiring the resource.
 - Use `make` with a size hint when the slice/map length is known or estimable.
+- Declare empty slices as `var s []T`, not `s := []T{}`. Use the non-nil form
+  only when empty must be distinguishable from nil (e.g. JSON arrays
+  marshaling to `[]`).
 - Prefer `slices`, `maps`, and `cmp` packages over hand-rolled loops.
 - Use range-over-func iterators (`iter.Seq`, `iter.Seq2`) for lazy sequences
   and custom collection traversal. Prefer iterators over returning a collected
