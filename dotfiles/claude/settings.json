@@ -1,4 +1,12 @@
 {
+  "env": {
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "opus",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "opus"
+  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -94,22 +102,23 @@
     ],
     "defaultMode": "default"
   },
-  "env": {
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
-    "CLAUDE_CODE_NO_FLICKER": "1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "opus",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "opus"
-  },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true
+    "gopls-lsp@claude-plugins-official": true,
+    "codex@openai-codex": true
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    }
   },
   "effortLevel": "high",
-  "showThinkingSummaries": true,
-  "model": "opus[1m]"
+  "showThinkingSummaries": true
 }
