@@ -43,6 +43,10 @@ vim.keymap.set('n', '<leader>s.', function()
   MiniExtra.pickers.oldfiles()
 end, { desc = '[S]earch Recent Files (["."] for repeat)' })
 
+vim.keymap.set('n', '<leader>sb', function()
+  MiniPick.builtin.buffers()
+end, { desc = '[S]earch [B]uffers' })
+
 vim.keymap.set('n', '<leader>sd', function()
   MiniExtra.pickers.diagnostic()
 end, { desc = '[S]earch [D]iagnostics' })
