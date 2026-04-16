@@ -9,6 +9,8 @@
 - Prefer built-in tools (Glob, Grep, Read, Edit, etc) over Bash equivalents
 - Use `jj` instead of `git` for version control
 - Fail fast. Never silently swallow errors or proceed in a broken state.
+- Never weaken or remove test assertions to make tests pass. Fix the
+  implementation, not the test.
 
 ## Code Style
 
