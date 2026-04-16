@@ -5,18 +5,18 @@ behavior. Write the test first, confirm it fails, then write the implementation.
 
 ## The Cycle
 
-### 1. Red — Write a failing test
+### 1. Red: write a failing test
 
 - Write a test for the next piece of behavior before writing any implementation
   code.
 - Run the test. It **must fail**. If it passes, either the behavior already
-  exists or the test is wrong — investigate before proceeding.
+  exists or the test is wrong. Investigate before proceeding.
 - Confirm it fails for the **right reason**: a missing function, wrong return
-  value, or expected error — not a syntax error, import failure, or unrelated
+  value, or expected error, not a syntax error, import failure, or unrelated
   crash. The failure message should describe the behavior gap you are about to
   fill.
 
-### 2. Green — Make it pass
+### 2. Green: make it pass
 
 - Write the **minimum implementation** to make the failing test pass. Nothing
   more.
@@ -25,7 +25,7 @@ behavior. Write the test first, confirm it fails, then write the implementation.
 - Run the full test suite, not just the new test. New code must not break
   existing behavior.
 
-### 3. Refactor — Clean up under green tests
+### 3. Refactor: clean up under green tests
 
 - With all tests passing, improve the code: extract duplication, rename for
   clarity, simplify conditionals, improve structure.
@@ -42,7 +42,7 @@ Then repeat. Each cycle adds one behavior.
 **New feature or function:** Start by writing a test for the simplest useful
 behavior. Build up complexity one test at a time through successive cycles.
 
-**Bug fix:** Write a test that reproduces the bug — it should fail against the
+**Bug fix:** Write a test that reproduces the bug. It should fail against the
 current code. Then fix the bug and confirm the test passes.
 
 **Refactoring existing code:** Ensure adequate test coverage exists before
@@ -56,7 +56,7 @@ behavior first (these should pass immediately), then refactor under those tests.
 - **Small steps.** If a test requires a large implementation to pass, the test
   is asking for too much. Break it into smaller, independently testable
   behaviors.
-- **Do not skip red.** Seeing the test fail is not a formality — it verifies
+- **Do not skip red.** Seeing the test fail is not a formality. It verifies
   the test actually exercises the behavior you intend. A test you have never
   seen fail is a test you cannot trust.
 - **Do not skip refactor.** The first implementation that passes is rarely the

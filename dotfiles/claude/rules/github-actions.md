@@ -7,8 +7,8 @@ paths: "**/.github/workflows/**"
 ## Workflow structure
 
 - Every workflow must include `workflow_dispatch` so it can be triggered manually
-- Use `paths` filters on push/pull_request triggers to avoid unnecessary runs —
-  always include the workflow file itself in the paths list
+- Use `paths` filters on push/pull_request triggers to avoid unnecessary runs.
+  Always include the workflow file itself in the paths list
 - Prefer parallel independent jobs (format, lint, test) over a single sequential job
 - Name workflows and jobs in lowercase for consistency (e.g., `name: neovim`,
   `name: format`)
@@ -20,13 +20,13 @@ paths: "**/.github/workflows/**"
 
 ## Security
 
-- Never hardcode secrets — use `${{ secrets.* }}` or `${{ github.token }}`
+- Never hardcode secrets. Use `${{ secrets.* }}` or `${{ github.token }}`
 - Use `${{ github.token }}` (scoped to the repo) over `${{ secrets.GITHUB_TOKEN }}`
   where the default token permissions suffice
 - Prefer first-party (`actions/*`) and verified-creator actions over community
   actions to reduce supply chain risk
-- Avoid `pull_request_target` unless you understand the security implications —
-  prefer `pull_request` for PR-triggered workflows
+- Avoid `pull_request_target` unless you understand the security implications.
+  Prefer `pull_request` for PR-triggered workflows
 
 ## Testing and validation
 
@@ -37,7 +37,7 @@ paths: "**/.github/workflows/**"
 
 ## Style
 
-- Scope `env:` to the narrowest level needed — prefer step-level over job-level
+- Scope `env:` to the narrowest level needed. Prefer step-level over job-level
   over workflow-level to avoid unintended variable leakage between steps/jobs
 - Use `run: |` (literal block scalar) for multi-line shell commands
 - Keep step names descriptive but concise (e.g., "Install dependencies", "Check formatting")
