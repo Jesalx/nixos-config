@@ -17,6 +17,11 @@
 - Match the style of surrounding code rather than imposing your own
 - Prefer idiomatic code following best practices and conventions of the language/framework
 
+## Dependencies
+
+- Prefer the standard library over third-party packages.
+- Do not add new dependencies without explicit approval from the user.
+
 ## Security
 
 - Never commit secrets, credentials, API keys, or tokens. If a file looks
