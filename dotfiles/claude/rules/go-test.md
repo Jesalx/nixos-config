@@ -9,7 +9,7 @@ paths:
 
 - **Existing test expectations are authoritative.** Never modify assertions
   without explicit user confirmation that the behavioral contract has changed.
-  When tests fail, present the details (which tests, expected vs. actual, and
+  When tests fail, present the details (which tests, expected vs actual, and
   why) and let the user decide the fix. Structural refactors (e.g. converting
   to table-driven) are always fine.
 - **Proactively increase coverage.** When writing or modifying code, add tests
@@ -18,8 +18,10 @@ paths:
 
 ## Style
 
-- Use table-driven tests as the default pattern: named struct cases, `t.Run`
-  subtests, `errors.Is` for error comparison.
+- Use table-driven tests as the default pattern: named struct cases and
+  `t.Run` subtests.
+- Match errors with `errors.Is`/`errors.As`, not substring checks against
+  `err.Error()`. Error strings are not a contract.
 - Use `t.Parallel()` in tests and subtests where safe.
 - Use `t.Context()` instead of `context.Background()` in tests that need a
   context. It cancels when the test ends.
@@ -63,3 +65,12 @@ paths:
 - Derive golden file paths from `t.Name()` so subtests each get their own file
   (e.g. `filepath.Join("testdata", t.Name()+".golden")`).
 - Commit golden files to version control. Diffs in review are the point.
+
+## Other Test Kinds
+
+- Use `testing/synctest` for time-dependent code. `synctest.Run` gives every
+  goroutine in the bubble a virtual clock, so timeouts, tickers, and
+  scheduling can be tested deterministically without real sleeps.
+- Write `FuzzXxx` targets for parsers and anything accepting untrusted input.
+- Add `ExampleXxx` functions for exported API where a short usage snippet
+  clarifies intent. They run as tests and appear in godoc.
