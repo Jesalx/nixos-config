@@ -63,9 +63,11 @@ Never add other external packages unless explicitly instructed by the user.
 
 - Keep interfaces small.
 - Define interfaces at the **consumer** site, not the provider.
-- Accept interfaces, return concrete types. When a type exists only to
-  implement an interface, its constructor returns the interface instead
-  (`crc32.NewIEEE` returns `hash.Hash32`).
+- Accept interfaces, return concrete types. This lets callers substitute
+  inputs freely while still getting the full concrete API on outputs. When a
+  type exists only to implement an interface and has no useful concrete API
+  of its own, its constructor returns the interface instead (`crc32.NewIEEE`
+  returns `hash.Hash32`).
 - Assert interface conformance at compile time with
   `var _ Iface = (*Type)(nil)` only when no static conversion already proves it.
 
@@ -138,8 +140,9 @@ Never add other external packages unless explicitly instructed by the user.
   cannot easily remove it.
 - Always ensure goroutines can be stopped. Accept a `context.Context` or provide
   a shutdown/close mechanism.
-- Share memory by communicating: default to passing values on channels. Use
-  `sync.Mutex` when it is simpler.
+- Choose the primitive that matches the problem: a mutex protects shared
+  state that multiple goroutines access in place; a channel passes ownership
+  or signals between goroutines.
 - Use `sync.WaitGroup` for fan-out work where all goroutines should run to
   completion. Use `errgroup.WithContext` when you want fail-fast cancellation
   on the first error.
