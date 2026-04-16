@@ -31,6 +31,12 @@ Never add other external packages unless explicitly instructed by the user.
 - Define interfaces at the **consumer** site, not the provider.
 - Accept interfaces, return concrete types.
 
+## Zero Values
+
+- Design types so the zero value is usable where practical. `bytes.Buffer`
+  and `sync.Mutex` work without initialization; aim for the same.
+- When the zero value cannot be useful, provide a `NewX` constructor.
+
 ## Generics
 
 - Prefer concrete types and interfaces by default. Use generics when the logic
@@ -94,3 +100,5 @@ Never add other external packages unless explicitly instructed by the user.
 - Represent durations with `time.Duration`, never bare `int` seconds or milliseconds.
 - Accept `io.Reader` / `io.Writer` for stream processing rather than `[]byte`
   or `string`.
+- Use `net/http.ServeMux` for HTTP routing. The 1.22 pattern syntax supports
+  methods and path parameters (`"GET /users/{id}"`, read with `r.PathValue`).

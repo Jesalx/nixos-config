@@ -21,8 +21,12 @@ paths:
 - Use table-driven tests as the default pattern: named struct cases, `t.Run`
   subtests, `errors.Is` for error comparison.
 - Use `t.Parallel()` in tests and subtests where safe.
-- Prefer real implementations (in-memory stores, temp dirs) over mocks. Only
-  mock at true external boundaries.
+- Use `t.Context()` instead of `context.Background()` in tests that need a
+  context. It cancels when the test ends.
+- Prefer `t.Cleanup` over `defer` in tests. It runs at test end, so helpers
+  can register their own teardown.
+- Prefer real implementations (in-memory stores, temp dirs, `httptest.NewServer`)
+  over mocks. Only mock at true external boundaries.
 - Always run tests with `-race`. Benchmark before optimizing with `testing.B`.
 - Use `cmp.Diff` (`github.com/google/go-cmp/cmp`) for comparing structs and
   complex types. It produces readable diffs in failure output.
