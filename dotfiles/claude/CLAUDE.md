@@ -11,6 +11,8 @@
 - Fail fast. Never silently swallow errors or proceed in a broken state.
 - Never weaken or remove test assertions to make tests pass. Fix the
   implementation, not the test.
+- If a project CLAUDE.md exists, update it when your changes introduce or
+  modify a convention, dependency, or architectural pattern.
 
 ## Code Style
 
