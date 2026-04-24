@@ -21,6 +21,11 @@
 - Match the style of surrounding code rather than imposing your own
 - Prefer idiomatic code following best practices and conventions of the language/framework
 
+## Writing Style
+
+- Do not use em dashes in generated content, documentation, or edits.
+  Use commas, parentheses, colons, or separate sentences.
+
 ## Dependencies
 
 - Prefer the standard library over third-party packages.
@@ -38,3 +43,8 @@
 ## Communication
 
 - If uncertain, say so rather than guessing
+- When making factual claims about code behavior, storage, or data
+  structures, verify by reading the source and cite `file:line`
+  references. If you cannot cite it, say "unverified" instead of
+  asserting.
+- Do not rationalize existing code. If something looks wrong, flag it.

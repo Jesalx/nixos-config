@@ -69,9 +69,6 @@ paths:
 - Do not qualify rules with language or tool versions (e.g. "in Go 1.22+",
   "since Terraform 1.5"). Rules assume the latest stable version. Write the
   rule as current practice.
-- Avoid em dashes and hyphens as sentence punctuation. Use periods, commas,
-  colons, or parentheses. Hyphens in compound words (e.g. `kebab-case`,
-  `path-scoped`) are fine.
 
 ## Maintenance
 
