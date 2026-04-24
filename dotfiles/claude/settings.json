@@ -120,5 +120,7 @@
     }
   },
   "effortLevel": "xhigh",
-  "showThinkingSummaries": true
+  "showThinkingSummaries": true,
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true
 }
