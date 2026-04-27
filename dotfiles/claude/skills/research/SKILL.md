@@ -1,10 +1,10 @@
 ---
 name: research
-description: Research the codebase to answer a question. Spawns multiple Explore agents with overlapping scopes so their findings cross-check each other, writes a full report to .claude/research/<timestamp>-<slug>/report.md, then gives the user a direct summary.
+description: Research the codebase to answer a question. Spawns multiple Explore agents with overlapping scopes so their findings cross-check each other, writes a full report to $NOTES_DIR/<project>/<timestamp>-<slug>.md (alongside the project's <project>.md notes), then gives the user a direct summary.
 user-invocable: true
 disable-model-invocation: true
 argument-hint: <question or topic to research>
-allowed-tools: Agent, Bash(mkdir *), Bash(date *), Read, Write, Grep, Glob
+allowed-tools: Agent, Bash(mkdir *), Bash(date *), Bash(jj root), Bash(git rev-parse *), Bash(pwd), Bash(basename *), Read, Write, Grep, Glob
 ---
 
 ## Query
@@ -15,14 +15,19 @@ If empty, ask for a topic and stop.
 
 ## Process
 
-### 1. Pick a directory
+### 1. Pick a path
 
-`$DIR = .claude/research/<timestamp>-<slug>`:
+Determine the project name: basename of the current repo root, or basename of `pwd` if not in a repo. Try in order: `jj root 2>/dev/null`, then `git rev-parse --show-toplevel 2>/dev/null`, then `pwd`. Take `basename` of the result.
+
+If `$NOTES_DIR` is not set, stop and tell the user to export it in their environment.
+
+`$DIR = $NOTES_DIR/<project>`
+`$FILE = $DIR/<timestamp>-<slug>.md`
 
 - **Timestamp**: `date +%Y-%m-%d-%H%M`.
-- **Slug**: 2-5 word kebab-case from the query. Lowercase ASCII, drop filler words, no trailing dash. Keep `$DIR` under ~60 chars. Examples: `cache-invalidation`, `http-client-retry`.
+- **Slug**: 2-5 word kebab-case from the query. Lowercase ASCII, drop filler words, no trailing dash. Examples: `cache-invalidation`, `http-client-retry`.
 
-`mkdir -p "$DIR"`. If it already exists, append `-2`, `-3`, etc. Report path: `$DIR/report.md`.
+`mkdir -p "$DIR"` (creates the project subdirectory if it does not exist). If `$FILE` already exists, append `-2`, `-3`, etc. before `.md`. Report path: `$FILE`.
 
 ### 2. Plan overlapping scopes
 
@@ -59,7 +64,7 @@ The report is an answer to the user's question, not a log of how it was research
 
 Cross-check results are a filter, not a section: include a finding only if it was corroborated by 2+ agents or you re-read the cited `file:line` and verified it yourself. Everything else goes to "Open Questions" or is phrased with explicit uncertainty in the prose (still cited).
 
-Write to `$DIR/report.md`:
+Write to `$FILE`:
 
 ```markdown
 # <original query>

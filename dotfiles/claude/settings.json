@@ -4,8 +4,8 @@
     "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
     "CLAUDE_CODE_NO_FLICKER": "1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "opus",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "opus"
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "sonnet",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "sonnet"
   },
   "permissions": {
     "allow": [
