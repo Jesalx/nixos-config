@@ -6,7 +6,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
+    # Pinned: revs after this switch wayland.windowManager.hyprland to a Lua
+    # config (hyprland.lua) and stop emitting hyprland.conf, which breaks
+    # Hyprland startup (falls back to default config).
+    home-manager.url = "github:nix-community/home-manager/2f419037039a152448c5f4ae9494154753d1b399";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # NixOS hardware
