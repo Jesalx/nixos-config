@@ -16,6 +16,7 @@
       gh
       tldr
       act
+      devenv
       lsof
       hyperfine
       nodejs_22
