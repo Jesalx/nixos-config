@@ -200,13 +200,19 @@ vim.api.nvim_create_user_command('Run', function(opts)
     interactive = false,
     persistent = false,
     win = {
+      position = opts.bang and 'bottom' or nil,
       keys = {
         q = 'close',
       },
     },
   })
-end, { nargs = '+', complete = 'shellcmdline', desc = 'Run shell command in floating terminal' })
+end, { nargs = '+', bang = true, complete = 'shellcmdline', desc = 'Run shell command in terminal (! for split)' })
 
-vim.keymap.set('ca', '!!', function()
-  return vim.fn.getcmdtype() == ':' and vim.fn.getcmdline() == '!!' and 'Run' or '!!'
-end, { expr = true })
+local function cabbrev(lhs, rhs)
+  vim.keymap.set('ca', lhs, function()
+    return vim.fn.getcmdtype() == ':' and vim.fn.getcmdline() == lhs and rhs or lhs
+  end, { expr = true })
+end
+
+cabbrev('!!', 'Run')
+cabbrev('!s', 'Run!')
