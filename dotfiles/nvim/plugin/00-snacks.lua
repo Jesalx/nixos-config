@@ -194,3 +194,19 @@ require('snacks').setup({
 vim.keymap.set('n', '<leader>.', function()
   Snacks.terminal.toggle()
 end, { desc = 'Toggle floating terminal' })
+
+vim.api.nvim_create_user_command('Run', function(opts)
+  Snacks.terminal.open(opts.args, {
+    interactive = false,
+    persistent = false,
+    win = {
+      keys = {
+        q = 'close',
+      },
+    },
+  })
+end, { nargs = '+', complete = 'shellcmdline', desc = 'Run shell command in floating terminal' })
+
+vim.keymap.set('ca', '!!', function()
+  return vim.fn.getcmdtype() == ':' and vim.fn.getcmdline() == '!!' and 'Run' or '!!'
+end, { expr = true })
