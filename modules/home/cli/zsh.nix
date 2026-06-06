@@ -3,69 +3,39 @@
   lib,
   config,
   ...
-}: {
+}: let
+  dotfiles = config.home.homeDirectory + "/nixos-config/dotfiles";
+in {
   options = {
     zsh.enable = lib.mkEnableOption "enables custom zsh config";
   };
   config = lib.mkIf config.zsh.enable {
     programs = {
+      # The real config lives in the repo and is shared verbatim with non-nix
+      # machines (dotfiles/zsh/.zshrc). As with neovim and tmux, that repo file
+      # is the single source of truth; the difference is Home Manager owns
+      # ~/.zshrc, so it sources the live file rather than symlinking it. Plugins
+      # are managed inside that file (git clone), not by Home Manager, so the
+      # interactive setup is identical everywhere.
       zsh = {
         enable = true;
-        autosuggestion.enable = true;
-        syntaxHighlighting.enable = true;
-        enableCompletion = true;
-        historySubstringSearch.enable = true;
-
-        shellAliases = {
-          gg = "jj";
-          g = "jj";
-          j = "jj";
-          oc = "opencode";
-          v = "nvim";
-        };
-
-        history = {
-          size = 100000;
-          save = 100000;
-          ignoreDups = true;
-          ignoreSpace = true;
-          share = true;
-          extended = true;
-          path = "${config.xdg.dataHome}/zsh/history";
-        };
-
         initContent = ''
-          if [[ -z "$TMUX" ]]; then
-            if tmux has-session -t default 2>/dev/null; then
-              tmux attach-session -t default
-            else
-              tmux new-session -s default
-            fi
-          fi
-
-          bindkey '^P' history-substring-search-up
-          bindkey '^N' history-substring-search-down
-          bindkey '^F' fzf-cd-widget
-
-          y() {
-            local tmp cwd
-            tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-            yazi "$@" --cwd-file="$tmp"
-            cwd="$(<"$tmp")"
-            if [[ -n "$cwd" ]] && [[ "$cwd" != "$PWD" ]]; then
-              builtin cd -- "$cwd"
-            fi
-            rm -f -- "$tmp"
-          }
+          source "${dotfiles}/zsh/.zshrc"
         '';
       };
 
+      # Provide the binaries, but let the shared .zshrc set up shell integration
+      # so it stays portable; disable Home Manager's generated init to avoid
+      # double-loading.
       fzf = {
         enable = true;
-        enableZshIntegration = true;
+        enableZshIntegration = false;
       };
-
-      zoxide.enableZshIntegration = true;
+      zoxide = {
+        enable = true;
+        enableZshIntegration = false;
+      };
+      starship.enableZshIntegration = false;
     };
 
     home.packages = with pkgs; [

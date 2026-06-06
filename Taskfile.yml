@@ -34,3 +34,39 @@ tasks:
     dir: /home/jesal/nixos-config
     cmds:
       - nh clean all --keep-since 7d --keep 10
+  link:
+    desc: Symlink shared dotfiles into place (macOS)
+    platforms: [darwin]
+    vars:
+      DOTFILES: '{{.ROOT_DIR}}/dotfiles'
+    cmds:
+      - |
+        link() {
+          src="$1"; dst="$2"
+          if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+            echo "backing up existing $dst -> $dst.pre-link.bak"
+            mv "$dst" "$dst.pre-link.bak"
+          fi
+          mkdir -p "$(dirname "$dst")"
+          ln -sfn "$src" "$dst"
+          echo "linked $dst -> $src"
+        }
+        # Mirror of the symlinks Home Manager creates on nixos; keep in sync with
+        # neovim.nix, tmux.nix, and zsh.nix when adding shared dotfiles.
+        link "{{.DOTFILES}}/zsh/.zshrc"      "$HOME/.zshrc"
+        link "{{.DOTFILES}}/nvim"            "$HOME/.config/nvim"
+        link "{{.DOTFILES}}/tmux/.tmux.conf" "$HOME/.tmux.conf"
+  zsh:update:
+    desc: Update zsh plugins (git pull each)
+    cmds:
+      - |
+        dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+        if [ ! -d "$dir" ]; then
+          echo "no zsh plugins installed yet at $dir"
+          exit 0
+        fi
+        for p in "$dir"/*/; do
+          [ -d "$p/.git" ] || continue
+          echo "updating $(basename "$p")"
+          git -C "$p" pull --ff-only
+        done
