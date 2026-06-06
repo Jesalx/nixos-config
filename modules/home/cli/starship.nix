@@ -11,7 +11,6 @@
     programs.starship.settings = {
       add_newline = false;
       format = "$all";
-      right_format = "$cmd_duration";
 
       username = {
         style_user = "green bold";
@@ -40,13 +39,7 @@
         style = "bold blue";
       };
 
-      cmd_duration = {
-        format = "[$duration]($style) ";
-        min_time = 4;
-        show_milliseconds = false;
-        disabled = false;
-        style = "bold italic yellow";
-      };
+      cmd_duration.disabled = true;
 
       aws = {
         symbol = "  ";

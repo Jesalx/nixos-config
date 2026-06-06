@@ -9,7 +9,7 @@
   };
   config = lib.mkIf config.ghostty.enable {
     xdg.configFile."ghostty/config".text = ''
-      shell-integration = fish
+      shell-integration = zsh
       background = 080808
       window-decoration = false
       gtk-titlebar = false

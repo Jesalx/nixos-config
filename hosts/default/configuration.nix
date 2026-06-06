@@ -105,7 +105,7 @@
         "docker"
         "audio"
       ];
-      shell = pkgs.fish;
+      shell = pkgs.zsh;
     };
   };
 
