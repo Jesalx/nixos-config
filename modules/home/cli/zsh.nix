@@ -63,21 +63,6 @@
       fzf = {
         enable = true;
         enableZshIntegration = true;
-
-        defaultOptions = [
-          "--height=60%"
-          "--layout=reverse"
-          "--border=rounded"
-          "--info=inline-right"
-          "--pointer=▶"
-          "--marker=◆"
-          "--scrollbar=▍"
-        ];
-
-        historyWidgetOptions = [
-          "--exact"
-          "--bind=ctrl-u:half-page-up,ctrl-d:half-page-down"
-        ];
       };
 
       zoxide.enableZshIntegration = true;
