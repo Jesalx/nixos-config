@@ -120,7 +120,7 @@ require('snacks').setup({
           key = 'f',
           desc = 'Find File',
           action = function()
-            MiniPick.builtin.files()
+            require('fff').find_files()
           end,
         },
         {
@@ -128,7 +128,7 @@ require('snacks').setup({
           key = '/',
           desc = 'Find Text',
           action = function()
-            MiniPick.builtin.grep_live()
+            require('fff').live_grep({ grep = { modes = { 'regex', 'fuzzy', 'plain' } } })
           end,
         },
         {
@@ -144,7 +144,7 @@ require('snacks').setup({
           key = 'c',
           desc = 'Config',
           action = function()
-            MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand('~/.config/nvim') } })
+            require('fff').find_files_in_dir(vim.fn.expand('~/.config/nvim'))
           end,
         },
         {
