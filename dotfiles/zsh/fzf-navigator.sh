@@ -958,6 +958,7 @@ __fzf_navigator() {
     [[ -n "${FZF_NAVIGATOR_SHOW_IGNORED:-}" ]] && touch "$tmpdir/show_ignored"
     rm -f "$tmpdir/show_help"
     rm -f "$tmpdir/show_details"
+    [[ -z "${FZF_NAVIGATOR_HIDE_DETAILS:-}" ]] && touch "$tmpdir/show_details"
     rm -f "$tmpdir/recent_first"
   fi
 
