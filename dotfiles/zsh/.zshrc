@@ -104,6 +104,14 @@ unfunction _zsh_load_plugin
 # ---------------------------------------------------------------------------
 bindkey '^F' fzf-cd-widget
 
+# fzf directory navigator (Ctrl-Space). Lives next to this file; sourced via a
+# path relative to this file (:A resolves symlinks) so it works whether ~/.zshrc
+# is symlinked on non-nix machines or this file is sourced by Home Manager on
+# nixos. The script binds Ctrl-Space itself and auto-detects its own directory.
+_fzf_navigator="${${(%):-%x}:A:h}/fzf-navigator.sh"
+[[ -r "$_fzf_navigator" ]] && (( $+commands[fzf] )) && source "$_fzf_navigator"
+unset _fzf_navigator
+
 # ---------------------------------------------------------------------------
 # Aliases
 # ---------------------------------------------------------------------------
