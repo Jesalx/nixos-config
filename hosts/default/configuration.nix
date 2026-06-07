@@ -127,7 +127,13 @@
       xkb.layout = "us";
       xkb.variant = "";
     };
-    displayManager.gdm.enable = true;
+    greetd = {
+      enable = true;
+      settings.default_session = {
+        command = "${lib.getExe pkgs.tuigreet} --time --remember --remember-session --cmd ${lib.getExe' pkgs.hyprland "start-hyprland"}";
+        user = "greeter";
+      };
+    };
     pipewire = {
       enable = true;
       alsa.enable = true;
