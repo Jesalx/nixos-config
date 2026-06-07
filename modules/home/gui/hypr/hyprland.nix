@@ -9,6 +9,11 @@
   config = lib.mkIf config.hyprland.enable {
     wayland.windowManager.hyprland = {
       enable = true;
+      # Keep the classic hyprlang (hyprland.conf) generator. As of
+      # stateVersion 26.05 home-manager defaults configType to "lua", which
+      # serializes settings as hl.<name>(...) and produces invalid Lua for the
+      # hyprlang-style keys used below ($variables, exec-once, windowrule).
+      configType = "hyprlang";
       systemd.enable = true;
       xwayland.enable = true;
       settings = {
