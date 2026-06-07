@@ -75,8 +75,37 @@
         symbol = " ";
       };
 
-      git_branch = {
-        symbol = " ";
+      # Native git_branch/git_commit only see git's view of the world. In a
+      # jj repo git keeps HEAD detached, so they render useless "HEAD (hash)"
+      # noise. Disable them and drive the VCS segment from the custom modules
+      # below: jj info in jj repos, git branch everywhere else.
+      git_commit.disabled = true;
+      git_branch.disabled = true;
+
+      custom = {
+        # Plain git repos (not managed by jj): mirror the native git_branch look.
+        git_branch = {
+          description = "Current git branch (non-jj repos only)";
+          when = "git rev-parse --is-inside-work-tree >/dev/null 2>&1 && ! jj root --ignore-working-copy >/dev/null 2>&1";
+          shell = ["sh"];
+          command = ''b=$(git branch --show-current); [ -z "$b" ] && b=$(git rev-parse --short HEAD 2>/dev/null); printf '%s' "$b"'';
+          style = "bold purple";
+          format = "on [$output]($style) ";
+        };
+
+        # jj repos: show the closest ancestor bookmark (or this change's own)
+        # and the working-copy change id, e.g. "main lmvktrkt". Needs shell =
+        # ["sh"] because the script is piped to the shell's stdin (a "-c" form
+        # would error with "option requires an argument").
+        jj = {
+          description = "Current jj change";
+          when = "jj root --ignore-working-copy >/dev/null 2>&1";
+          ignore_timeout = true;
+          shell = ["sh"];
+          command = ''b=$(jj log --ignore-working-copy --no-graph --color never -r 'latest(heads(::@ & bookmarks()))' -T 'bookmarks.join(",")' 2>/dev/null); c=$(jj log --ignore-working-copy --no-graph --color never -r @ -T 'change_id.shortest(8)' 2>/dev/null); [ -n "$b" ] && printf '%s ' "$b"; printf '%s' "$c"'';
+          style = "bold purple";
+          format = "on [$output]($style) ";
+        };
       };
 
       git_status = {
