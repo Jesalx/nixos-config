@@ -24,6 +24,11 @@ path=("$HOME/go/bin" "$HOME/.local/bin" $path)
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # ---------------------------------------------------------------------------
+# Environment
+# ---------------------------------------------------------------------------
+export EDITOR=nvim
+
+# ---------------------------------------------------------------------------
 # tmux: attach the 'default' session for interactive shells. Done before the
 # heavier setup below so the outer shell hands off to tmux quickly; the shell
 # inside the pane re-runs this file with $TMUX set and skips this block.
@@ -90,6 +95,9 @@ unfunction _zsh_load_plugin
 (( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 (( $+commands[fzf] ))      && source <(fzf --zsh)
+# direnv: guard against a double hook if a parent already installed it (e.g.
+# Home Manager's zsh integration on nixos), so this stays a no-op there.
+(( $+commands[direnv] && ! $+functions[_direnv_hook] )) && eval "$(direnv hook zsh)"
 
 # ---------------------------------------------------------------------------
 # Keybindings
@@ -122,6 +130,22 @@ alias oc="opencode"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
+
+# kubernetes
+alias k="kubectl"
+alias kc="kubectx"
+alias kn="kubens"
+# colourised kubectl, only when kubecolor is installed (else kubectl would break)
+(( $+commands[kubecolor] )) && alias kubectl="kubecolor"
+
+alias tf="terraform"
+alias dev="cd ~/Developer"
+# open the current directory in the OS file manager (macOS `open`, else xdg-open)
+if (( $+commands[open] )); then
+  alias ofd="open ."
+elif (( $+commands[xdg-open] )); then
+  alias ofd="xdg-open ."
+fi
 unset _nixconfig
 
 # ---------------------------------------------------------------------------
