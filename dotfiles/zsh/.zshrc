@@ -171,6 +171,13 @@ unset _kube_fzf
 # colourised kubectl, only when kubecolor is installed (else kubectl would break)
 (( $+commands[kubecolor] )) && alias kubectl="kubecolor"
 
+# pr.fzf — interactive GitHub PR picker
+_pr_fzf="${${(%):-%x}:A:h}/pr.fzf"
+if [[ -x "$_pr_fzf" ]] && (( $+commands[fzf] && $+commands[gh] )); then
+  alias pr="'$_pr_fzf'"
+fi
+unset _pr_fzf
+
 alias tf="terraform"
 alias dev="cd ~/Developer"
 # open the current directory in the OS file manager (macOS `open`, else xdg-open)

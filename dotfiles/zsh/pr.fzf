@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+export PR_FORMAT='{{tablerow "ID" "TITLE" "AUTHOR" "BRANCH" "CREATED"}}{{range .}}{{tablerow (printf "#%v" .number | autocolor "green") (.title | truncate 60) .author.login (.headRefName | autocolor "cyan") (timeago .createdAt)}}{{end}}{{tablerender}}'
+
+fzf --ansi \
+    --info inline --reverse --header-lines 1 \
+    --preview 'GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view --comments {1}' \
+    --preview-window up:border-down \
+    --with-shell 'bash -c' \
+    --bind 'start:preview(echo Loading pull requests ...)+reload:GH_FORCE_TTY=95% gh pr list --limit=1000 --json number,title,author,headRefName,createdAt --template "$PR_FORMAT"' \
+    --bind 'load:transform:(( FZF_TOTAL_COUNT )) || echo become:echo No pull requests' \
+    --bind 'ctrl-o:execute-silent:gh pr view --web {1}' \
+    --bind 'enter:become:gh pr checkout {1}' \
+    --footer 'Press Enter to checkout / CTRL-O to open in browser' "$@"
