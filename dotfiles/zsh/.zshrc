@@ -141,8 +141,25 @@ alias vim="nvim"
 
 # kubernetes
 alias k="kubectl"
-alias kc="kubectx"
-alias kn="kubens"
+# kube.fzf — interactive kubectl/context/namespace picker via fzf. Lives next to
+# this file and is resolved the same way as fzf-navigator above, so it works
+# whether ~/.zshrc is symlinked on non-nix machines or sourced by Home Manager.
+# `kube` opens the menu (or takes a subcommand: p d j cj sc sn). It reimplements
+# kubectx/kubens via plain kubectl, so kc/kn and the full kubectx/kubens names
+# all route through it. Falls back to the standalone tools only when fzf or the
+# script isn't available.
+_kube_fzf="${${(%):-%x}:A:h}/kube.fzf"
+if [[ -x "$_kube_fzf" ]] && (( $+commands[fzf] )); then
+  alias kube="'$_kube_fzf'"
+  alias kc="'$_kube_fzf' sc"
+  alias kn="'$_kube_fzf' sn"
+  alias kubectx="'$_kube_fzf' sc"
+  alias kubens="'$_kube_fzf' sn"
+else
+  (( $+commands[kubectx] )) && alias kc="kubectx"
+  (( $+commands[kubens] ))  && alias kn="kubens"
+fi
+unset _kube_fzf
 # colourised kubectl, only when kubecolor is installed (else kubectl would break)
 (( $+commands[kubecolor] )) && alias kubectl="kubecolor"
 

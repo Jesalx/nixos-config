@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+
+read -d '' -r OPTS << 'EOF'
+  --height 100% --border --layout reverse --info inline-right --with-shell 'bash -c'
+  --style full --header-lines-border inline --no-input-border
+  --color nth:regular,fg:dim
+  --bind 'click-header:transform:
+    if [[ $FZF_CLICK_HEADER_WORD =~ ^[A-Z]+$ ]]; then
+      echo "change-nth:$FZF_CLICK_HEADER_NTH"
+    else
+      echo change-nth:..
+    fi
+  '
+EOF
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $OPTS"
+
+command=$1
+shift
+
+boxit() {
+  local line
+  while read line; do
+    echo "${line#[[:space:]]}"
+  done <<< "$1"
+}
+
+read -r -d '' divider << 'EOF'
+  awk '{print} FNR==1 {gsub(/./, "▔", $0); print}'
+EOF
+
+[[ $1 = -- ]] && trap "bash \"$0\"" EXIT
+
+case "$command" in
+p) # Pods
+  command='kubectl get pods --sort-by=.metadata.creationTimestamp --all-namespaces'
+  fzf \
+    --header-lines 1 --tac --scheme history \
+    --border-label ' PODS ' \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header "$(boxit 'Enter (kubectl exec) │ CTRL-O (open log in editor) │ CTRL-R (reload)
+                       CTRL-Y (copy)        │ CTRL-ALT-X (delete)')" \
+    --bind "start:reload:$command" \
+    --bind "ctrl-r:reload:$command" \
+    --bind 'ctrl-y:execute-silent(echo -n {2} | pbcopy)' \
+    --bind 'ctrl-alt-x:execute(kubectl delete pod -n {1} {2})' \
+    --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+    --bind 'enter:execute:kubectl exec -it --namespace {1} {2} -- bash' \
+    --bind 'ctrl-o:execute:vim -n <(kubectl logs --all-containers --namespace {1} {2})' \
+    --preview-window bottom,follow \
+    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
+  ;;
+
+d) # Deployments
+  command='kubectl get deployments --all-namespaces'
+  fzf \
+    --header-lines 1 \
+    --border-label ' DEPLOYMENTS ' \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header "$(boxit 'CTRL-O (open log in editor)  │ CTRL-R (reload)
+                       CTRL-ALT-R (rollout restart) │ CTRL-ALT-X (delete)')" \
+    --bind 'enter:ignore' \
+    --bind "start:reload:$command" \
+    --bind "ctrl-r:reload:$command" \
+    --bind 'ctrl-o:execute:vim -n <(kubectl logs --namespace {1} deployments/{2})' \
+    --bind "ctrl-alt-r:execute(
+              kubectl --namespace {1} rollout restart deployments/{2};
+              kubectl --namespace {1} rollout status deployments/{2}
+            )+reload:$command" \
+    --bind "ctrl-alt-x:execute(
+              kubectl --namespace {1} delete deployment {2}
+            )+reload:$command" \
+    --preview-window bottom,follow \
+    --preview 'kubectl logs --follow --tail=10000 --namespace {1} deployments/{2}'
+  ;;
+
+j) # Jobs
+  command='kubectl get jobs --sort-by=.metadata.creationTimestamp --all-namespaces'
+  fzf \
+    --header-lines 1 --tac --scheme history \
+    --border-label ' JOBS ' \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header "$(boxit 'CTRL-O (open log in editor) │ CTRL-R (reload)')" \
+    --bind 'enter:ignore' \
+    --bind "start:reload:$command" \
+    --bind "ctrl-r:reload:$command" \
+    --bind 'ctrl-o:execute:vim -n <(kubectl logs --namespace {1} jobs/{2})' \
+    --preview-window bottom,follow \
+    --preview 'kubectl logs --follow --tail=10000 --namespace {1} jobs/{2}'
+  ;;
+
+cj) # CronJobs
+  command='kubectl get cronjobs --all-namespaces'
+  fzf \
+    --header-lines 1 --scheme history \
+    --border-label ' CRONJOBS ' \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header "$(boxit 'CTRL-T (trigger) │ CTRL-R (reload)
+                       CTRL-ALT-X (delete)')" \
+    --bind 'enter:ignore' \
+    --bind "start:reload:$command" \
+    --bind "ctrl-r:reload($command)+refresh-preview" \
+    --bind 'ctrl-t:execute-silent(kubectl create job --namespace {1} --from=cronjob/{2} {2}-manual-$(date +%s))+refresh-preview' \
+    --bind "ctrl-alt-x:execute(kubectl delete cronjob -n {1} {2})+reload:$command" \
+    --preview-window bottom,wrap-word \
+    --preview "
+      jobs=\$(kubectl get jobs --namespace {1} -o=jsonpath='{.items[?(@.metadata.ownerReferences[*].name==\"'{2}'\")].metadata.name}')
+      if [[ -n \$jobs ]]; then
+        kubectl get jobs --namespace {1} \$jobs
+        echo
+        kubectl logs --follow --tail=10000 --namespace {1} jobs/\$(echo \$jobs | awk '{print \$NF}')
+      fi
+    "
+  ;;
+
+sc) # Contexts
+  current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.cluster')
+  kubectl config get-contexts | grep -v '^\*' | cut -c11- | fzf \
+    --header-lines 1 --reverse --delimiter ' {2,}' \
+    --border-label ' CONTEXTS ' \
+    --prompt "$current -> " \
+    --tiebreak index --preview-window bottom,20,~1 \
+    --preview 'kubectl get pods --all-namespaces --context {1}' \
+    --bind 'enter:become:echo Switching to {1}; kubectl config set current-context {1}'
+  ;;
+
+sn) # Namespaces
+  current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.namespace')
+  kubectl get namespaces | grep -v "^$current " | fzf \
+    --header-lines 1 --reverse --nth=1 --listen --sync \
+    --border-label ' NAMESPACES ' \
+    --prompt "$current -> " \
+    --bind change:top \
+    --bind 'enter:become:echo Switching to {1}; kubectl config set-context --current --namespace {1}' \
+    --preview 'kubectl get all --namespace {1}'
+  ;;
+
+*)
+  trap - EXIT
+  echo "usage: $0 [p|d|j|cj|sc|sn]
+  p   list all pods
+  d   list all deployments
+  j   list all jobs
+  cj  list all cronjobs
+  sc  switch to a different context
+  sn  switch to a different namespace" |
+    fzf --prompt 'kube.fzf> ' --border-label ' SUBCOMMANDS ' --height ~100% \
+        --header-lines=1 --bind enter:transform:"
+      if [[ {1} ]]; then
+        echo become:bash \"$0\" {1} --
+      fi
+    " || echo -en "\x1b[0J"
+  ;;
+esac
