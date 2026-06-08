@@ -114,6 +114,13 @@ cj) # CronJobs
   ;;
 
 sc) # Contexts
+  # A name argument switches directly; otherwise fall through to the fzf picker.
+  # use-context validates against the kubeconfig locally (no API call) and prints
+  # its own confirmation, so a typo fails fast instead of leaving a bad context.
+  if [[ -n $1 && $1 != -- ]]; then
+    kubectl config use-context "$1"
+    exit
+  fi
   current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.cluster')
   kubectl config get-contexts | grep -v '^\*' | cut -c11- | fzf \
     --header-lines 1 --reverse --delimiter ' {2,}' \
@@ -125,6 +132,14 @@ sc) # Contexts
   ;;
 
 sn) # Namespaces
+  # A name argument switches directly; otherwise fall through to the fzf picker.
+  # The namespace lives only in the kubeconfig, so there is nothing to validate
+  # locally; we set it without a cluster round-trip to keep direct switches fast.
+  if [[ -n $1 && $1 != -- ]]; then
+    echo "Switching to $1"
+    kubectl config set-context --current --namespace "$1"
+    exit
+  fi
   current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.namespace')
   kubectl get namespaces | grep -v "^$current " | fzf \
     --header-lines 1 --reverse --nth=1 --listen --sync \
@@ -142,8 +157,8 @@ sn) # Namespaces
   d   list all deployments
   j   list all jobs
   cj  list all cronjobs
-  sc  switch to a different context
-  sn  switch to a different namespace" |
+  sc  switch context
+  sn  switch namespace" |
     fzf --prompt 'kube.fzf> ' --border-label ' SUBCOMMANDS ' --height ~100% \
         --header-lines=1 --bind enter:transform:"
       if [[ {1} ]]; then

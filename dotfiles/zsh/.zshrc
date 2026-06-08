@@ -153,8 +153,9 @@ alias k="kubectl"
 # whether ~/.zshrc is symlinked on non-nix machines or sourced by Home Manager.
 # `kube` opens the menu (or takes a subcommand: p d j cj sc sn). It reimplements
 # kubectx/kubens via plain kubectl, so kc/kn and the full kubectx/kubens names
-# all route through it. Falls back to the standalone tools only when fzf or the
-# script isn't available.
+# all route through it; pass a name (e.g. `kubens prod`) to switch directly, or
+# omit it for the fzf picker. Falls back to the standalone tools only when fzf or
+# the script isn't available.
 _kube_fzf="${${(%):-%x}:A:h}/kube.fzf"
 if [[ -x "$_kube_fzf" ]] && (( $+commands[fzf] )); then
   alias kube="'$_kube_fzf'"
