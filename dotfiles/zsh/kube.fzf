@@ -29,38 +29,79 @@ read -r -d '' divider << 'EOF'
   awk '{print} FNR==1 {gsub(/./, "▔", $0); print}'
 EOF
 
+# Clipboard command for the copy bindings: pbcopy on macOS, wl-copy/xclip on
+# Linux. Resolved once and baked into the binds so copy works across platforms.
+clip=
+for candidate in pbcopy wl-copy "xclip -selection clipboard"; do
+  command -v "${candidate%% *}" &>/dev/null && { clip=$candidate; break; }
+done
+clip=${clip:-cat}
+
 [[ $1 = -- ]] && trap "bash \"$0\"" EXIT
 
 case "$command" in
 p) # Pods
   command='kubectl get pods --sort-by=.metadata.creationTimestamp --all-namespaces'
+  # ctrl-d flips the preview between streaming logs (follow, tail) and `describe`
+  # (no follow, anchored to the top). The flag file's existence marks describe mode
+  # so the bind, window options, and preview command stay in sync.
+  preview_describe="${TMPDIR:-/tmp}/kube.fzf-describe.$$"
+  rm -f "$preview_describe"
   fzf \
     --header-lines 1 --tac --scheme history \
     --border-label ' PODS ' \
     --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
-    --header "$(boxit 'CTRL-O (open log in editor) │ CTRL-R (reload) │ CTRL-Y (copy)')" \
+    --header "$(boxit 'CTRL-O (open logs)     │ CTRL-D (toggle describe) │ CTRL-R (reload)
+                       CTRL-P (previous logs) │ CTRL-Y (copy)')" \
     --bind 'enter:ignore' \
     --bind "start:reload:$command" \
     --bind "ctrl-r:reload:$command" \
-    --bind 'ctrl-y:execute-silent(echo -n {2} | pbcopy)' \
+    --bind "ctrl-y:execute-silent(echo -n {2} | $clip)" \
     --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
     --bind 'ctrl-o:execute:vim -n <(kubectl logs --all-containers --namespace {1} {2})' \
+    --bind 'ctrl-p:execute:vim -n <(kubectl logs --previous --all-containers --namespace {1} {2} 2>&1)' \
+    --bind "ctrl-d:transform:
+      if [[ -e $preview_describe ]]; then
+        rm -f $preview_describe
+        echo 'change-preview-window(follow)+refresh-preview'
+      else
+        : > $preview_describe
+        echo 'change-preview-window(nofollow)+refresh-preview+preview-top'
+      fi" \
     --preview-window bottom,follow \
-    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
+    --preview "if [[ -e $preview_describe ]]; then
+                 kubectl describe --namespace {1} pod {2}
+               else
+                 kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}
+               fi" "$@"
+  rm -f "$preview_describe"
   ;;
 
 d) # Deployments
   command='kubectl get deployments --all-namespaces'
+  # ctrl-d flips the preview between streaming logs (follow) and `describe` (rollout
+  # status, conditions, events; no follow, anchored to the top). The flag file's
+  # existence marks describe mode.
+  preview_describe="${TMPDIR:-/tmp}/kube.fzf-describe.$$"
+  rm -f "$preview_describe"
   fzf \
     --header-lines 1 \
     --border-label ' DEPLOYMENTS ' \
     --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
-    --header "$(boxit 'CTRL-O (open log in editor)  │ CTRL-R (reload)
+    --header "$(boxit 'CTRL-O (open log in editor)  │ CTRL-D (toggle describe) │ CTRL-R (reload)
                        CTRL-ALT-R (rollout restart) │ CTRL-ALT-X (delete)')" \
     --bind 'enter:ignore' \
     --bind "start:reload:$command" \
     --bind "ctrl-r:reload:$command" \
     --bind 'ctrl-o:execute:vim -n <(kubectl logs --namespace {1} deployments/{2})' \
+    --bind "ctrl-d:transform:
+      if [[ -e $preview_describe ]]; then
+        rm -f $preview_describe
+        echo 'change-preview-window(follow)+refresh-preview'
+      else
+        : > $preview_describe
+        echo 'change-preview-window(nofollow)+refresh-preview+preview-top'
+      fi" \
     --bind "ctrl-alt-r:execute(
               kubectl --namespace {1} rollout restart deployments/{2};
               kubectl --namespace {1} rollout status deployments/{2}
@@ -69,7 +110,12 @@ d) # Deployments
               kubectl --namespace {1} delete deployment {2}
             )+reload:$command" \
     --preview-window bottom,follow \
-    --preview 'kubectl logs --follow --tail=10000 --namespace {1} deployments/{2}'
+    --preview "if [[ -e $preview_describe ]]; then
+                 kubectl describe --namespace {1} deployments/{2}
+               else
+                 kubectl logs --follow --tail=10000 --namespace {1} deployments/{2}
+               fi"
+  rm -f "$preview_describe"
   ;;
 
 j) # Jobs
@@ -111,6 +157,22 @@ cj) # CronJobs
     "
   ;;
 
+cm) # ConfigMaps
+  command='kubectl get configmaps --all-namespaces'
+  fzf \
+    --header-lines 1 \
+    --border-label ' CONFIGMAPS ' \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header "$(boxit 'CTRL-O (open in editor) │ CTRL-R (reload) │ CTRL-Y (copy)')" \
+    --bind 'enter:ignore' \
+    --bind "start:reload:$command" \
+    --bind "ctrl-r:reload:$command" \
+    --bind "ctrl-y:execute-silent(echo -n {2} | $clip)" \
+    --bind 'ctrl-o:execute:vim -n <(kubectl get configmap --namespace {1} {2} -o yaml)' \
+    --preview-window bottom,wrap-word \
+    --preview 'kubectl describe configmap --namespace {1} {2}'
+  ;;
+
 sc) # Contexts
   # A name argument switches directly; otherwise fall through to the fzf picker.
   # use-context validates against the kubeconfig locally (no API call) and prints
@@ -150,11 +212,12 @@ sn) # Namespaces
 
 *)
   trap - EXIT
-  echo "usage: $0 [p|d|j|cj|sc|sn]
+  echo "usage: $0 [p|d|j|cj|cm|sc|sn]
   p   list all pods
   d   list all deployments
   j   list all jobs
   cj  list all cronjobs
+  cm  list all configmaps
   sc  switch context
   sn  switch namespace" |
     fzf --prompt 'kube.fzf> ' --border-label ' SUBCOMMANDS ' --height ~100% \
