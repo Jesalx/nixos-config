@@ -5,7 +5,7 @@
 (( $+functions[compdef] )) || return  # completion system not initialized
 
 typeset -A _zsh_completions=(
-  jj      'jj util completion zsh'
+  jj      'env COMPLETE=zsh jj'
   gh      'gh completion -s zsh'
   helm    'helm completion zsh'
   rustup  'rustup completions zsh'
