@@ -62,8 +62,15 @@ setopt EXTENDED_HISTORY    # extended
 # Completion (skip if a parent already ran compinit, e.g. Home Manager)
 # ---------------------------------------------------------------------------
 if ! (( $+functions[compdef] )); then
-  autoload -Uz compinit && compinit
+  # -i: silently skip insecure (e.g. world-writable Homebrew) fpath dirs instead
+  # of prompting/aborting. Completions for those tools come from completions.zsh.
+  autoload -Uz compinit && compinit -i
 fi
+
+# Tool completions, loaded after compinit so compdef is available.
+_zsh_comp_file="${${(%):-%x}:A:h}/completions.zsh"
+[[ -r "$_zsh_comp_file" ]] && source "$_zsh_comp_file"
+unset _zsh_comp_file
 
 # ---------------------------------------------------------------------------
 # Plugins: hand-rolled bootstrap. Clone on first run, then source.
@@ -160,23 +167,8 @@ else
   (( $+commands[kubens] ))  && alias kn="kubens"
 fi
 unset _kube_fzf
-# kubectl shell completion: dynamic, queries the live cluster so e.g.
-# `kubectl edit cm <TAB>` lists configmaps (fish did this for free; zsh needs
-# the script loaded explicitly). `compdef k=kubectl` extends it to the `k` alias.
-(( $+commands[kubectl] )) && {
-  source <(kubectl completion zsh)
-  compdef k=kubectl
-}
 # colourised kubectl, only when kubecolor is installed (else kubectl would break)
-(( $+commands[kubecolor] )) && {
-  alias kubectl="kubecolor"
-  # zsh resolves the kubectl->kubecolor alias before it looks up a completion,
-  # so without this `kubectl <TAB>` (and k->kubectl->kubecolor) finds no
-  # completion registered for `kubecolor` and silently falls back to file
-  # completion. Register the kubectl completion under `kubecolor` too; it then
-  # runs `kubecolor __complete ...`, which passes the protocol through untouched.
-  (( $+functions[_kubectl] )) && compdef kubecolor=kubectl
-}
+(( $+commands[kubecolor] )) && alias kubectl="kubecolor"
 
 alias tf="terraform"
 alias dev="cd ~/Developer"
