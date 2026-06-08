@@ -38,14 +38,12 @@ p) # Pods
     --header-lines 1 --tac --scheme history \
     --border-label ' PODS ' \
     --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
-    --header "$(boxit 'Enter (kubectl exec) │ CTRL-O (open log in editor) │ CTRL-R (reload)
-                       CTRL-Y (copy)        │ CTRL-ALT-X (delete)')" \
+    --header "$(boxit 'CTRL-O (open log in editor) │ CTRL-R (reload) │ CTRL-Y (copy)')" \
+    --bind 'enter:ignore' \
     --bind "start:reload:$command" \
     --bind "ctrl-r:reload:$command" \
     --bind 'ctrl-y:execute-silent(echo -n {2} | pbcopy)' \
-    --bind 'ctrl-alt-x:execute(kubectl delete pod -n {1} {2})' \
     --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
-    --bind 'enter:execute:kubectl exec -it --namespace {1} {2} -- bash' \
     --bind 'ctrl-o:execute:vim -n <(kubectl logs --all-containers --namespace {1} {2})' \
     --preview-window bottom,follow \
     --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
