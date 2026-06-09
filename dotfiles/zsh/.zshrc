@@ -178,6 +178,13 @@ if [[ -x "$_pr_fzf" ]] && (( $+commands[fzf] && $+commands[gh] )); then
 fi
 unset _pr_fzf
 
+# review.fzf — GitHub PRs awaiting your review (cross-repo)
+_review_fzf="${${(%):-%x}:A:h}/review.fzf"
+if [[ -x "$_review_fzf" ]] && (( $+commands[fzf] && $+commands[gh] )); then
+  alias review="'$_review_fzf'"
+fi
+unset _review_fzf
+
 alias tf="terraform"
 alias dev="cd ~/Developer"
 # open the current directory in the OS file manager (macOS `open`, else xdg-open)
