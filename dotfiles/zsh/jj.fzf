@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+read -d '' -r OPTS << 'EOF'
+  --height 100% --border --layout reverse --info inline-right
+  --with-shell 'bash -c'
+EOF
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $OPTS"
+
+# Every subcommand needs a repo; bail early with a clear message rather than
+# letting each jj invocation fail noisily inside the picker. `jj` works from any
+# subdirectory, so the root doubles as the prompt label.
+root=$(jj root 2>/dev/null) || { echo "jj.fzf: not inside a jj repo" >&2; exit 1; }
+
+# Description + delta-colored diff for the selected revision. delta is jj's
+# configured diff-formatter; export COLUMNS so it sizes to the preview pane.
+preview='COLUMNS=$FZF_PREVIEW_COLUMNS jj show --color=always -r {1}'
+
+command=$1
+shift
+
+# When launched from the menu (which passes `--`), re-open the menu on exit so
+# the picker behaves like a hub. Direct invocations (`jf l`) skip the trap.
+[[ $1 = -- ]] && trap "bash \"$0\"" EXIT
+
+case "$command" in
+l) # Log (changes)
+  # Default to the full ancestry of the working copy: every commit leading up to
+  # @ (newest first), minus jj's virtual root() so the bottom row is a real
+  # commit. An explicit revset argument replaces this entirely (e.g.
+  # `jf l 'mine()'`, `jf l all()`); the menu passes `--`, which keeps the default.
+  revset='::@ ~ root()'
+  [[ -n $1 && $1 != -- ]] && revset=$1
+  list="jj log --no-graph --color=always -T builtin_log_oneline -r $(printf %q "$revset")"
+  fzf --ansi \
+    --border-label ' JJ LOG ' \
+    --prompt "$(basename "$root")> " \
+    --header 'ENTER (new change) │ CTRL-E (edit)' \
+    --bind "start:reload:$list" \
+    --bind 'enter:become:jj new {1}' \
+    --bind 'ctrl-e:become:jj edit {1}' \
+    --preview-window 'up:border-down' \
+    --preview "$preview"
+  ;;
+
+b) # Bookmarks
+  # Clean names only (no trailing colon); target context lives in the preview,
+  # which sidesteps fragile multi-field template parsing.
+  list='jj bookmark list --color=always -T '\''name ++ "\n"'\'''
+  fzf --ansi \
+    --border-label ' JJ BOOKMARKS ' \
+    --prompt "$(basename "$root")> " \
+    --header 'ENTER (new change) │ CTRL-E (edit)' \
+    --bind "start:reload:$list" \
+    --bind 'enter:become:jj new {1}' \
+    --bind 'ctrl-e:become:jj edit {1}' \
+    --preview-window 'up:border-down' \
+    --preview "$preview"
+  ;;
+
+*)
+  trap - EXIT
+  echo "usage: $0 [l|b]
+  l   log (changes)
+  b   bookmarks" |
+    fzf --prompt 'jj.fzf> ' --border-label ' SUBCOMMANDS ' --height ~100% \
+        --header-lines=1 --bind enter:transform:"
+      if [[ {1} ]]; then
+        echo become:bash \"$0\" {1} --
+      fi
+    " || echo -en "\x1b[0J"
+  ;;
+esac
