@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./atuin.nix
     ./claude.nix
     ./development.nix
     ./go.nix
@@ -20,6 +21,7 @@
     ./tmux.nix
   ];
 
+  atuin.enable = lib.mkDefault true;
   claude.enable = lib.mkDefault true;
   development.enable = lib.mkDefault true;
   go.enable = lib.mkDefault true;

@@ -126,6 +126,9 @@ fi
 (( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 (( $+commands[fzf] ))      && source <(fzf --zsh)
+# atuin: record history (sync after `atuin login`). Keybindings disabled so the
+# fzf widget below owns Ctrl-R and Up keeps zsh's default.
+(( $+commands[atuin] ))    && eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 # direnv: guard against a double hook if a parent already installed it (e.g.
 # Home Manager's zsh integration on nixos), so this stays a no-op there.
 (( $+commands[direnv] && ! $+functions[_direnv_hook] )) && eval "$(direnv hook zsh)"
@@ -134,6 +137,24 @@ fi
 # Keybindings
 # ---------------------------------------------------------------------------
 bindkey '^F' fzf-cd-widget
+
+# Ctrl-R: fzf over atuin's history, overriding fzf's own $HISTFILE binding.
+# Newest-first, deduped to the most recent; newline-delimited for awk portability.
+if (( $+commands[atuin] && $+commands[fzf] )); then
+  _atuin_fzf_history() {
+    local selected
+    selected=$(
+      atuin history list --cmd-only --reverse false \
+        | awk '!seen[$0]++' \
+        | fzf --scheme=history --height 40% --reverse \
+              --prompt 'history> ' --query "$LBUFFER"
+    ) || return
+    BUFFER="$selected"
+    CURSOR=$#BUFFER
+  }
+  zle -N _atuin_fzf_history
+  bindkey '^R' _atuin_fzf_history
+fi
 
 # ---------------------------------------------------------------------------
 # Aliases
