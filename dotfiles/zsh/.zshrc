@@ -156,6 +156,18 @@ if (( $+commands[atuin] && $+commands[fzf] )); then
   bindkey '^R' _atuin_fzf_history
 fi
 
+# Ctrl-E: fzf over env vars, inserting $NAME at the cursor (shadows end-of-line).
+if (( $+commands[fzf] )); then
+  _fzf_env_widget() {
+    local selected
+    selected=$(printenv | sort | fzf --height 40% --reverse --prompt 'env> ') || return
+    LBUFFER+="\$${selected%%=*}"
+    zle redisplay
+  }
+  zle -N _fzf_env_widget
+  bindkey '^E' _fzf_env_widget
+fi
+
 # ---------------------------------------------------------------------------
 # Aliases
 # ---------------------------------------------------------------------------
