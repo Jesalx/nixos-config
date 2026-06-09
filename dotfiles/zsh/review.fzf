@@ -10,5 +10,5 @@ fzf --ansi \
     --with-shell 'bash -c' \
     --bind 'start:preview(echo Loading review requests ...)+reload:GH_FORCE_TTY=95% gh search prs --review-requested=@me --state=open --limit=200 --json number,title,repository,author,createdAt --template "$REVIEW_FORMAT"' \
     --bind 'load:transform:(( FZF_TOTAL_COUNT )) || echo become:echo No review requests' \
-    --bind 'enter:execute-silent:gh pr view --web {1} -R {2}' \
+    --bind 'enter:execute-silent(gh pr view --web {1} -R {2})+abort' \
     --footer 'Press Enter to open in browser' "$@"
