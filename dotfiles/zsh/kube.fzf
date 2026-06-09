@@ -182,7 +182,7 @@ sc) # Contexts
     exit
   fi
   current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.cluster')
-  kubectl config get-contexts | grep -v '^\*' | cut -c11- | fzf \
+  kubectl config get-contexts | cut -c11- | fzf \
     --header-lines 1 --reverse --delimiter ' {2,}' \
     --border-label ' CONTEXTS ' \
     --prompt "$current -> " \
@@ -201,7 +201,7 @@ sn) # Namespaces
     exit
   fi
   current=$(kubectl config view --minify --flatten --output=json | jq -r '.contexts[0].context.namespace')
-  kubectl get namespaces | grep -v "^$current " | fzf \
+  kubectl get namespaces | fzf \
     --header-lines 1 --reverse --nth=1 --listen --sync \
     --border-label ' NAMESPACES ' \
     --prompt "$current -> " \
