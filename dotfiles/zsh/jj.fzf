@@ -9,12 +9,15 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $OPTS"
 
 # Every subcommand needs a repo; bail early with a clear message rather than
 # letting each jj invocation fail noisily inside the picker. `jj` works from any
-# subdirectory, so the root doubles as the prompt label.
-root=$(jj root 2>/dev/null) || { echo "jj.fzf: not inside a jj repo" >&2; exit 1; }
+# subdirectory, so the root doubles as the prompt label. Reads pass
+# --ignore-working-copy throughout: the picker only displays state, so it must
+# not snapshot the working copy (a write lock the frequent reloads would contend
+# on).
+root=$(jj root --ignore-working-copy 2>/dev/null) || { echo "jj.fzf: not inside a jj repo" >&2; exit 1; }
 
 # Description + delta-colored diff for the selected revision. delta is jj's
 # configured diff-formatter; export COLUMNS so it sizes to the preview pane.
-preview='COLUMNS=$FZF_PREVIEW_COLUMNS jj show --color=always -r {1}'
+preview='COLUMNS=$FZF_PREVIEW_COLUMNS jj show --ignore-working-copy --color=always -r {1}'
 
 # Run a picker over a jj list command. $1 = border label, $2 = the list command
 # (re-run on start). The log and bookmark screens differ only in those two; the
@@ -46,14 +49,18 @@ l) # Log (changes)
   # `jf l 'mine()'`, `jf l all()`); the menu passes `--`, which keeps the default.
   revset='::@ ~ root()'
   [[ -n $1 && $1 != -- ]] && revset=$1
-  list="jj log --no-graph --color=always -T builtin_log_oneline -r $(printf %q "$revset")"
+  # builtin_log_oneline shows the author as the email local-part, which is noisy
+  # across a history with several author emails; override the signature template
+  # to use the author's name instead, which is stable regardless of the email.
+  author_template='template-aliases."format_short_signature_oneline(signature)"=coalesce(signature.name(), signature.email(), email_placeholder)'
+  list="jj log --ignore-working-copy --no-graph --color=always -T builtin_log_oneline --config $(printf %q "$author_template") -r $(printf %q "$revset")"
   picker ' JJ LOG ' "$list"
   ;;
 
 b) # Bookmarks
   # Clean names only (no trailing colon); target context lives in the preview,
   # which sidesteps fragile multi-field template parsing.
-  list='jj bookmark list --color=always -T '\''name ++ "\n"'\'''
+  list='jj bookmark list --ignore-working-copy --color=always -T '\''name ++ "\n"'\'''
   picker ' JJ BOOKMARKS ' "$list"
   ;;
 
