@@ -25,10 +25,6 @@ boxit() {
   done <<< "$1"
 }
 
-read -r -d '' divider << 'EOF'
-  awk '{print} FNR==1 {gsub(/./, "▔", $0); print}'
-EOF
-
 # Clipboard command for the copy bindings: pbcopy on macOS, wl-copy/xclip on
 # Linux. Resolved once and baked into the binds so copy works across platforms.
 clip=

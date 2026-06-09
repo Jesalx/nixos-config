@@ -113,32 +113,33 @@ __fzf_navigator_has_icons() {
 
 __fzf_navigator_extract_filename() {
   local line="$1"
-  local clean_line=$(printf '%s' "$line" | perl -pe 's/\e\[[0-9;]*[a-zA-Z]//g')
 
-  # Field offsets differ by command:
-  #   eza -l: 7 (without icons) or 8 (with icons)
-  #   ls -l:  9
-  # Detect long listing by checking for Unix permission string (e.g., drwxr-xr-x)
-  if printf '%s' "$clean_line" | grep -qE '^[.dlcbspDw-][-rwxsStTlL]{9}[@.+]?[[:space:]]'; then
-    local field_start
-    if [[ "$(__fzf_navigator_detect_ls_command)" == "eza" ]]; then
-      if __fzf_navigator_has_icons; then
-        field_start=8
-      else
-        field_start=7
-      fi
-    else
-      field_start=9
-    fi
-
-    local filename=$(printf '%s' "$clean_line" | awk -v start="$field_start" '{for(i=start;i<=NF;i++) printf "%s%s", $i, (i<NF ? OFS : ""); print ""}')
-  else
-    if __fzf_navigator_has_icons; then
-      filename=$(printf '%s' "$clean_line" | awk '{for(i=2;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}')
-    else
-      filename="$clean_line"
-    fi
+  # Long-listing field offset: eza -l is 7 (8 with icons), ls -l is 9.
+  local icons=0 field_start=9
+  __fzf_navigator_has_icons && icons=1
+  if [[ "$(__fzf_navigator_detect_ls_command)" == "eza" ]]; then
+    (( icons )) && field_start=8 || field_start=7
   fi
+
+  # One awk (ANSI strip, long-listing detection, field extraction) replacing a
+  # perl|grep|awk pipeline, on the per-cursor-move preview path.
+  local filename
+  filename=$(printf '%s' "$line" | awk -v start="$field_start" -v icons="$icons" -v esc=$'\033' '
+    BEGIN { ansi = esc "\\[[0-9;]*[a-zA-Z]" }
+    {
+      gsub(ansi, "")
+      if ($0 ~ /^[.dlcbspDw-][-rwxsStTlL]{9}[@.+]?[[:space:]]/) {
+        out = ""
+        for (i = start; i <= NF; i++) out = out (i > start ? OFS : "") $i
+        print out
+      } else if (icons) {
+        out = ""
+        for (i = 2; i <= NF; i++) out = out (i > 2 ? " " : "") $i
+        print out
+      } else {
+        print $0
+      }
+    }')
 
   filename="${filename%% ->*}"
   __fzf_navigator_has_feature "classify" && filename="${filename%/}"
@@ -178,11 +179,42 @@ __fzf_navigator_build_ls_cmd() {
   echo "$cmd"
 }
 
+# Memoise `git check-ignore` per directory so toggles that re-reload the same
+# dir don't re-spawn git. Returns its exit status (0 = dir is ignored).
+__fzf_navigator_dir_git_ignored() {
+  local dir="$1"
+  local cache="$FZF_NAVIGATOR_TMPDIR/gitignore_dir"
+  local cached_dir="" cached_val=""
+  if [[ -r "$cache" ]]; then
+    { IFS= read -r cached_dir; IFS= read -r cached_val; } < "$cache"
+  fi
+  # Trust the cache only for this dir with a numeric status; else recheck.
+  if [[ "$cached_dir" == "$dir" && "$cached_val" == [0-9]* ]]; then
+    return "$cached_val"
+  fi
+  git -C "$dir" check-ignore -q "$dir" 2>/dev/null
+  local rc=$?
+  printf '%s\n%s\n' "$dir" "$rc" > "$cache"
+  return "$rc"
+}
+
 __fzf_navigator_reload() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
   local ls_cmd=$(__fzf_navigator_detect_ls_command)
   local cmd=$(__fzf_navigator_build_ls_cmd)
+
+  # Cache the dir's total entry count for the info line (which else rescans on
+  # every keystroke). Only needed when something is hidden.
+  if [[ ! -f "$tmpdir/show_hidden" || ! -f "$tmpdir/show_ignored" ]]; then
+    local total
+    if [[ "$ls_cmd" == "eza" ]]; then
+      total=$(eza -1 -a "$current_dir" 2>/dev/null | wc -l)
+    else
+      total=$(ls -1A "$current_dir" 2>/dev/null | wc -l)
+    fi
+    printf '%s\n' "$total" > "$tmpdir/total_count"
+  fi
 
   if [[ "$ls_cmd" == "eza" ]]; then
     if [[ -f "$tmpdir/recent_first" ]]; then
@@ -192,7 +224,7 @@ __fzf_navigator_reload() {
     fi
     [[ -f "$tmpdir/show_details" ]] && cmd="$cmd -l" || cmd="$cmd -1"
     [[ -f "$tmpdir/show_hidden" ]] && cmd="$cmd -a"
-    if [[ ! -f "$tmpdir/show_ignored" ]] && ! git -C "$current_dir" check-ignore -q "$current_dir" 2>/dev/null; then
+    if [[ ! -f "$tmpdir/show_ignored" ]] && ! __fzf_navigator_dir_git_ignored "$current_dir"; then
       cmd="$cmd --git-ignore"
     fi
   else
@@ -250,7 +282,7 @@ __fzf_navigator_default_preview_directory() {
 
 __fzf_navigator_preview() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
   local filename=$(__fzf_navigator_extract_filename "$1")
   local full_path="${current_dir%/}/$filename"
 
@@ -271,8 +303,8 @@ __fzf_navigator_preview() {
 
 __fzf_navigator_prompt() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
-  local initial_dir=$(cat "$tmpdir/lock_initial_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
+  local initial_dir=$(<"$tmpdir/lock_initial_dir")
 
   if [[ "$current_dir" == "$initial_dir" ]]; then
     printf $'\e[1;36m%s\e[0m \e[1;36m>\e[0m ' "$(__fzf_navigator_tildify "$initial_dir")"
@@ -376,7 +408,7 @@ __fzf_navigator_footer() {
       "toggle_help"
     )
 
-    local bindings_list=$(bash -c 'source "$FZF_NAVIGATOR_DIR/fzf-navigator.sh"; __fzf_navigator_parse_bindings')
+    local bindings_list=$(<"$tmpdir/bindings")
 
     for action in "${action_order[@]}"; do
       local keys=$(echo "$bindings_list" | grep "^$action:" | cut -d: -f2)
@@ -388,7 +420,7 @@ __fzf_navigator_footer() {
     done
     footer_content=$(IFS=$'\n'; echo "${help_lines[*]}")
   elif [[ -z "${FZF_NAVIGATOR_HIDE_HELP:-}" ]]; then
-    local bindings_list=$(bash -c 'source "$FZF_NAVIGATOR_DIR/fzf-navigator.sh"; __fzf_navigator_parse_bindings')
+    local bindings_list=$(<"$tmpdir/bindings")
     local help_key=$(echo "$bindings_list" | grep "^toggle_help:" | cut -d: -f2 | head -n1)
     footer_content="$help_key for help"
   fi
@@ -398,8 +430,8 @@ __fzf_navigator_footer() {
 
 __fzf_navigator_info() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
-  local initial_dir=$(cat "$tmpdir/lock_initial_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
+  local initial_dir=$(<"$tmpdir/lock_initial_dir")
   local indicators=""
   [[ -f "$tmpdir/show_hidden" ]] && indicators+="H"
   [[ -f "$tmpdir/show_ignored" ]] && indicators+="I"
@@ -408,13 +440,9 @@ __fzf_navigator_info() {
 
   local not_shown_text=""
   if [[ ! -f "$tmpdir/show_hidden" ]] || [[ ! -f "$tmpdir/show_ignored" ]]; then
-    local ls_cmd=$(__fzf_navigator_detect_ls_command)
-    local total_count
-    if [[ "$ls_cmd" == "eza" ]]; then
-      total_count=$(eza -1 -a "$current_dir" 2>/dev/null | wc -l)
-    else
-      total_count=$(ls -1A "$current_dir" 2>/dev/null | wc -l)
-    fi
+    # Count cached by reload; avoids a per-keystroke dir rescan.
+    local total_count=0
+    [[ -r "$tmpdir/total_count" ]] && total_count=$(<"$tmpdir/total_count")
     local not_shown=$((total_count - FZF_TOTAL_COUNT))
     [[ $not_shown -gt 0 ]] && not_shown_text="-$not_shown"
   fi
@@ -458,13 +486,13 @@ __fzf_navigator_info() {
 
 __fzf_navigator_transform_open() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
 
   local history=()
   while IFS= read -r line; do
     history+=("$line")
   done < "$tmpdir/history"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
   local selections=()
   while IFS= read -r line; do
     selections+=("$line")
@@ -511,13 +539,13 @@ __fzf_navigator_transform_open() {
 
 __fzf_navigator_transform_parent() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
 
   local history=()
   while IFS= read -r line; do
     history+=("$line")
   done < "$tmpdir/history"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
 
   local parent=$(dirname "$current_dir")
   parent=$(__fzf_navigator_abspath "$parent")
@@ -535,7 +563,7 @@ __fzf_navigator_transform_parent() {
 
 __fzf_navigator_transform_back() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
 
   if [[ $history_index -gt 0 ]]; then
     history_index=$((history_index - 1))
@@ -552,7 +580,7 @@ __fzf_navigator_transform_back() {
 
 __fzf_navigator_transform_forward() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
   local history_count=$(wc -l < "$tmpdir/history")
 
   if [[ $history_index -lt $((history_count - 1)) ]]; then
@@ -570,15 +598,15 @@ __fzf_navigator_transform_forward() {
 
 __fzf_navigator_transform_session_start() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
-  local session_start_dir=$(cat "$tmpdir/session_start_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
+  local session_start_dir=$(<"$tmpdir/session_start_dir")
 
   if [[ "$session_start_dir" != "$current_dir" ]]; then
     local history=()
     while IFS= read -r line; do
       history+=("$line")
     done < "$tmpdir/history"
-    local history_index=$(cat "$tmpdir/history_index")
+    local history_index=$(<"$tmpdir/history_index")
     echo "$session_start_dir" > "$tmpdir/lock_current_dir"
     printf '%s\n' "${history[@]:0:$((history_index+1))}" > "$tmpdir/history"
     echo "$session_start_dir" >> "$tmpdir/history"
@@ -591,12 +619,12 @@ __fzf_navigator_transform_session_start() {
 
 __fzf_navigator_transform_go_home() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
   local history=()
   while IFS= read -r line; do
     history+=("$line")
   done < "$tmpdir/history"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
   local home_dir="$HOME"
 
   if [[ "$home_dir" != "$current_dir" ]]; then
@@ -612,12 +640,12 @@ __fzf_navigator_transform_go_home() {
 
 __fzf_navigator_transform_go_to_root() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
   local history=()
   while IFS= read -r line; do
     history+=("$line")
   done < "$tmpdir/history"
-  local history_index=$(cat "$tmpdir/history_index")
+  local history_index=$(<"$tmpdir/history_index")
   local root_dir="/"
 
   if [[ "$root_dir" != "$current_dir" ]]; then
@@ -686,8 +714,8 @@ __fzf_navigator_transform_toggle_recent_first() {
 __fzf_navigator_transform_toggle_locked() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
   local flag_file="$tmpdir/locked"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
-  local initial_dir=$(cat "$tmpdir/lock_initial_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
+  local initial_dir=$(<"$tmpdir/lock_initial_dir")
 
   if [[ -f "$flag_file" ]]; then
     rm "$flag_file"
@@ -704,15 +732,15 @@ __fzf_navigator_transform_toggle_locked() {
 
 __fzf_navigator_transform_cancel() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
-  local initial_dir=$(cat "$tmpdir/lock_initial_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
+  local initial_dir=$(<"$tmpdir/lock_initial_dir")
 
   if [[ "$current_dir" != "$initial_dir" ]]; then
     local history=()
     while IFS= read -r line; do
       history+=("$line")
     done < "$tmpdir/history"
-    local history_index=$(cat "$tmpdir/history_index")
+    local history_index=$(<"$tmpdir/history_index")
     echo "$initial_dir" > "$tmpdir/lock_current_dir"
     printf '%s\n' "${history[@]:0:$((history_index+1))}" > "$tmpdir/history"
     echo "$initial_dir" >> "$tmpdir/history"
@@ -725,7 +753,7 @@ __fzf_navigator_transform_cancel() {
 
 __fzf_navigator_transform_open_and_exit() {
   local tmpdir="$FZF_NAVIGATOR_TMPDIR"
-  local current_dir=$(cat "$tmpdir/lock_current_dir")
+  local current_dir=$(<"$tmpdir/lock_current_dir")
   local selections=()
   while IFS= read -r line; do
     selections+=("$line")
@@ -939,7 +967,7 @@ __fzf_navigator() {
       [[ -n "${FZF_NAVIGATOR_SHOW_IGNORED:-}" ]] && touch "$tmpdir/show_ignored"
       [[ -n "${FZF_NAVIGATOR_LOCK_CWD:-}" ]] && touch "$tmpdir/locked"
     else
-      local history_index=$(cat "$tmpdir/history_index")
+      local history_index=$(<"$tmpdir/history_index")
       local last_line=$(sed -n "$((history_index + 1))p" "$tmpdir/history")
       if [[ "$last_line" != "$PWD" ]]; then
         echo "$PWD" >> "$tmpdir/history"
@@ -963,6 +991,11 @@ __fzf_navigator() {
   fi
 
   export FZF_NAVIGATOR_TMPDIR="$tmpdir"
+
+  # Parse the (static) bindings once into a cache the footer and binding loop
+  # read, rather than re-sourcing the whole script on every footer refresh.
+  # bash -c since parse_bindings relies on bash word-splitting.
+  bash -c 'source "$FZF_NAVIGATOR_DIR/fzf-navigator.sh"; __fzf_navigator_parse_bindings' > "$tmpdir/bindings"
 
   local preview_cmd="bash -c 'source \"\$FZF_NAVIGATOR_DIR/fzf-navigator.sh\"; __fzf_navigator_preview \"\$1\"' _ {}"
   local fzf_bindings=()
@@ -1028,7 +1061,7 @@ __fzf_navigator() {
         ;;
     esac
     [[ -n "$bind_str" ]] && fzf_bindings+=("--bind" "$bind_str")
-  done < <(bash -c 'source "$FZF_NAVIGATOR_DIR/fzf-navigator.sh"; __fzf_navigator_parse_bindings')
+  done < "$tmpdir/bindings"
 
   local help_binding=""
   if [[ -n "$help_key" ]]; then
@@ -1076,7 +1109,7 @@ __fzf_navigator() {
   if [[ -z "$selection" || "$selection" == "//esc" ]]; then
     :
   elif [[ "$selection" == "//cd" ]]; then
-    dir=$(cat "$tmpdir/lock_current_dir")
+    dir=$(<"$tmpdir/lock_current_dir")
     export __FZF_NAV_RESET_SHOW_HIDDEN=""
     [[ -f "$tmpdir/show_hidden" ]] && export __FZF_NAV_RESET_SHOW_HIDDEN="1"
     export __FZF_NAV_RESET_SHOW_IGNORED=""
@@ -1089,19 +1122,19 @@ __fzf_navigator() {
     [[ -f "$tmpdir/show_help" ]] && export __FZF_NAV_RESET_SHOW_HELP="1"
     export __FZF_NAV_RESET_LOCKED=""
     [[ -f "$tmpdir/locked" ]] && export __FZF_NAV_RESET_LOCKED="1"
-    export __FZF_NAV_RESET_HISTORY=$(cat "$tmpdir/history" | tr '\n' $'\x1E')
-    export __FZF_NAV_RESET_HISTORY_INDEX=$(cat "$tmpdir/history_index")
+    export __FZF_NAV_RESET_HISTORY=$(tr '\n' $'\x1E' < "$tmpdir/history")
+    export __FZF_NAV_RESET_HISTORY_INDEX=$(<"$tmpdir/history_index")
     export __FZF_NAV_RESET_CURRENT_DIR="$dir"
-    export __FZF_NAV_RESET_SESSION_START_DIR=$(cat "$tmpdir/session_start_dir")
+    export __FZF_NAV_RESET_SESSION_START_DIR=$(<"$tmpdir/session_start_dir")
     cd "$dir"
     [[ "$dir" != "$tmpdir"/* && "$dir" != "$tmpdir" ]] && rm -rf "$tmpdir"
     __fzf_navigator
   elif [[ "$selection" == "//exit" ]]; then
-    dir=$(cat "$tmpdir/lock_current_dir")
+    dir=$(<"$tmpdir/lock_current_dir")
     cd "$dir"
   elif [[ "$selection" == //open* ]]; then
     local selections="${selection#//open$'\n'}"
-    local dir=$(cat "$tmpdir/lock_current_dir")
+    local dir=$(<"$tmpdir/lock_current_dir")
     local paths=()
     while IFS= read -r line; do
       local filename=$(__fzf_navigator_extract_filename "$line")
@@ -1113,7 +1146,7 @@ __fzf_navigator() {
     __FZF_NAV_SCREEN_CLEARED=1
   elif [[ "$selection" == //copy* ]]; then
     local selections="${selection#//copy$'\n'}"
-    local dir=$(cat "$tmpdir/lock_current_dir")
+    local dir=$(<"$tmpdir/lock_current_dir")
     local paths=()
     while IFS= read -r line; do
       local filename=$(__fzf_navigator_extract_filename "$line")
@@ -1130,7 +1163,7 @@ __fzf_navigator() {
     fi
   elif [[ "$selection" == //insert* ]]; then
     local selections="${selection#//insert$'\n'}"
-    local dir=$(cat "$tmpdir/lock_current_dir")
+    local dir=$(<"$tmpdir/lock_current_dir")
     local paths=()
     while IFS= read -r line; do
       local filename=$(__fzf_navigator_extract_filename "$line")
