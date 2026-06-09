@@ -34,18 +34,6 @@
         hostName = "nixos";
         gitEmail = "mail@jesal.dev";
       };
-      mac = {
-        profile = "mac";
-        user = "jesal";
-        hostName = "jesals-mbp";
-        gitEmail = "mail@jesal.dev";
-      };
-      work = {
-        profile = "work";
-        user = "patel";
-        hostName = "patel-MBP";
-        gitEmail = "mail@jesal.dev";
-      };
     };
     overlays = {
       helium = final: _: {
@@ -64,26 +52,6 @@
           userConfig = userConfig.default;
         };
         modules = [./hosts/default/configuration.nix];
-      };
-    };
-
-    # MacOS home manager configuration
-    homeConfigurations = {
-      "mac" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        extraSpecialArgs = {
-          inherit inputs;
-          userConfig = userConfig.mac;
-        };
-        modules = [./hosts/mac/configuration.nix];
-      };
-      "work" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        extraSpecialArgs = {
-          inherit inputs;
-          userConfig = userConfig.work;
-        };
-        modules = [./hosts/work/configuration.nix];
       };
     };
   };
