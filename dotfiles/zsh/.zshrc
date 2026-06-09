@@ -210,12 +210,14 @@ fi
 unset _review_fzf
 
 # jj.fzf — interactive Jujutsu change/bookmark picker via fzf. Resolved the same
-# way as kube.fzf/fzf-navigator above, so it works whether ~/.zshrc is symlinked
-# on non-nix machines or sourced by Home Manager on nixos. `jf` opens the menu
-# (or takes a subcommand: l b). The jj binary keeps its own aliases (j/jj/gg/g).
+# way as kube.fzf/fzf-navigator above. `jf` opens the menu; `jjl`/`jjb` jump
+# straight to the log/bookmark subcommands. The jj binary keeps its own aliases
+# (j/jj/gg/g).
 _jj_fzf="${${(%):-%x}:A:h}/jj.fzf"
 if [[ -x "$_jj_fzf" ]] && (( $+commands[fzf] && $+commands[jj] )); then
   alias jf="'$_jj_fzf'"
+  alias jjl="'$_jj_fzf' l"
+  alias jjb="'$_jj_fzf' b"
 fi
 unset _jj_fzf
 
