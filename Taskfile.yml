@@ -48,3 +48,41 @@ tasks:
           echo "updating $(basename "$p")"
           git -C "$p" pull --ff-only
         done
+  macos:bootstrap:
+    desc: Bootstrap a bare-nix mac (symlink dotfiles, install CLI tools, set up direnv)
+    platforms: [darwin]
+    vars:
+      DOTFILES: '{{.ROOT_DIR}}/dotfiles'
+    cmds:
+      # Symlink shared dotfiles into place.
+      - |
+        link() {
+          src="$1"; dst="$2"
+          if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+            echo "backing up existing $dst -> $dst.pre-link.bak"
+            mv "$dst" "$dst.pre-link.bak"
+          fi
+          mkdir -p "$(dirname "$dst")"
+          ln -sfn "$src" "$dst"
+          echo "linked $dst -> $src"
+        }
+        link "{{.DOTFILES}}/zsh/.zshrc"      "$HOME/.zshrc"
+        link "{{.DOTFILES}}/nvim"            "$HOME/.config/nvim"
+        link "{{.DOTFILES}}/tmux/.tmux.conf" "$HOME/.tmux.conf"
+      # Install CLI tools via Homebrew.
+      - |
+        command -v brew >/dev/null 2>&1 || {
+          echo "Homebrew not found; install it first: https://brew.sh" >&2
+          exit 1
+        }
+        brew install \
+          atuin bat direnv eza fd fzf gh go jujutsu neovim \
+          ripgrep starship tmux yazi zoxide
+      # nix-direnv
+      - |
+        rc="$HOME/.nix-profile/share/nix-direnv/direnvrc"
+        [ -e "$rc" ] || nix profile install nixpkgs#nix-direnv
+        mkdir -p "$HOME/.config/direnv"
+        grep -q nix-direnv "$HOME/.config/direnv/direnvrc" 2>/dev/null || \
+          echo 'source $HOME/.nix-profile/share/nix-direnv/direnvrc' \
+            >> "$HOME/.config/direnv/direnvrc"
