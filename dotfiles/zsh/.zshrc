@@ -89,12 +89,36 @@ _zsh_load_plugin() {
   source "$dir/$file"
 }
 
+# fzf-tab renders zsh's Tab completion menu through fzf. Must be sourced after
+# compinit (above) and before plugins that wrap completion widgets (the two
+# below); needs the fzf binary at runtime, so guard on it.
+(( $+commands[fzf] )) && _zsh_load_plugin fzf-tab \
+  https://github.com/Aloxaf/fzf-tab fzf-tab.plugin.zsh
 _zsh_load_plugin zsh-autosuggestions \
   https://github.com/zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
 _zsh_load_plugin zsh-syntax-highlighting \
   https://github.com/zsh-users/zsh-syntax-highlighting zsh-syntax-highlighting.zsh
 
 unfunction _zsh_load_plugin
+
+# ---------------------------------------------------------------------------
+# fzf-tab styling (only meaningful when the plugin loaded above)
+# ---------------------------------------------------------------------------
+if (( $+commands[fzf] )); then
+  # Let fzf-tab own the menu: stop the completion system drawing its own.
+  zstyle ':completion:*' menu no
+  # Group candidates under a header so fzf-tab can show/switch groups.
+  zstyle ':completion:*:descriptions' format '[%d]'
+  # Colourise file/dir candidates from LS_COLORS when it's set.
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+  # Move between completion groups with < and >.
+  zstyle ':fzf-tab:*' switch-group '<' '>'
+  # Preview directory contents when completing cd. cd is aliased to zoxide's
+  # `z`, so completion runs under the `z` context (see completions.zsh); match
+  # both. Guard eza as the file does for its other optional tools.
+  (( $+commands[eza] )) && \
+    zstyle ':fzf-tab:complete:(cd|z):*' fzf-preview 'eza -1 --color=always $realpath'
+fi
 
 # ---------------------------------------------------------------------------
 # Tool integrations (each guarded so missing binaries are harmless)

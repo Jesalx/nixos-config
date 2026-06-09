@@ -26,3 +26,9 @@ unset _cmd _zsh_completions
   compdef k=kubectl
   (( $+commands[kubecolor] )) && compdef kubecolor=kubectl
 }
+
+# cd is aliased to zoxide's `z` (see .zshrc), which ships no completion of its
+# own, so zsh resolves the alias and falls back to completing files. Register
+# cd's completion under `z` so `cd <tab>` offers directories like a real cd
+# (and gives fzf-tab a directory context to preview).
+(( $+commands[zoxide] )) && [[ -n ${_comps[cd]} ]] && compdef z=cd
