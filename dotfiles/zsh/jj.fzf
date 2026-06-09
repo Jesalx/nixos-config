@@ -16,6 +16,21 @@ root=$(jj root 2>/dev/null) || { echo "jj.fzf: not inside a jj repo" >&2; exit 1
 # configured diff-formatter; export COLUMNS so it sizes to the preview pane.
 preview='COLUMNS=$FZF_PREVIEW_COLUMNS jj show --color=always -r {1}'
 
+# Run a picker over a jj list command. $1 = border label, $2 = the list command
+# (re-run on start). The log and bookmark screens differ only in those two; the
+# Enter (new change) / Ctrl-E (edit) binds and the jj show preview are shared.
+picker() {
+  fzf --ansi \
+    --border-label "$1" \
+    --prompt "${root##*/}> " \
+    --header 'ENTER (new change) │ CTRL-E (edit)' \
+    --bind "start:reload:$2" \
+    --bind 'enter:become:jj new {1}' \
+    --bind 'ctrl-e:become:jj edit {1}' \
+    --preview-window 'up:border-down' \
+    --preview "$preview"
+}
+
 command=$1
 shift
 
@@ -32,30 +47,14 @@ l) # Log (changes)
   revset='::@ ~ root()'
   [[ -n $1 && $1 != -- ]] && revset=$1
   list="jj log --no-graph --color=always -T builtin_log_oneline -r $(printf %q "$revset")"
-  fzf --ansi \
-    --border-label ' JJ LOG ' \
-    --prompt "$(basename "$root")> " \
-    --header 'ENTER (new change) │ CTRL-E (edit)' \
-    --bind "start:reload:$list" \
-    --bind 'enter:become:jj new {1}' \
-    --bind 'ctrl-e:become:jj edit {1}' \
-    --preview-window 'up:border-down' \
-    --preview "$preview"
+  picker ' JJ LOG ' "$list"
   ;;
 
 b) # Bookmarks
   # Clean names only (no trailing colon); target context lives in the preview,
   # which sidesteps fragile multi-field template parsing.
   list='jj bookmark list --color=always -T '\''name ++ "\n"'\'''
-  fzf --ansi \
-    --border-label ' JJ BOOKMARKS ' \
-    --prompt "$(basename "$root")> " \
-    --header 'ENTER (new change) │ CTRL-E (edit)' \
-    --bind "start:reload:$list" \
-    --bind 'enter:become:jj new {1}' \
-    --bind 'ctrl-e:become:jj edit {1}' \
-    --preview-window 'up:border-down' \
-    --preview "$preview"
+  picker ' JJ BOOKMARKS ' "$list"
   ;;
 
 *)
