@@ -135,14 +135,6 @@ fi
 # ---------------------------------------------------------------------------
 bindkey '^F' fzf-cd-widget
 
-# fzf directory navigator (Ctrl-Space). Lives next to this file; sourced via a
-# path relative to this file (:A resolves symlinks) so it works whether ~/.zshrc
-# is symlinked on non-nix machines or this file is sourced by Home Manager on
-# nixos. The script binds Ctrl-Space itself and auto-detects its own directory.
-_fzf_navigator="${${(%):-%x}:A:h}/fzf-navigator.sh"
-[[ -r "$_fzf_navigator" ]] && (( $+commands[fzf] )) && source "$_fzf_navigator"
-unset _fzf_navigator
-
 # ---------------------------------------------------------------------------
 # Aliases
 # ---------------------------------------------------------------------------
@@ -173,7 +165,7 @@ alias vim="nvim"
 # kubernetes
 alias k="kubectl"
 # kube.fzf — interactive kubectl/context/namespace picker via fzf. Lives next to
-# this file and is resolved the same way as fzf-navigator above, so it works
+# this file, resolved via a path relative to it (:A resolves symlinks) so it works
 # whether ~/.zshrc is symlinked on non-nix machines or sourced by Home Manager.
 # `kube` opens the menu (or takes a subcommand: p d j cj sc sn). It reimplements
 # kubectx/kubens via plain kubectl, so kc/kn and the full kubectx/kubens names
@@ -210,7 +202,7 @@ fi
 unset _review_fzf
 
 # jj.fzf — interactive Jujutsu change/bookmark picker via fzf. Resolved the same
-# way as kube.fzf/fzf-navigator above. `jf` opens the menu; `jjl`/`jjb` jump
+# way as kube.fzf above. `jf` opens the menu; `jjl`/`jjb` jump
 # straight to the log/bookmark subcommands. The jj binary keeps its own aliases
 # (j/jj/gg/g).
 _jj_fzf="${${(%):-%x}:A:h}/jj.fzf"
