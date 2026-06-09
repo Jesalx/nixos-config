@@ -1,14 +1,31 @@
 #!/usr/bin/env bash
 
-# Cross-repo: actions address each PR by ID ({1}) + REPO ({2}).
-export REVIEW_FORMAT='{{tablerow "ID" "REPO" "TITLE" "AUTHOR" "CREATED"}}{{range .}}{{tablerow (printf "#%v" .number | autocolor "green") (.repository.nameWithOwner | autocolor "cyan") (.title | truncate 60) .author.login (timeago .createdAt)}}{{end}}{{tablerender}}'
+# Cross-repo picker for PRs awaiting review. Defaults to yours; --team ORG/TEAM
+# scopes to a team instead (alias it for teams you review). Extra args go to fzf.
+
+reviewer='@me'
+fzf_args=()
+team_err() { echo "review: --team requires an ORG/TEAM argument" >&2; exit 2; }
+while (( $# )); do
+  case "$1" in
+    --team)   [[ -n "${2:-}" ]] || team_err; reviewer="$2"; shift 2 ;;
+    --team=*) reviewer="${1#*=}"; [[ -n "$reviewer" ]] || team_err; shift ;;
+    *)        fzf_args+=("$1"); shift ;;
+  esac
+done
+export REVIEW_REVIEWER="$reviewer"
+
+# Each row is "<url>\t<display>": the hidden url (field 1) drives the actions, so
+# they resolve cross-repo even when the visible columns truncate.
+export REVIEW_FORMAT='URL{{"\t"}}{{printf "%-6s" "ID"}}  {{printf "%-34s" "REPO"}}  {{printf "%-50s" "TITLE"}}  {{printf "%-15s" "AUTHOR"}}  CREATED{{"\n"}}{{range .}}{{.url}}{{"\t"}}{{printf "#%-5v" .number | autocolor "green"}}  {{printf "%-34s" (.repository.nameWithOwner | truncate 34) | autocolor "cyan"}}  {{printf "%-50s" (.title | truncate 50)}}  {{printf "%-15s" .author.login}}  {{timeago .createdAt}}{{"\n"}}{{end}}'
 
 fzf --ansi \
     --info inline --reverse --header-lines 1 \
-    --preview 'GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view --comments {1} -R {2}' \
+    --delimiter '\t' --with-nth '2..' \
+    --preview 'GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view --comments {1}' \
     --preview-window up:border-down \
     --with-shell 'bash -c' \
-    --bind 'start:preview(echo Loading review requests ...)+reload:GH_FORCE_TTY=95% gh search prs --review-requested=@me --state=open --limit=200 --json number,title,repository,author,createdAt --template "$REVIEW_FORMAT"' \
-    --bind 'load:transform:(( FZF_TOTAL_COUNT )) || echo become:echo No review requests' \
-    --bind 'enter:execute-silent(gh pr view --web {1} -R {2})+abort' \
-    --footer 'Press Enter to open in browser' "$@"
+    --bind 'start:preview(echo Loading review requests for $REVIEW_REVIEWER ...)+reload:GH_FORCE_TTY=95% gh search prs --review-requested="$REVIEW_REVIEWER" --state=open --limit=200 --json number,title,repository,author,createdAt,url --template "$REVIEW_FORMAT"' \
+    --bind 'load:transform:(( FZF_TOTAL_COUNT )) || echo become:echo No review requests for $REVIEW_REVIEWER' \
+    --bind 'enter:execute-silent(gh pr view --web {1})+abort' \
+    --footer 'Press Enter to open in browser' "${fzf_args[@]}"
