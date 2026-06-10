@@ -138,6 +138,17 @@ if (( $+commands[fzf] )); then
   # for its other optional tools.
   (( $+commands[eza] )) && \
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+  # Preview file/dir arguments for these commands. Scoped per command: a
+  # catch-all would draw an empty pane for non-path candidates.
+  (( $+commands[eza] && $+commands[bat] )) && () {
+    local preview='if [[ -d $realpath ]]; then eza -1 --color=always $realpath
+      elif [[ -f $realpath ]]; then bat --color=always --style=plain $realpath
+      fi'
+    local cmd
+    for cmd in nvim bat cp mv rm ln source jq open; do
+      zstyle ":fzf-tab:complete:$cmd:*" fzf-preview $preview
+    done
+  }
 fi
 
 # ---------------------------------------------------------------------------
