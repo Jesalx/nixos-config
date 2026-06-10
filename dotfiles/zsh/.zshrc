@@ -48,6 +48,10 @@ setopt AUTO_CD              # bare directory name (e.g. `..`) chdirs into it
 setopt AUTO_PUSHD           # cd pushes the old directory onto the dir stack
 setopt PUSHD_IGNORE_DUPS    # keep the dir stack free of duplicates
 setopt INTERACTIVE_COMMENTS # allow # comments on the command line (safe pastes)
+setopt COMPLETE_IN_WORD     # complete from the cursor, not just the word end
+setopt ALWAYS_TO_END        # after completing, move the cursor to the word end
+setopt EXTENDED_GLOB        # ^ ~ # glob operators and (#q...) qualifiers
+setopt NO_BEEP              # stay quiet on completion/edit errors
 
 # ---------------------------------------------------------------------------
 # History
@@ -60,6 +64,8 @@ setopt HIST_IGNORE_DUPS    # ignoreDups
 setopt HIST_IGNORE_SPACE   # ignoreSpace
 setopt SHARE_HISTORY       # share
 setopt EXTENDED_HISTORY    # extended
+setopt HIST_VERIFY         # show !-expansions in the buffer before running them
+setopt HIST_REDUCE_BLANKS  # collapse redundant whitespace before saving
 
 # ---------------------------------------------------------------------------
 # Completion (skip if a parent already ran compinit, e.g. Home Manager)
@@ -110,17 +116,23 @@ _zsh_load_plugin() {
 }
 
 # fzf-tab renders zsh's Tab completion menu through fzf. Must be sourced after
-# compinit (above) and before plugins that wrap completion widgets (the two
-# below); needs the fzf binary at runtime, so guard on it.
+# compinit (above) and before the plugins that wrap completion widgets
+# (zsh-autosuggestions below, and zsh-syntax-highlighting at the end of the
+# file); needs the fzf binary at runtime, so guard on it.
 (( $+commands[fzf] )) && _zsh_load_plugin fzf-tab \
   https://github.com/Aloxaf/fzf-tab fzf-tab.plugin.zsh
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# Skip rebinding the autosuggest widgets on every precmd (faster), and compute
+# suggestions asynchronously. Both must be set before the plugin is sourced.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 _zsh_load_plugin zsh-autosuggestions \
   https://github.com/zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
-_zsh_load_plugin zsh-syntax-highlighting \
-  https://github.com/zsh-users/zsh-syntax-highlighting zsh-syntax-highlighting.zsh
 
-unfunction _zsh_load_plugin
+# zsh-syntax-highlighting is loaded at the very end of this file: it wraps every
+# existing ZLE widget at source time, so it must come after all custom widgets
+# (the Ctrl-R/Ctrl-E widgets below) have been defined. _zsh_load_plugin is kept
+# around until then.
 
 # ---------------------------------------------------------------------------
 # fzf-tab styling (only meaningful when the plugin loaded above)
@@ -310,6 +322,15 @@ y() {
   fi
   rm -f -- "$tmp"
 }
+
+# ---------------------------------------------------------------------------
+# Syntax highlighting: must be sourced last. It wraps every ZLE widget that
+# exists at source time, so it has to come after all custom widgets defined
+# above (the Ctrl-R/Ctrl-E pickers) to highlight and coexist with them.
+# ---------------------------------------------------------------------------
+_zsh_load_plugin zsh-syntax-highlighting \
+  https://github.com/zsh-users/zsh-syntax-highlighting zsh-syntax-highlighting.zsh
+unfunction _zsh_load_plugin
 
 # ---------------------------------------------------------------------------
 # Machine-specific overrides (not tracked in the repo)
