@@ -177,6 +177,17 @@ fi
 # direnv: guard against a double hook if a parent already installed it (e.g.
 # Home Manager's zsh integration on nixos), so this stays a no-op there.
 (( $+commands[direnv] && ! $+functions[_direnv_hook] )) && eval "$(direnv hook zsh)"
+# devenv auto-activation hook (no .envrc; trust dirs with `devenv allow`).
+# Wrapper forces --no-reload so the spawned shell skips the status-bar watcher
+# (trade-off: editing devenv.nix then needs a shell re-entry to apply).
+devenv() {
+  if [[ "$1" == shell && $# -eq 1 ]]; then
+    command devenv shell --no-reload
+  else
+    command devenv "$@"
+  fi
+}
+(( $+commands[devenv] )) && eval "$(devenv hook zsh)"
 
 # ---------------------------------------------------------------------------
 # Keybindings

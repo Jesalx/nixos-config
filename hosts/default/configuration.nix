@@ -46,11 +46,8 @@
       warn-dirty = false;
       experimental-features = "nix-command flakes";
       flake-registry = "";
-      # devenv binary cache, so devenv shells pull prebuilt instead of compiling.
-      extra-substituters = ["https://devenv.cachix.org"];
-      extra-trusted-public-keys = [
-        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hxu8XACzz4="
-      ];
+      # Trusted users may add binary caches at runtime (devenv adds its own).
+      trusted-users = [userConfig.user];
     };
     # Opinionated: disable channels
     channel.enable = false;

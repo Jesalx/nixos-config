@@ -101,13 +101,15 @@ tasks:
         grep -q nix-direnv "$HOME/.config/direnv/direnvrc" 2>/dev/null || \
           echo 'source $HOME/.nix-profile/share/nix-direnv/direnvrc' \
             >> "$HOME/.config/direnv/direnvrc"
-      # devenv binary cache (mirrors nix.settings on NixOS). Only honored if this
-      # user is a trusted-user in /etc/nix/nix.conf on a multi-user install.
+      # devenv's cache needs a trusted-user; on mac that's a root edit to
+      # /etc/nix/nix.conf, so just check and instruct instead of editing it.
       - |
-        conf="$HOME/.config/nix/nix.conf"
-        mkdir -p "$HOME/.config/nix"
-        grep -q devenv.cachix.org "$conf" 2>/dev/null || \
-          printf 'extra-substituters = https://devenv.cachix.org\nextra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hxu8XACzz4=\n' \
-            >> "$conf"
-      # devenv itself (mirrors the NixOS home.packages install).
+        if nix config show trusted-users 2>/dev/null | grep -qw "$(whoami)"; then
+          echo "trusted-user OK: devenv will configure its cache per shell"
+        else
+          echo "NOTE: add '$(whoami)' to trusted-users in /etc/nix/nix.conf, then run:"
+          echo "  sudo launchctl kickstart -k system/org.nixos.nix-daemon"
+          echo "(without it, devenv shells compile from source instead of using cache)"
+        fi
+      # devenv (matches the NixOS install).
       - command -v devenv >/dev/null 2>&1 || nix profile add nixpkgs#devenv
