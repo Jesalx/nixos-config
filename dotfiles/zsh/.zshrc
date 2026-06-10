@@ -169,6 +169,11 @@ fi
 # ---------------------------------------------------------------------------
 # Keybindings
 # ---------------------------------------------------------------------------
+# Explicit vi mode; must precede the bindkey calls below.
+bindkey -v
+# Esc disambiguation delay, 10ms units (default 40 feels sluggish).
+KEYTIMEOUT=1
+
 bindkey '^F' fzf-cd-widget
 
 # Ctrl-R: fzf over atuin's history, overriding fzf's own $HISTFILE binding.
