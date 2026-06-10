@@ -149,6 +149,7 @@
       };
 
       nix_shell = {
+        format = "[$symbol]($style) ";
         symbol = " ";
       };
 
