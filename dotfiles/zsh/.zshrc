@@ -67,6 +67,9 @@ if ! (( $+functions[compdef] )); then
   autoload -Uz compinit && compinit -i
 fi
 
+# Smart-case completion: exact match first, then case-insensitive fallback.
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
 # Tool completions, loaded after compinit so compdef is available.
 _zsh_comp_file="${${(%):-%x}:A:h}/completions.zsh"
 [[ -r "$_zsh_comp_file" ]] && source "$_zsh_comp_file"
