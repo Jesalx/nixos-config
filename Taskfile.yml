@@ -69,15 +69,27 @@ tasks:
         link "{{.DOTFILES}}/zsh/.zshrc"      "$HOME/.zshrc"
         link "{{.DOTFILES}}/nvim"            "$HOME/.config/nvim"
         link "{{.DOTFILES}}/tmux/.tmux.conf" "$HOME/.tmux.conf"
-      # Install CLI tools via Homebrew.
+      # Install CLI tools via Homebrew, skipping any already on PATH.
       - |
         command -v brew >/dev/null 2>&1 || {
           echo "Homebrew not found; install it first: https://brew.sh" >&2
           exit 1
         }
-        brew install \
-          atuin bat direnv eza fd fzf gh go jujutsu neovim \
-          ripgrep starship tmux yazi zoxide
+        # "formula:command" pairs; command defaults to formula when omitted.
+        tools="atuin bat direnv eza fd fzf gh go jujutsu:jj neovim:nvim \
+          ripgrep:rg starship tmux yazi zoxide"
+        missing=""
+        for entry in $tools; do
+          formula="${entry%%:*}"
+          cmd="${entry#*:}"
+          command -v "$cmd" >/dev/null 2>&1 || missing="$missing $formula"
+        done
+        if [ -n "$missing" ]; then
+          echo "installing:$missing"
+          brew install $missing
+        else
+          echo "all CLI tools already on PATH; nothing to install"
+        fi
       # nix-direnv
       - |
         rc="$HOME/.nix-profile/share/nix-direnv/direnvrc"
