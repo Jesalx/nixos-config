@@ -44,7 +44,10 @@ fi
 # ---------------------------------------------------------------------------
 # Shell options
 # ---------------------------------------------------------------------------
-setopt AUTO_CD             # bare directory name (e.g. `..`) chdirs into it
+setopt AUTO_CD              # bare directory name (e.g. `..`) chdirs into it
+setopt AUTO_PUSHD           # cd pushes the old directory onto the dir stack
+setopt PUSHD_IGNORE_DUPS    # keep the dir stack free of duplicates
+setopt INTERACTIVE_COMMENTS # allow # comments on the command line (safe pastes)
 
 # ---------------------------------------------------------------------------
 # History
