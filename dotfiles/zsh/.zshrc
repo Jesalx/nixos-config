@@ -62,9 +62,23 @@ setopt EXTENDED_HISTORY    # extended
 # Completion (skip if a parent already ran compinit, e.g. Home Manager)
 # ---------------------------------------------------------------------------
 if ! (( $+functions[compdef] )); then
-  # -i: silently skip insecure (e.g. world-writable Homebrew) fpath dirs instead
-  # of prompting/aborting. Completions for those tools come from completions.zsh.
-  autoload -Uz compinit && compinit -i
+  autoload -Uz compinit
+  # A full compinit scan is slow: run it at most once a day, otherwise trust
+  # the dump with -C. -i skips insecure (e.g. world-writable Homebrew) fpath
+  # dirs instead of prompting. Delete the dump to refresh immediately.
+  () {
+    setopt local_options extended_glob
+    local dump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+    mkdir -p "${dump:h}"
+    if [[ -n "$dump"(#qN.mh-24) ]]; then
+      compinit -C -d "$dump"
+    else
+      compinit -i -d "$dump"
+      # compinit won't bump an unchanged dump's mtime; touch it so the daily
+      # -C window restarts.
+      [[ -f "$dump" ]] && touch "$dump"
+    fi
+  }
 fi
 
 # Smart-case completion: exact match first, then case-insensitive fallback.
@@ -97,6 +111,7 @@ _zsh_load_plugin() {
 # below); needs the fzf binary at runtime, so guard on it.
 (( $+commands[fzf] )) && _zsh_load_plugin fzf-tab \
   https://github.com/Aloxaf/fzf-tab fzf-tab.plugin.zsh
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 _zsh_load_plugin zsh-autosuggestions \
   https://github.com/zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
 _zsh_load_plugin zsh-syntax-highlighting \
@@ -116,17 +131,18 @@ if (( $+commands[fzf] )); then
   zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
   # Move between completion groups with < and >.
   zstyle ':fzf-tab:*' switch-group '<' '>'
-  # Preview directory contents when completing cd. cd is aliased to zoxide's
-  # `z`, so completion runs under the `z` context (see completions.zsh); match
-  # both. Guard eza as the file does for its other optional tools.
+  # Preview directory contents when completing cd. Guard eza as the file does
+  # for its other optional tools.
   (( $+commands[eza] )) && \
-    zstyle ':fzf-tab:complete:(cd|z):*' fzf-preview 'eza -1 --color=always $realpath'
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 fi
 
 # ---------------------------------------------------------------------------
 # Tool integrations (each guarded so missing binaries are harmless)
 # ---------------------------------------------------------------------------
-(( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
+# zoxide owns cd (--cmd cd) and registers its own completion; `cdi` and
+# `cd <space><tab>` open the interactive picker.
+(( $+commands[zoxide] ))   && eval "$(zoxide init zsh --cmd cd)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 (( $+commands[fzf] ))      && source <(fzf --zsh)
 # atuin: record history (sync after `atuin login`). Keybindings disabled so the
@@ -179,7 +195,10 @@ for _nixconfig in "$HOME/.config/nixos-config" "$HOME/nixos-config"; do
   [[ -d "$_nixconfig" ]] && break
 done
 
-alias cd="z"
+# Named directories: ~dev and ~nix.
+[[ -d "$HOME/Developer" ]] && hash -d dev="$HOME/Developer"
+[[ -d "$_nixconfig" ]] && hash -d nix="$_nixconfig"
+
 alias nixconfig="nvim $_nixconfig"
 alias vimconfig="nvim $_nixconfig/dotfiles/nvim"
 alias dt="ssh jesal@deepthought"

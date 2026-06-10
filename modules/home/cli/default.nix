@@ -40,7 +40,6 @@
 
   home.shellAliases =
     {
-      cd = "z";
       nixconfig = "nvim ${config.home.homeDirectory}/nixos-config";
       vimconfig = "nvim ${config.home.homeDirectory}/nixos-config/dotfiles/nvim";
       dt = "ssh jesal@deepthought";

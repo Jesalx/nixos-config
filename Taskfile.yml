@@ -35,7 +35,7 @@ tasks:
     cmds:
       - nh clean all --keep-since 7d --keep 10
   zsh:update:
-    desc: Update zsh plugins (git pull each)
+    desc: Update zsh plugins (git pull each) and reset the compinit dump
     cmds:
       - |
         dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
@@ -48,6 +48,9 @@ tasks:
           echo "updating $(basename "$p")"
           git -C "$p" pull --ff-only
         done
+      # Plugin updates can change fpath completions; drop the dump so the
+      # next shell rebuilds it instead of trusting it with -C for up to a day.
+      - rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
   macos:bootstrap:
     desc: Bootstrap a bare-nix mac (symlink dotfiles, install CLI tools, set up direnv)
     platforms: [darwin]
