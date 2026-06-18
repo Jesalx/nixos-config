@@ -5,6 +5,10 @@
     "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -100,7 +104,7 @@
     ],
     "defaultMode": "default"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
@@ -116,10 +120,6 @@
         "repo": "openai/codex-plugin-cc"
       }
     }
-  },
-  "attribution": {
-    "commit": "",
-    "pr": ""
   },
   "effortLevel": "xhigh",
   "showThinkingSummaries": true,
