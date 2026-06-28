@@ -18,6 +18,12 @@ tasks:
     cmds:
       - git add --intent-to-add .
       - nh os switch -u --hostname default .
+  update:fallback:
+    desc: Update flake lockfile and apply changes, building from source if substitutes fail
+    dir: /home/jesal/nixos-config
+    cmds:
+      - git add --intent-to-add .
+      - nh os switch -u --hostname default . -- --fallback
   lint:
     desc: Run formatting and linting checks
     dir: /home/jesal/nixos-config
