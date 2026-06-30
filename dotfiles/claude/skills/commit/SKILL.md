@@ -1,7 +1,7 @@
 ---
 name: commit
 description: Generate a conventional commit description for current jj changes, apply it with jj desc, then start a new change with jj new
-model: sonnet
+model: haiku
 disable-model-invocation: true
 allowed-tools: Bash(jj diff *), Bash(jj desc *), Bash(jj new *), Bash(jj log *)
 ---
