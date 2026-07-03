@@ -18,6 +18,9 @@
     # Neovim nightly
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Hermes Agent (desktop client for a remote Hermes agent)
+    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
 
   outputs = {
