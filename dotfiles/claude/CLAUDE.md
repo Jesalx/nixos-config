@@ -49,6 +49,11 @@
 - Project-specific build, test, lint, and run commands belong in each project's
   CLAUDE.md, not here.
 
+## Tooling
+
+- Prefer `rg` over `grep` and `fd` over `find` (the plain commands are denied
+  in settings by design). Use the Read tool to inspect files, not `cat`.
+
 ## Dependencies
 
 - Prefer the standard library. Do not add new dependencies without explicit
