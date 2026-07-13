@@ -13,6 +13,7 @@
       docker
       podman
       opencode
+      codex
       gh
       tldr
       act
