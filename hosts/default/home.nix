@@ -1,5 +1,4 @@
 {
-  inputs,
   outputs,
   pkgs,
   userConfig,
@@ -24,7 +23,6 @@
     obsidian
     pandoc
     helium
-    inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
   ];
 
   home.sessionPath = ["$HOME/.cargo/bin"];
