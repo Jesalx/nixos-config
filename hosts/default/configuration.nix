@@ -144,10 +144,6 @@
     };
     tailscale.enable = true;
     ivpn.enable = true;
-    mullvad-vpn = {
-      enable = true;
-      package = pkgs.mullvad-vpn;
-    };
   };
 
   security.rtkit.enable = true;
