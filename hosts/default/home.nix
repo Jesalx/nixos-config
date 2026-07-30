@@ -4,7 +4,7 @@
   userConfig,
   ...
 }: {
-  imports = [outputs.homeManagerModules];
+  imports = [outputs.homeModules.default];
 
   home = {
     username = userConfig.user;

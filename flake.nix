@@ -43,7 +43,7 @@
   in {
     inherit overlays;
 
-    homeManagerModules = ./modules/home;
+    homeModules.default = ./modules/home;
 
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {

@@ -9,6 +9,7 @@
   };
   config = lib.mkIf config.theme.enable {
     home.pointerCursor = {
+      enable = true;
       name = "Numix-Cursor-Light";
       package = pkgs.numix-cursor-theme;
       size = 24;

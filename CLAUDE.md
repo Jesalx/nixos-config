@@ -35,8 +35,8 @@ Raw equivalents: `nixos-rebuild switch --flake .#default` or `nh os switch`.
   threaded to every module via `specialArgs` / `extraSpecialArgs`, so hardcoded
   usernames/paths should instead read from `userConfig`.
 - `overlays.helium` — exposes `packages/helium` as `pkgs.helium`.
-- `homeManagerModules = ./modules/home` — the home-manager module tree, imported
-  by `hosts/default/home.nix` via `outputs.homeManagerModules`.
+- `homeModules.default = ./modules/home` — the home-manager module tree, imported
+  by `hosts/default/home.nix` via `outputs.homeModules.default`.
 - `nixosConfigurations.default` — the one host, built from
   `hosts/default/configuration.nix`.
 
