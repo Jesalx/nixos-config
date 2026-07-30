@@ -24,11 +24,11 @@ end, { desc = '[E]xplorer' })
 -- Picker keymaps
 
 vim.keymap.set('n', '<leader><leader>', function()
-  require('fff').find_files()
+  Snacks.picker.smart()
 end, { desc = '[ ] Search Files' })
 
 vim.keymap.set('n', '<leader>/', function()
-  require('fff').live_grep({ grep = { modes = { 'regex', 'fuzzy', 'plain' } } })
+  Snacks.picker.grep()
 end, { desc = '[/] Search by Grep' })
 
 vim.keymap.set('n', '<leader>sh', function()

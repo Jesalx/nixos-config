@@ -112,6 +112,7 @@ vim.pack.add({ 'https://github.com/folke/snacks.nvim' })
 
 require('snacks').setup({
   indent = {},
+  picker = {},
   dashboard = {
     preset = {
       keys = {
@@ -120,7 +121,7 @@ require('snacks').setup({
           key = 'f',
           desc = 'Find File',
           action = function()
-            require('fff').find_files()
+            Snacks.picker.smart()
           end,
         },
         {
@@ -128,7 +129,7 @@ require('snacks').setup({
           key = '/',
           desc = 'Find Text',
           action = function()
-            require('fff').live_grep({ grep = { modes = { 'regex', 'fuzzy', 'plain' } } })
+            Snacks.picker.grep()
           end,
         },
         {
@@ -144,7 +145,7 @@ require('snacks').setup({
           key = 'c',
           desc = 'Config',
           action = function()
-            require('fff').find_files_in_dir(vim.fn.expand('~/.config/nvim'))
+            Snacks.picker.files({ cwd = vim.fn.expand('~/.config/nvim') })
           end,
         },
         {
