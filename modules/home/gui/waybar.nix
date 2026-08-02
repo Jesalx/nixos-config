@@ -138,7 +138,6 @@ in {
             },
             "cpu": {
                 "format": " {usage}%",
-                "on-click": "kitty btm",
                 "interval": 10
             },
             "temperature": {

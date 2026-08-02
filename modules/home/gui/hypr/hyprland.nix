@@ -2,227 +2,325 @@
   lib,
   config,
   ...
-}: {
+}: let
+  inherit (lib.generators) mkLuaInline;
+
+  # Every `settings` key renders as `hl.<key>(<args>)`. `_args` makes a
+  # multi-argument call and `mkLuaInline` emits raw Lua, which is what lets the
+  # binds below refer to the `_var` locals by name.
+  mkBind = keys: dispatcher: {
+    _args = [(mkLuaInline keys) (mkLuaInline dispatcher)];
+  };
+
+  mkMouseBind = keys: dispatcher: {
+    _args = [(mkLuaInline keys) (mkLuaInline dispatcher) {mouse = true;}];
+  };
+
+  superKey = key: ''mainMod .. " + ${key}"'';
+  superShiftKey = key: ''mainMod .. " + SHIFT + ${key}"'';
+
+  # Workspaces 1-10 live on keys 1-9 and 0.
+  workspaceBinds = lib.concatMap (ws: let
+    key = toString (lib.mod ws 10);
+  in [
+    (mkBind (superKey key) "hl.dsp.focus({ workspace = ${toString ws} })")
+    (mkBind (superShiftKey key) "hl.dsp.window.move({ workspace = ${toString ws} })")
+  ]) (lib.range 1 10);
+
+  focusBinds = lib.concatMap ({
+    keys,
+    direction,
+  }:
+    map (key: mkBind (superKey key) ''hl.dsp.focus({ direction = "${direction}" })'') keys) [
+    {
+      keys = ["H" "left"];
+      direction = "left";
+    }
+    {
+      keys = ["L" "right"];
+      direction = "right";
+    }
+    {
+      keys = ["K" "up"];
+      direction = "up";
+    }
+    {
+      keys = ["J" "down"];
+      direction = "down";
+    }
+  ];
+
+  specialWorkspaceBinds =
+    lib.concatMap ({
+      key,
+      name,
+    }: [
+      (mkBind (superKey key) ''hl.dsp.workspace.toggle_special("${name}")'')
+      (mkBind (superShiftKey key) ''hl.dsp.window.move({ workspace = "special:${name}" })'')
+    ]) [
+      {
+        key = "S";
+        name = "social";
+      }
+      {
+        key = "N";
+        name = "notes";
+      }
+      {
+        key = "D";
+        name = "term";
+      }
+    ];
+
+  # `rules` become window rules applied to the spawned client, so the old
+  # `[workspace 1 silent]` prefix is a `workspace` rule rather than a separate
+  # `silent` key.
+  autostart = [
+    {cmd = "dunst";}
+    {cmd = "hyprpaper";}
+    {cmd = "hypridle";}
+    {cmd = "waybar";}
+    {
+      cmd = "ghostty";
+      rules = ''{ workspace = "1 silent" }'';
+    }
+    {
+      cmd = "helium-browser";
+      rules = ''{ workspace = "1 silent" }'';
+    }
+    {
+      cmd = "ghostty";
+      rules = ''{ workspace = "special:term silent" }'';
+    }
+    {
+      cmd = "obsidian";
+      rules = ''{ workspace = "special:notes silent" }'';
+    }
+  ];
+
+  renderAutostart = {
+    cmd,
+    rules ? null,
+  }: ''hl.exec_cmd("${cmd}"${lib.optionalString (rules != null) ", ${rules}"})'';
+in {
   options = {
     hyprland.enable = lib.mkEnableOption "enables custom hyprland config";
   };
   config = lib.mkIf config.hyprland.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      # Keep the classic hyprlang (hyprland.conf) generator. As of
-      # stateVersion 26.05 home-manager defaults configType to "lua", which
-      # serializes settings as hl.<name>(...) and produces invalid Lua for the
-      # hyprlang-style keys used below ($variables, exec-once, windowrule).
-      configType = "hyprlang";
       systemd.enable = true;
       xwayland.enable = true;
       settings = {
+        # Rendered as Lua locals, so the binds below can reference them.
+        browser = {_var = "helium-browser";};
+        terminal = {_var = "ghostty";};
+        fileManager = {_var = "nautilus";};
+        menu = {_var = "pkill fuzzel || fuzzel";};
+        mainMod = {_var = "SUPER";};
+
         monitor = [
-          "HDMI-A-1, highres,0x0,1.5"
-          "DP-2, 2560x1440@360,auto,1"
-          ",preferred,auto,auto"
+          {
+            output = "HDMI-A-1";
+            mode = "highres";
+            position = "0x0";
+            scale = 1.5;
+          }
+          {
+            output = "DP-2";
+            mode = "2560x1440@360";
+            position = "auto";
+            scale = 1;
+          }
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = "auto";
+          }
         ];
 
-        exec-once = [
-          "dunst"
-          "hyprpaper"
-          "hypridle"
-          "waybar"
-          "wl-paste --type text --watch cliphist store"
-          "wl-paste --type image --watch cliphist store"
-          "rm $HOME/.cache/cliphist/db # delete clipboard history every boot"
+        config = {
+          general = {
+            # See https://wiki.hypr.land/Configuring/Variables/ for more
+            gaps_in = 5;
+            gaps_out = 8;
+            border_size = 2;
+            col = {
+              active_border = {
+                colors = ["rgba(d972ffee)" "rgba(3772ffee)"];
+                angle = 45;
+              };
+              inactive_border = "rgba(595959aa)";
+            };
 
-          "[workspace 1 silent] ghostty"
-          "[workspace 1 silent] helium-browser"
-          "[workspace special:term silent] ghostty"
-          "[workspace special:notes silent] obsidian"
+            layout = "dwindle";
+
+            # Please see https://wiki.hypr.land/Configuring/Tearing/ before you turn this on
+            allow_tearing = false;
+          };
+
+          decoration = {
+            rounding = 10;
+
+            blur = {
+              enabled = true;
+              size = 8;
+              passes = 1;
+            };
+
+            shadow = {
+              enabled = true;
+              range = 4;
+              render_power = 3;
+              color = "rgba(1a1a1aee)";
+            };
+          };
+
+          input = {
+            kb_layout = "us";
+            kb_options = "ctrl:nocaps";
+            follow_mouse = 1;
+            mouse_refocus = false;
+            accel_profile = "flat";
+
+            touchpad.natural_scroll = false;
+
+            sensitivity = 0.2; # -1.0 - 1.0, 0 means no modification.
+          };
+
+          misc = {
+            force_default_wallpaper = 0; # Set to 0 to disable the anime mascot wallpapers
+            mouse_move_enables_dpms = true;
+            key_press_enables_dpms = true;
+            disable_splash_rendering = true;
+            focus_on_activate = true;
+            vrr = 2;
+          };
+
+          dwindle.preserve_split = true;
+
+          animations.enabled = true;
+        };
+
+        # `curve` is in `importantPrefixes`, so it is emitted before `animation`;
+        # an animation that names a not-yet-defined curve is a config error.
+        curve = [
+          {
+            _args = [
+              "myBezier"
+              {
+                type = "bezier";
+                points = [[0.05 0.9] [0.1 1.05]];
+              }
+            ];
+          }
         ];
 
-        "$browser" = "helium-browser";
-        "$terminal" = "ghostty";
-        "$fileManager" = "nautilus";
-        "$menu" = "pkill fuzzel || fuzzel";
-
-        input = {
-          kb_layout = "us";
-          kb_options = "ctrl:nocaps";
-          follow_mouse = 1;
-          mouse_refocus = false;
-          accel_profile = "flat";
-
-          touchpad = {
-            natural_scroll = "no";
-          };
-
-          sensitivity = 0.2; # -1.0 - 1.0, 0 means no modification.
-        };
-
-        general = {
-          # See https://wiki.hyprland.org/Configuring/Variables/ for more
-          gaps_in = 5;
-          gaps_out = 8;
-          border_size = 2;
-          "col.active_border" = "rgba(d972ffee) rgba(3772ffee) 45deg";
-          "col.inactive_border" = "rgba(595959aa)";
-
-          layout = "dwindle";
-
-          # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
-          allow_tearing = false;
-        };
-
-        decoration = {
-          # See https://wiki.hyprland.org/Configuring/Variables/ for more
-
-          rounding = 10;
-
-          blur = {
+        animation = [
+          {
+            leaf = "windows";
             enabled = true;
-            size = 8;
-            passes = 1;
-          };
-
-          shadow = {
+            speed = 7;
+            bezier = "myBezier";
+          }
+          {
+            leaf = "windowsOut";
             enabled = true;
-            range = 4;
-            render_power = 3;
-            color = "rgba(1a1a1aee)";
-          };
-        };
+            speed = 7;
+            bezier = "default";
+            style = "popin 80%";
+          }
+          {
+            leaf = "border";
+            enabled = true;
+            speed = 10;
+            bezier = "default";
+          }
+          {
+            leaf = "borderangle";
+            enabled = true;
+            speed = 8;
+            bezier = "default";
+          }
+          {
+            leaf = "fade";
+            enabled = true;
+            speed = 7;
+            bezier = "default";
+          }
+          {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 6;
+            bezier = "default";
+          }
+        ];
 
-        animations = {
-          enabled = "yes";
-          # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-          bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-          animation = [
-            "windows, 1, 7, myBezier"
-            "windowsOut, 1, 7, default, popin 80%"
-            "border, 1, 10, default"
-            "borderangle, 1, 8, default"
-            "fade, 1, 7, default"
-            "workspaces, 1, 6, default"
+        window_rule = [
+          {
+            match = {
+              class = "firefox";
+              fullscreen = true;
+            };
+            idle_inhibit = "fullscreen";
+          }
+          {
+            match.class = "mpv";
+            idle_inhibit = "focus";
+          }
+        ];
+
+        workspace_rule =
+          map (ws: {
+            workspace = toString ws;
+            monitor = "DP-2";
+          }) (lib.range 1 9)
+          ++ [
+            {
+              workspace = "10";
+              monitor = "HDMI-A-1";
+            }
           ];
-        };
 
-        dwindle = {
-          # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-          preserve_split = "yes"; # you probably want this
-        };
+        bind =
+          [
+            (mkBind (superKey "RETURN") "hl.dsp.exec_cmd(terminal)")
+            (mkBind (superKey "B") "hl.dsp.exec_cmd(browser)")
+            (mkBind (superKey "Q") "hl.dsp.window.close()")
+            (mkBind (superKey "E") "hl.dsp.exec_cmd(fileManager)")
+            (mkBind (superKey "V") ''hl.dsp.window.float({ action = "toggle" })'')
+            (mkBind (superKey "F") "hl.dsp.window.fullscreen()")
+            (mkBind (superKey "SPACE") "hl.dsp.exec_cmd(menu)")
 
-        master = {
-          # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
-          # new_is_master = true
-        };
+            # Take a screenshot
+            (mkBind (superKey "P") ''hl.dsp.exec_cmd("hyprshot -m region")'')
 
-        misc = {
-          # See https://wiki.hyprland.org/Configuring/Variables/ for more
-          force_default_wallpaper = 0; # Set to 0 to disable the anime mascot wallpapers
-          mouse_move_enables_dpms = true;
-          key_press_enables_dpms = true;
-          disable_splash_rendering = true;
-          focus_on_activate = true;
-          vrr = 2;
-        };
+            # Scroll through existing workspaces with mainMod + scroll
+            (mkBind (superKey "mouse_down") ''hl.dsp.focus({ workspace = "e+1" })'')
+            (mkBind (superKey "mouse_up") ''hl.dsp.focus({ workspace = "e-1" })'')
 
-        windowrule = [
-          "idle_inhibit fullscreen, match:class firefox, match:fullscreen 1"
-          "idle_inhibit focus, match:class mpv"
-          "opacity 0.85, match:class ^(kitty)$"
-        ];
+            # Mouse macro keybindings
+            (mkBind ''"CONTROL + right"'' ''hl.dsp.focus({ workspace = "e+1" })'')
+            (mkBind ''"CONTROL + left"'' ''hl.dsp.focus({ workspace = "e-1" })'')
+            (mkBind ''"CONTROL + up"'' ''hl.dsp.workspace.toggle_special("social")'')
 
-        "$mainMod" = "SUPER";
-        bind = [
-          "$mainMod, RETURN, exec, $terminal"
-          "$mainMod, B, exec, $browser"
-          "$mainMod, Q, killactive, "
-          # bind = $mainMod, BACKSPACE, exit,
-          "$mainMod, E, exec, $fileManager"
-          "$mainMod, V, togglefloating, "
-          "$mainMod, F, fullscreen, "
-          # bind = $mainMod, R, exec, $menu
-          "$mainMod, SPACE, exec, $menu"
-          # bind = $mainMod, P, pseudo, # dwindle
-          # bind = $mainMod, J, togglesplit, # dwindle
-
-          # Move focus with mainMod + vim directional keys
-          "$mainMod, H, movefocus, l"
-          "$mainMod, L, movefocus, r"
-          "$mainMod, K, movefocus, u"
-          "$mainMod, J, movefocus, d"
-
-          # Move focus with mainMod + arrow keys
-          "$mainMod, left, movefocus, l"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, up, movefocus, u"
-          "$mainMod, down, movefocus, d"
-
-          # Switch workspaces with mainMod + [0-9]
-          "$mainMod, 1, workspace, 1"
-          "$mainMod, 2, workspace, 2"
-          "$mainMod, 3, workspace, 3"
-          "$mainMod, 4, workspace, 4"
-          "$mainMod, 5, workspace, 5"
-          "$mainMod, 6, workspace, 6"
-          "$mainMod, 7, workspace, 7"
-          "$mainMod, 8, workspace, 8"
-          "$mainMod, 9, workspace, 9"
-          "$mainMod, 0, workspace, 10"
-
-          # Take a screenshot
-          "$mainMod, P, exec, $XDG_CONFIG_HOME/hypr/scripts/screenshot.sh"
-
-          # Move active window to a workspace with mainMod + SHIFT + [0-9]
-          "$mainMod SHIFT, 1, movetoworkspace, 1"
-          "$mainMod SHIFT, 2, movetoworkspace, 2"
-          "$mainMod SHIFT, 3, movetoworkspace, 3"
-          "$mainMod SHIFT, 4, movetoworkspace, 4"
-          "$mainMod SHIFT, 5, movetoworkspace, 5"
-          "$mainMod SHIFT, 6, movetoworkspace, 6"
-          "$mainMod SHIFT, 7, movetoworkspace, 7"
-          "$mainMod SHIFT, 8, movetoworkspace, 8"
-          "$mainMod SHIFT, 9, movetoworkspace, 9"
-          "$mainMod SHIFT, 0, movetoworkspace, 10"
-
-          # Special workspace (social)
-          "$mainMod, S, togglespecialworkspace, social"
-          "$mainMod SHIFT, S, movetoworkspace, special:social"
-
-          # Special workspace (notes)
-          "$mainMod, N, togglespecialworkspace, notes"
-          "$mainMod SHIFT, N, movetoworkspace, special:notes"
-
-          # Special workspace (term)
-          "$mainMod, D, togglespecialworkspace, term"
-          "$mainMod SHIFT, D, movetoworkspace, special:term"
-
-          # Scroll through existing workspaces with mainMod + scroll
-          "$mainMod, mouse_down, workspace, e+1"
-          "$mainMod, mouse_up, workspace, e-1"
-
-          # Mouse macro keybindings
-          "CONTROL, right, workspace, e+1"
-          "CONTROL, left, workspace, e-1"
-          "CONTROL, up, togglespecialworkspace, social"
-        ];
-
-        bindm = [
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
-        ];
-
-        workspace = [
-          "1, monitor:DP-2"
-          "2, monitor:DP-2"
-          "3, monitor:DP-2"
-          "4, monitor:DP-2"
-          "5, monitor:DP-2"
-          "6, monitor:DP-2"
-          "7, monitor:DP-2"
-          "8, monitor:DP-2"
-          "9, monitor:DP-2"
-          "10, monitor:HDMI-A-1"
-        ];
+            (mkMouseBind (superKey "mouse:272") "hl.dsp.window.drag()")
+            (mkMouseBind (superKey "mouse:273") "hl.dsp.window.resize()")
+          ]
+          ++ focusBinds
+          ++ workspaceBinds
+          ++ specialWorkspaceBinds;
       };
+
+      # Home Manager emits `extraConfig` after its own `hyprland.start` hook but
+      # `settings.on` before it, and the autostarted clients expect the D-Bus and
+      # systemd environment to already be populated, as it was under hyprlang.
+      extraConfig = ''
+        hl.on("hyprland.start", function()
+        ${lib.concatMapStringsSep "\n" renderAutostart autostart}
+        end)
+      '';
     };
   };
 }
