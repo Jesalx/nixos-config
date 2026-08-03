@@ -74,6 +74,19 @@ Configs under `dotfiles/` (nvim, claude, zsh) are linked into `$HOME` with
 since the symlink points at the working tree rather than the Nix store. Prefer
 this pattern for editor/tool configs you iterate on frequently.
 
+### Secrets stay out of the flake
+
+This repo is public (GitHub + GitLab). Anything committed is published, and a
+flake can only see git-tracked files, so `.gitignore` is not a way to hide a
+value from the build. Secrets therefore live in untracked files outside the
+repo, with only the non-secret settings declared in Nix.
+
+`modules/nixos/dns.nix` is the working example: it declares systemd-resolved and
+DNS-over-TLS, while the upstream resolver (which embeds a per-profile modDNS
+identifier) sits in `/etc/systemd/resolved.conf.d/50-moddns.conf`, maintained by
+hand. Do not inline that value here. Note such files are not reproducible and
+must be backed up separately.
+
 ### Custom packages
 
 `packages/<name>/default.nix` holds derivations for things not in nixpkgs (e.g.
