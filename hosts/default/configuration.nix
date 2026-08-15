@@ -62,18 +62,6 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  system.autoUpgrade = {
-    enable = true;
-    flake = inputs.self.outPath;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "-L"
-    ];
-    dates = "03:00";
-    randomizedDelaySec = "45min";
-  };
-
   # Set your time zone.
   time.timeZone = "America/New_York";
 
