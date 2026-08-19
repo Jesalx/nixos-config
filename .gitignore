@@ -4,3 +4,8 @@ combined_output.txt
 mprocs.log
 dotfiles/claude/agents/sun-*/
 dotfiles/claude/skills/sun-*/
+dotfiles/claude/skills/_shared
+dotfiles/claude/skills/catalog-check
+dotfiles/claude/skills/pg-region-diff
+dotfiles/claude/skills/pws-location-audit
+dotfiles/claude/skills/sunspot
