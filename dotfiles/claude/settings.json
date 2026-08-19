@@ -100,7 +100,7 @@
       "Bash(yarn *)",
       "Bash(pnpm *)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
