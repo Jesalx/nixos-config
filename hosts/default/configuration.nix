@@ -44,7 +44,7 @@
   in {
     settings = {
       warn-dirty = false;
-      experimental-features = "nix-command flakes";
+      experimental-features = ["nix-command" "flakes"];
       flake-registry = "";
       # Trusted users may add binary caches at runtime (devenv adds its own).
       trusted-users = [userConfig.user];
