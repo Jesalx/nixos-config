@@ -4,6 +4,7 @@ combined_output.txt
 mprocs.log
 dotfiles/claude/agents/sun-*/
 dotfiles/claude/skills/sun-*/
+dotfiles/claude/skills/synced/
 dotfiles/claude/skills/_shared
 dotfiles/claude/skills/catalog-check
 dotfiles/claude/skills/pg-region-diff
