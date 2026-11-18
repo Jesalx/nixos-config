@@ -15,3 +15,8 @@ dotfiles/claude/skills/.trash/
 dotfiles/claude/skills/gen-repo-docs
 dotfiles/claude/skills/hpa-audit
 dotfiles/claude/skills/add-manifest/
+__pycache__/
+dotfiles/claude/agents/grafana-investigator.md
+dotfiles/claude/agents/logs-investigator.md
+dotfiles/claude/skills/alb-logs/
+dotfiles/claude/skills/investigator-conventions/
