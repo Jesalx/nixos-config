@@ -9,12 +9,12 @@
   },
   "permissions": {
     "allow": [
-      "Read(*)",
-      "Grep(*)",
-      "Glob(*)",
-      "Edit(*)",
-      "Write(*)",
-      "NotebookEdit(*)",
+      "Read",
+      "Grep",
+      "Glob",
+      "Edit",
+      "Write",
+      "NotebookEdit",
       "WebSearch",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:docs.anthropic.com)",
