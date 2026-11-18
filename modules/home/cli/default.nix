@@ -53,5 +53,9 @@
       tms = "${config.home.homeDirectory}/go/bin/tms";
       ts = "${config.home.homeDirectory}/go/bin/tms";
     }
-    // lib.optionalAttrs config.development.enable {cat = "bat --paging=never";};
+    // lib.optionalAttrs config.development.enable {cat = "bat --paging=never";}
+    // lib.optionalAttrs config.claude.enable {
+      c = "claude";
+      ca = "claude agents";
+    };
 }
