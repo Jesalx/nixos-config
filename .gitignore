@@ -10,3 +10,8 @@ dotfiles/claude/skills/catalog-check
 dotfiles/claude/skills/pg-region-diff
 dotfiles/claude/skills/pws-location-audit
 dotfiles/claude/skills/sunspot
+dotfiles/claude/skills/synced/
+dotfiles/claude/skills/.trash/
+dotfiles/claude/skills/gen-repo-docs
+dotfiles/claude/skills/hpa-audit
+dotfiles/claude/skills/add-manifest/

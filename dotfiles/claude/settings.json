@@ -102,7 +102,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opusplan",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
@@ -110,9 +110,9 @@
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
   },
+  "outputStyle": "Concise",
   "effortLevel": "xhigh",
   "showThinkingSummaries": true,
   "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
-  "outputStyle": "Concise"
+  "skipAutoPermissionPrompt": true
 }
